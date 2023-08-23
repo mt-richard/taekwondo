@@ -18,19 +18,20 @@
         <div class="md:w-1/4 px-5 py-3  bg-white shadow-xl text-gray-600 md:rounded-xl rounded mb-2">
           <h2 class="text-lg sm:text-xl  font-bold title-font mb-2">ADDRESS</h2>
           <hr class="pt-3">
-          <p class="leading-relaxed font-[500] mb-4 pt-3  font-light">KIGALI Rwanda <br>Remera taxi station </p>
+          <p class="leading-relaxed font-[500] mb-4 pt-3  font-light">KIGALI Rwanda <br>Remera Stadium </p>
         
         </div>
         <div class="md:w-1/4 px-5 py-3  bg-white shadow-xl text-gray-600 md:rounded-xl rounded mb-2">
           <h2 class="text-lg sm:text-xl  font-bold title-font mb-2">EMAIL</h2>
           <hr class="pt-3">
-          <p class="leading-relaxed font-[500] mb-4 pt-3 font-light">thecellarrestaurant@yahoo.com</p>
+          <p class="leading-relaxed font-[500] mb-4 pt-3 font-light">info@rft.rw</p>
           
         </div>
         <div class="md:w-1/4 px-5 py-3  bg-white shadow-xl text-gray-600 md:rounded-xl rounded mb-2">
           <h2 class="text-lg sm:text-xl  font-bold title-font mb-2">PHONE</h2>
           <hr class="pt-3">
-          <p class="leading-relaxed font-[500] mb-4 pt-3 font-light">+250782363423</p>
+          <p class="leading-relaxed font-[500]  pt-3 font-light">+250 788 824 606 </p>
+          <p class="leading-relaxed font-[500] mb-4 pt-3 font-light">+250 783 817 187 </p>
         
         </div>
         

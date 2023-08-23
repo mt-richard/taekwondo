@@ -36,7 +36,7 @@
             </li>
             
             <li class="text-center cursor-pointer">
-                <a href="<?php echo $currentURL; ?>/contact" class=" mynavlink md:px-2 py-6 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600 ">Contact us</a>
+                <a href="<?php echo $currentURL; ?>contact" class=" mynavlink md:px-2 py-6 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600 ">Contact us</a>
             </li>
         
         </ul>
