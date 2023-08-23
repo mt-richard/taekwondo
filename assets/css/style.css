@@ -22,3 +22,17 @@
     background-size: cover;
     width: 100%;
   }
+
+  .active-link{
+    background-color: rebeccapurple;
+  }
+
+
+  .newcard {
+    transition: transform 0.3s ease;
+  }
+  
+  .newcard:hover {
+    transform: translateY(-5px); 
+  }
+  

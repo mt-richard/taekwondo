@@ -19,17 +19,17 @@
             <div class="flex gap-1 pt-5">
                 <div class="bg-main w-8 rounded-full">
                     <a href="" class="">
-                        <img src="../icons/icons8-facebook.svg" alt="" srcset="">
+                        <img src="../assets/icons/icons8-facebook.svg" alt="" srcset="">
                     </a>
                 </div>
                 <div class="bg-main w-8 rounded-full">
                     <a href="" class="">
-                        <img src="../icons/icons8-twitter.svg" alt="" srcset="">
+                        <img src="../assets/icons/icons8-twitter.svg" alt="" srcset="">
                     </a>
                 </div>
                 <div class="bg-main w-8 rounded-full">
                     <a href="" class="">
-                        <img src="../icons/icons8-instagram.svg" alt="" srcset="">
+                        <img src="../assets/icons/icons8-instagram.svg" alt="" srcset="">
                     </a>
                 </div>
                
@@ -73,9 +73,5 @@
 
     <div class="w-full bg-gray-950 border-t border-gray-700 items-center py-6">
         <p class="text-gray-400 text-center">Copyright ©2023 All rights reserved | Rwanda Taekwondo Federation |</p>
-        
-        <button class="absolute bottom-6 bg-main rounded  right-6 fixed font-[500] py-1.5 px-1">
-            <img src="./icons/icons8-chevron-up-64.png" alt="" srcset="" class="w-7">
-        </button>
     </div>
 </div>
