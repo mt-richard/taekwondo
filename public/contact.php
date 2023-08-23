@@ -42,14 +42,14 @@
 
 <!-- contact Form -->
 
-<section class=" body-font overflow-hidden py-5 md:py-20  md:px-10 lg:px-20 xl:px-40 2xl:px-56 z-1 mx-auto text-gray-600 bg-gray-100 body-font  ">
-      <div class="container md:px-5 2xl:px-32 py-5 mx-auto flex gap-2 sm:flex-nowrap flex-wrap">
-        <div class=" rounded md:w-1/2 flex flex-col w-full">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249.2185201974341!2d30.11352280814739!3d-1.9548479327345025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca701c8c9c5f5%3A0x113f758b9eabaa6f!2sRwanda%20Taekwondo%20Federation!5e0!3m2!1sen!2srw!4v1692746076954!5m2!1sen!2srw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<section class=" body-font overflow-hidden py-5 md:py-20 z-1 mx-auto text-gray-600 bg-gray-100 body-font  ">
+      <div class="container md:px-5 2xl:px-32 py-5 mx-auto grid justify-center lg:flex gap-2 sm:flex-nowrap flex-wrap">
+        <div class=" rounded md:w-1/2 lg:w-2/3 xl:w-1/2 flex flex-col w-full">
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249.2185201974341!2d30.11352280814739!3d-1.9548479327345025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca701c8c9c5f5%3A0x113f758b9eabaa6f!2sRwanda%20Taekwondo%20Federation!5e0!3m2!1sen!2srw!4v1692746076954!5m2!1sen!2srw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
         
       
-        <div class=" md:w-1/2 flex flex-col w-full px-2">
+        <div class=" md:w-full lg:w-1/3 flex flex-col w-full px-2">
         
               <div class=" mb-4 px-3">
               <form action="" method="POST">

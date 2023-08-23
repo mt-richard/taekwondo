@@ -9,8 +9,8 @@
             <p class="font-light">Let see whats trending</p>
         </div>
 
-        <div class="w-full flex  justify-center ">
-            <div class="md:w-3/5 newslist grid grid-cols-3 gap-5 md:py-10">
+        <div class="w-full grid md:flex gap-2 justify-center ">
+            <div class="md:w-3/5 newslist grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:py-10">
                 <div class="max-w-sm bg-white drop-shadow-xl rounded drop-shadow-xl newcard ">
                     <a href="#">
                         <img class="w-full h-60 object-cover" src="../assets/images/GettyImages-591755236 (1).jpg" alt="" />
@@ -120,7 +120,7 @@
                 </div>
 
             </div>
-            <div class=" md:w-[350px] latest  px-5 py-10">
+            <div class=" md:w-[350px] latest  py-10">
                 <div class="w-full mb-2 p-5 bg-white rounded">
                     <form action="">
                         <input type="search" name="" id="" class="w-full bg-white border rounded px-10 py-2" placeholder="Search here ..">
