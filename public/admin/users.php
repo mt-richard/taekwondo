@@ -1,3 +1,4 @@
+
 <?php include '../../includes/header.php'; ?>
 <div class="md:flex">
     <div>
@@ -25,26 +26,35 @@
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             include '../../config/dbconnection.php';
-                            $data = file_get_contents('php://input');
-                            $obj = json_decode($data);
-                            var_dump($obj);
-                            // echo json_encode($data);
+                            
+                            $username = $_POST['username'];
+                            $email = $_POST['email'];
+                            $phone = $_POST['phone'];
+                            $address = $_POST['address'];
+                            $password = $_POST['password'];
+                            
                             $userData = [
-                                "username" =>$obj->username,
-                                "email" =>$obj->email,
-                                "phone" =>$obj->phone,
-                                "address" =>$obj->address,
-                                "password" =>$obj->password];
+                                "username" => $username,
+                                "email" => $email,
+                                "phone" => $phone,
+                                "address" => $address,
+                                "password" => $password
+                            ];
+                            
                             $add = new dbconnection();
                             $result = $add->save("users", $userData);
-                            $response = ["message"=>"Failed to add student".$result, "status"=>0];
-                            if(is_int($result)){
-                                $response = ["message"=>"record added", "status" =>1, "id"=>$result];
-                            }
-                            echo (json_encode($response));
-                            // $add->save("users", [$_POST['username'], $_POST['email'], $_POST['phone'], $_POST['address'], $_POST['password']]);
-                        }
-                    ?>
+                            
+							if ($result['status'] == 'success') {
+								$response = $result['message'];
+							}else{
+								$response = "Failed to add User. Please aviod Duplicate" ;
+							}
+							$message = json_encode($response);
+							echo "<script>alert('$message'); window.history.pushState({}, '', 'users'); window.location.reload();</script>";
+
+							}
+                        ?>
+
 
                     <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
                         <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
@@ -63,7 +73,7 @@
                                         <input type="email" id="name" required name="email" placeholder="Enter Email address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="phome" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" id="name" required name="phone" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="text" id="name" required name="address" placeholder="Enter address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -83,83 +93,347 @@
                     </section>
 
                 <!-- end add user -->
+		
 
-                <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-                    <table id="example" class="stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-                        <thead>
-                            <tr>
-                                <th data-priority="1">Username</th>
-                                <th data-priority="2">Email</th>
-                                <th data-priority="3">Address</th>
-                                <th data-priority="4">Phone</th>
-                                <th data-priority="5">Created At</th>
-                                <th data-priority="6">Action</th>
-                            </tr>
-                        </thead>
 
-                        <?php
+
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>DataTables </title>
+	<meta name="description" content="">
+	<meta name="keywords" content="">
+	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
+	
+	<style>
+		
+
+		/*Form fields*/
+		.dataTables_wrapper select,
+		.dataTables_wrapper .dataTables_filter input {
+			color: #4a5568;
+			/*text-gray-700*/
+			padding-left: 1rem;
+			/*pl-4*/
+			padding-right: 1rem;
+			/*pl-4*/
+			padding-top: .5rem;
+			/*pl-2*/
+			padding-bottom: .5rem;
+			/*pl-2*/
+			line-height: 1.25;
+			/*leading-tight*/
+			border-width: 2px;
+			/*border-2*/
+			border-radius: .25rem;
+			border-color: #edf2f7;
+			/*border-gray-200*/
+			background-color: #edf2f7;
+			/*bg-gray-200*/
+		}
+
+		/*Row Hover*/
+		table.dataTable.hover tbody tr:hover,
+		table.dataTable.display tbody tr:hover {
+			background-color: #ebf4ff;
+			/*bg-indigo-100*/
+		}
+
+		/*Pagination Buttons*/
+		.dataTables_wrapper .dataTables_paginate .paginate_button {
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Current selected */
+		.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+			color: #fff !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #667eea !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Pagination Buttons - Hover */
+		.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+			color: #fff !important;
+			/*text-white*/
+			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
+			/*shadow*/
+			font-weight: 700;
+			/*font-bold*/
+			border-radius: .25rem;
+			/*rounded*/
+			background: #667eea !important;
+			/*bg-indigo-500*/
+			border: 1px solid transparent;
+			/*border border-transparent*/
+		}
+
+		/*Add padding to bottom border */
+		table.dataTable.no-footer {
+			border-bottom: 1px solid #e2e8f0;
+			/*border-b-1 border-gray-300*/
+			margin-top: 0.75em;
+			margin-bottom: 0.75em;
+		}
+
+		/*Change colour of responsive icon*/
+		table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
+		table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
+			background-color: #667eea !important;
+			/*bg-indigo-500*/
+		}
+		.current-page{
+			background: #60a5fa;
+			
+			padding-left: 5px;
+			padding-right: 5px;
+			border-radius: 6px;
+			color:white;
+		}
+	</style>
+</head>
+
+<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+	<div class="container w-full  mx-auto px-2">
+
+		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+			<div class="flex justify-center items-center py-5">
+				<input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search"  id="searchInput" class="form-control" placeholder="Search by here .....">
+			</div>
+		
+
+			<table id="datatable" class=" table datatable stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
+				<thead class="text-left px-5">
+					<tr class="bg-gray-100">
+						<th class="py-2 px-5 border" data-priority="1">Name</th>
+						<th class="py-2 px-5 border" data-priority="2">Position</th>
+						<th class="py-2 px-5 border" data-priority="3">Office</th>
+						<th class="py-2 px-5 border" data-priority="4">Age</th>
+						<th class="py-2 px-5 border" data-priority="5">Start date</th>
+						<th class="py-2 px-5 border" data-priority="6">Salary</th>
+					</tr>
+				</thead>
+				<tbody class="font-light">
+				<?php
                         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             include '../../config/dbconnection.php';
                             $users = new dbconnection();
                             $all =  $users->getAll("users");
-                            if(!empty($all)) {
-                                foreach ($all as $user) {?>
+							foreach($all as $user) {?>
+							<tr class="table-row">
+								<td><?php echo $user['username'];?></td>
+								<td><?php echo $user['email'];?></td>
+								<td><?php echo $user['phone'];?></td>
+								<td><?php echo $user['address'];?></td>
+							</tr>
+
+						<?php }}
+						?>
                        
-                        <tbody class="font-light">
-                           
-                            <tr>
-                                <td><?php echo $user['username']; ?></td>
-                                <td><?php echo $user['email']; ?></td>
-                                <td><?php echo $user['phone']; ?></td>
-                                <td><?php echo $user['address']; ?></td>
-                                <td>2011/01/25</td>
-                                <td>$112,000</td>
-                            </tr>
-                        
-                        <?php }}} ?>
-                    </tbody>
+                       
+				</tbody>
+				
 
-                    </table>
-                </div>
+			</table>
+			<div class=" msg w-full hidden flex justify-center items-center ">
+				<span class="text-center ">No records found</span>
+			</div>
+			<!-- paginnation with rows -->
 
-            </div>
-            <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-            <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-            <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-            <script>
-                $(document).ready(function() {
+			<div class="pagination flex justify-between py-5">
+				<span></span>
+				<div class="flex gap-1">
+					<button id="prevBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&lt;</button>
+					<span id="pageInfo" class="bg-blue-400 p-3 hidden rounded text-white">1</span>
+					<span id="pageList" class="p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
+					<button id="nextBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer ">&gt;</button>
+				</div>
+				
+			</div>
 
-                    var table = $('#example').DataTable({
-                            responsive: true
-                        })
-                        .columns.adjust()
-                        .responsive.recalc();
-                });
+			<script>
+				
 
-            const openModalBtn = document.getElementById('openModalBtn');
+const table = document.getElementById('datatable');
+const tbody = table.querySelector('tbody');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const pageInfo = document.getElementById('pageInfo');
+const pageList = document.getElementById('pageList');
+const rowsPerPage = 10;
+let currentPage = 1;
+
+const data = <?php echo json_encode($all); ?>;
+
+function renderTableRows(page) {
+    const start = (page - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    tbody.innerHTML = '';
+
+    for (let i = start; i < end && i < data.length; i++) {
+        const row = document.createElement('tr');
+        row.className = 'table-row';
+        row.innerHTML = `
+            <td class="px-5 py-1 border-b">${data[i].username}</td>
+            <td class="px-5 py-1 border-b">${data[i].email}</td>
+            <td class="px-5 py-1 border-b">${data[i].phone}</td>
+            <td class="px-5 py-1 border-b">${data[i].address}</td>
+            <td class="px-5 py-1 border-b">${data[i].createdat}</td>
+            <td class="px-5 py-1 border-b">$112,000</td>
+        `;
+        tbody.appendChild(row);
+    }
+}
+
+function updatePageInfo() {
+    pageInfo.textContent = `${currentPage}`;
+}
+
+function renderPageList() {
+    pageList.innerHTML = '';
+    const totalPages = Math.ceil(data.length / rowsPerPage);
+
+    const maxDisplayedPages = 10;
+    const lastPage = totalPages;
+
+    let startPage = Math.max(1, currentPage - Math.floor(maxDisplayedPages / 2));
+    let endPage = Math.min(lastPage, startPage + maxDisplayedPages - 1);
+
+    if (endPage - startPage < maxDisplayedPages - 1) {
+        startPage = Math.max(1, endPage - maxDisplayedPages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        const pageItem = document.createElement('span');
+        pageItem.textContent = i;
+        if (i === currentPage) {
+            pageItem.classList.add('current-page');
+        }
+        pageItem.addEventListener('click', () => {
+            currentPage = i;
+            renderTableRows(currentPage);
+            updatePageInfo();
+            renderPageList();
+        });
+        pageList.appendChild(pageItem);
+    }
+
+    if (totalPages > maxDisplayedPages) {
+        const lastPageItem = document.createElement('span');
+        lastPageItem.textContent = '... ' + totalPages;
+        lastPageItem.addEventListener('click', () => {
+            currentPage = lastPage;
+            renderTableRows(currentPage);
+            updatePageInfo();
+            renderPageList();
+        });
+        pageList.appendChild(lastPageItem);
+    }
+}
+
+prevBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        renderTableRows(currentPage);
+        updatePageInfo();
+        renderPageList();
+    }
+});
+
+nextBtn.addEventListener('click', () => {
+    const totalPages = Math.ceil(data.length / rowsPerPage);
+    if (currentPage < totalPages) {
+        currentPage++;
+        renderTableRows(currentPage);
+        updatePageInfo();
+        renderPageList();
+    }
+});
+
+renderTableRows(currentPage);
+updatePageInfo();
+renderPageList();
+
+
+
+			</script>
+
+		</div>
+	</div>
+
+	<script>
+
+		const openModalBtn = document.getElementById('openModalBtn');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const modal = document.getElementById('overlay');
-            // const overlay = document.getElementById('overlay');
 
             function openModal() {
                 modal.style.display = 'block';
-                // overlay.style.display = 'block';
             }
 
             function closeModal() {
                 modal.style.display = 'none';
-                // overlay.style.display = 'none';
             }
 
             openModalBtn.addEventListener('click', openModal);
             closeModalBtn.addEventListener('click', closeModal);
 
 
-            </script>
+	</script>
 
-        </div>
-    </main>
+<script>
+    //   document.getElementById('searchInput').addEventListener('input', function() {
+    //   let input, filter, table, tr, td, i, j, txtValue, searchColumns;
+    //   input = this.value.trim().toUpperCase();
+    //   table = document.querySelector('.datatable');
+    //   tr = table.getElementsByClassName('table-row');
+	//   message = document.querySelector('.msg');
+    //   searchColumns = [0,1,2,3,4]; 
+
+    //   for (i = 0; i < tr.length; i++) {
+    //       let displayRow = false;
+
+    //       for (j = 0; j < searchColumns.length; j++) {
+    //           td = tr[i].getElementsByTagName('td')[searchColumns[j]];
+    //           if (td) {
+    //               txtValue = td.textContent || td.innerText;
+    //               if (txtValue.toUpperCase().indexOf(input) > -1) {
+    //                   displayRow = true;
+    //                   break;
+    //               }
+    //           }
+    //       }
+
+    //       if (displayRow) {
+    //           tr[i].style.display = '';
+    //       } else {
+    //           tr[i].style.display = 'none';
+	// 		  message.style.display = 'block';
+    //       }
+    //   }
+    // });
+   
+</script>
+
+
+
 </div>
-</html>
-
-
+</div>
+</main>

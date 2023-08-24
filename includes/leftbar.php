@@ -1,7 +1,5 @@
 
 
-<?php include 'head.php'; ?>
-
 <body class="bg-gray-100">
   
 

@@ -10,6 +10,25 @@ class dbconnection {
         ]);
     }
 
+    function login($email, $password) {
+        try {
+            $query = "SELECT * FROM users WHERE email = ?";
+            $stm = $this->db->prepare($query);
+            $stm->execute([$email]);
+            $user = $stm->fetch(PDO::FETCH_ASSOC);
+    
+            if ($user && ($password == $user['password'])) {
+                return ["message" => "Login successful", "status" => 1, "user" => $user];
+            } else {
+                return ["message" => "Invalid email or password", "status" => 0];
+            }
+        } catch (PDOException $e) {
+            return ["message" => $e->getMessage(), "status" => 0];
+        }
+    }
+    
+    
+
     function save($table, $data){
         try {
             $query = "INSERT INTO ".$table."(";
@@ -25,13 +44,14 @@ class dbconnection {
             $query .= ")values(".$ph.")";
             $stm = $this->db->prepare($query);
             $stm->execute($values);
-            return intval($this->db->lastInsertId());
-
-        } catch (Exception $th) {
-            return $th->getMessage();
+            $lastInsertId = intval($this->db->lastInsertId());
+            
+            return ["status" => "success", "message" => "Record added successfully", "id" => $lastInsertId];
+        } catch (PDOException $e) {
+            return ["status" => "error", "message" => $e->getMessage()];
         }
-       
     }
+    
     
     function getAll($table){
         try {
@@ -44,16 +64,16 @@ class dbconnection {
         }
     }
 
-    // function destroy($table, $id){
-    //     try {
-    //         $stm = $this->db->prepare("DELETE FROM ".$table."WHERE id=".$id);
-    //         $stm->execute($id);
+    function destroy($table, $id){
+        try {
+            $stm = $this->db->prepare("DELETE FROM ".$table."WHERE id=".$id);
+            $stm->execute($id);
 
-    //         // return $stm->fetchAll();
-    //     } catch (Exception $th) {
-    //         return $th.getMessage();
-    //     }
-    // }
+            // return $stm->fetchAll();
+        } catch (Exception $th) {
+            return $th.getMessage();
+        }
+    }
         
 }
 
