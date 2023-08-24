@@ -1,6 +1,6 @@
 #for page not found
-ErrorDocument 404 /pms/public/404.php
-ErrorDocument 403 /pms/public/403.php
+ErrorDocument 404 /public/404.php
+ErrorDocument 403 /public/403.php
 
 #Prevent directory listing in all  of my folder
 
@@ -11,7 +11,7 @@ RewriteEngine on
 Options +MultiViews
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
-RewriteRule ^home$ index.php [NC,L]
+RewriteRule ^home$ /public/home.php [NC,L]
 RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
 
 Options -Indexes
