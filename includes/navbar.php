@@ -39,7 +39,7 @@
                     <a href="<?php echo $eventsUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">Events</li></a>
                     <a href="<?php echo $athletesUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">Athletes</li></a>
                     <a href="<?php echo $galleryUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">Gallery</li></a>
-                    <a href="<?php echo $championUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">our champion</li></a>
+                    <a href="<?php echo $championUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">our champions</li></a>
                 </ul>
             </li>
             <li class="text-center cursor-pointer">

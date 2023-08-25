@@ -11,57 +11,28 @@
 
         <div class="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 flex-wrap gap-5 justify-center items-center w-full px-5 md:px-10 lg:px-20 xl:px-40">
 
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/e3c3ef9a620b4178832794546540c764.webp" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Mike MIMOSA</h2>
-                    <span class="text-gray-200 ">Minister of sports</span>
-                </div>
-            </div>
 
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/Cheick-Cisse.webp
-                    " alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Gaddy MUGISHA</h2>
-                    <span class="text-gray-200 ">Minister of sports</span>
-                </div>
-            </div>
+        <?php
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            include '../config/dbconnection.php';
+            $db = new dbconnection();
+            $athletes = $db->getAll('athletes');
+            foreach($athletes as $athlete){
+                ?>
 
-        
-
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/Aurore-Mimosa-Munyangaju-ministre-des-Sports-Rwanda-.jpeg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Fred MUGABE</h2>
-                    <span class="text-gray-200 ">Minister of sports</span>
-                </div>
-            </div>
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/Aurore-Mimosa-Munyangaju-ministre-des-Sports-Rwanda-.jpeg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Aurore MIMOSA</h2>
-                    <span class="text-gray-200 ">Minister of sports</span>
-                </div>
-            </div>
             
-            <div class="relative md:w-full newcard mb-3 rounded" >
+            <div class="relative md:w-[400px] newcard" >
                 <div class="w-full">
-                    <img src="../assets/images/Aurore-Mimosa-Munyangaju-ministre-des-Sports-Rwanda-.jpeg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
+                <img src="<?php echo substr($athlete['photo'], 3); ?>" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
                 </div>
                 <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Aurore MIMOSA</h2>
-                    <span class="text-gray-200 ">Minister of sports</span>
+                    <h2 class="text-white font-bold text-2xl"><?php echo $athlete['name']; ?></h2>
+                    <span class="text-gray-200 "><?php echo $athlete['club']; ?></span>
                 </div>
             </div>
+
+            <?php }} ?>
+            
         </div>
     </div>
 </div>

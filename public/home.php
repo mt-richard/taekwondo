@@ -29,12 +29,21 @@
                 
                 <a href="" type="button" class="bg-blue-500 px-6 rounded-3xl py-3 uppercase font-semibold text-white border-none outline-none hover:bg-white hover:text-main hover:shadow">get in touch</a>
             </div>
+            <!--current  champion  -->
+            <?php
+             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                include '../config/dbconnection.php';
+                $db = new dbconnection();
+                $champion = $db->getChampion();
+                if ($champion){?>
+                <div class=" relative z-1 md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-1/4 rounded-t px-10 py-10 md:mt-52 lg:mt-40 md:right-20">
+                    <h1 class="text-gray-100 py-3 font-bold uppercase text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
+                    
+                    <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[15px]"><?php echo $champion['title'];?></span></h1>
+                    <img src="<?php echo substr($champion['photo'], 3); ?>" alt="" class="object-cover w-full h-[400px] md:h-96 rounded-t-xl">
+                </div>
 
-            <div class=" relative z-1 md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-1/4 rounded-t px-10 py-10 md:mt-52 lg:mt-40 md:right-20">
-                <h1 class="text-gray-100 py-3 font-bold uppercase text-xl">2023 Champion</h1>
-                <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase">Cheick Cisse</h1>
-                <img src="../assets/images/Cheick-Cisse.webp" alt="" class="object-cover w-full rounded-t-xl">
-            </div>
+               <?php  }  } ?>
         </div>
     </div>
 </div>
@@ -84,58 +93,79 @@
 
 <!-- upcoming event -->
 <div class="relative bg-white pt-5">
-    <div class="flex flex-col justify-center items-center mb-5 ">
-        <div class="absolute top-0 md:right-80 bg-gray-950 md:px-10 py-5">
-            <h2 class="uppercase text-white">upcoming event</h2>
-        </div>
-        <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
-            <div class="md:flex gap-6 px-5 py-5 md:px-10">
-                <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0 ">
-                    <img src="../assets/images/brochureFile_5.jpg" alt="" class="rounded w-full h-96 object-cover">
-                </div>
-                <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center "> 
-                    <div class="flex gap-2 md:gap-5">
-                        <div>
-                            <h2 class="text-white capitalize">days</h2>
-                            <h1 class="bg-gray-950 text-white px-5 py-3">00</h1>
+
+<!-- event -->
+            <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    
+                    $events = $db->getLatestEvent();
+                    if($events){
+                        $eventStartDate = new DateTime($events['event_date']); 
+                        $currentDate = new DateTime();
+                        $interval = $eventStartDate->diff($currentDate);
+
+                        $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;
+                        $remainingHours = $eventStartDate > $currentDate ? $interval->h : 0;
+                        $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
+                        $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
+                        ?>
+                         <div class="flex flex-col justify-center items-center mb-5 ">
+                            <div class="absolute top-0 md:right-80 bg-gray-950 md:px-10 py-5">
+                                <h2 class="uppercase text-white">upcoming event</h2>
+                            </div>
+                            <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
+                                <div class="md:flex gap-6 px-5 py-5 md:px-10">
+                                    <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0 ">
+                                        <img src="<?php echo substr($events['photo'], 3); ?>" alt="" class="rounded w-full h-96 object-cover">
+                                    </div>
+                                    <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center "> 
+                                        <div class="flex gap-2 md:gap-5">
+                                        <div>
+                                                <h2 class="text-white capitalize">days</h2>
+                                                <h1 id="days-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingDays ?></h1>
+                                            </div>
+                                            <div>
+                                                <h2 class="text-white capitalize">hr</h2>
+                                                <h1 id="hours-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingHours ?></h1>
+                                            </div>
+                                            <div>
+                                                <h2 class="text-white capitalize">min</h2>
+                                                <h1 id="minutes-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingMinutes ?></h1>
+                                            </div>
+                                            <div>
+                                                <h2 class="text-white capitalize">sec</h2>
+                                                <h1 id="seconds-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingSeconds ?></h1>
+                                            </div>
+                                            <h2 class="text-white font-bold tetx-2xl capitalize">remaining</h2>
+                                        </div>
+                                        <div class="md:py-5">
+                                            <h2 class="text-white font-bold py-3 text-4xl" ><?php echo $events['title'];?></h2>
+                                            <p class="text-white font-light"><?php echo $events['event_desc'];?></p>
+                                        </div>
+                                        <div class="pt-5">
+                                            <button class=" border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                         </div>
-                        <div>
-                            <h2 class="text-white capitalize">hr</h2>
-                            <h1 class="bg-gray-950 text-white px-5 py-3">00</h1>
-                        </div>
-                        <div>
-                            <h2 class="text-white capitalize">min</h2>
-                            <h1 class="bg-gray-950 text-white px-5 py-3">00</h1>
-                        </div>
-                        <div>
-                            <h2 class="text-white capitalize">sec</h2>
-                            <h1 class="bg-gray-950 text-white px-5 py-3">00</h1>
-                        </div>
-                        <h2 class="text-white font-bold tetx-2xl capitalize">remaining</h2>
-                    </div>
-                    <div class="md:py-5">
-                        <h2 class="text-white font-bold py-3 text-4xl" >We are going to arrange an event</h2>
-                        <p class="text-white font-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum, labore. Lorem, ipsum dolor sit amet consectetur adipisicing elit. Consequuntur, neque?</p>
-                    </div>
-                    <div class="pt-5">
-                        <button class=" border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <?php }} ?>
+
+
+   
 
     <div id="eventbanner" class="eventbanner py-10 md:flex gap-10 justify-center items-center bg-gray-800">
         <div>
             <h2 class="text-4xl text-white font-bold">Get more infomation about Events</h2>
         </div>
         <div>
-            <button class="rounded-2xl py-2 px-10 bg-white text-gray-950 uppercase hover:bg-blue-400 hover:text-white">View More Evente</button>
+            <button class="rounded-2xl py-2 px-10 bg-white text-gray-950 uppercase hover:bg-blue-400 hover:text-white">View More Events</button>
         </div>
     </div>
 </div>
 
-<!-- more info about rtf -->
+<!-- hot news  -->
 
 <div>
     <div class="w-full lg:flex justify-center md:gap-10 px-10 py-10 md:py-20 bg-gray-100">
@@ -143,7 +173,14 @@
             <img src="../assets/images/FWvAzJxWYAEIMPQ.jpeg" alt="" class="w-full h-full object-cover rounded-tl-2xl rounded-br-2xl">
         </div>
         <div class="md:w-full lg:w-1/3 flex flex-col justify-center  px-5 md:px-1">
-            <h1 class="font-bold py-3 text-4xl">Get more info about RTF</h1>
+            <div class="flex gap-1 py-5">
+                <img src="../assets/icons/icons8-rating-30.png" alt="">
+                <img src="../assets/icons/icons8-rating-30.png" alt="">
+                <img src="../assets/icons/icons8-rating-30.png" alt="">
+                <img src="../assets/icons/icons8-rating-30.png" alt="">
+                <img src="../assets/icons/icons8-rating-30.png" alt="">
+            </div>
+            <h1 class="font-bold py-3 text-4xl">African Youth Taekwondo Competition</h1>
             <p class="font-light leading-8 py-5 mb-5">World Taekwondo (WT) is the International Federation (IF) governing the sport of Taekwondo and is a member of the Association of Summer Olympic International Federations (ASOIF) and International Paralympic Committee (IPC). WT leads the most inclusive and accessible combat sport, which combines the values of an ancient Asian heritage with the values of a global elite sport. Taekwondo evolves on a solid base, mixing the traditional and the modern. The values recognized by practitioners and partners are the strength of our sport. They are distilled from those found in our society: the search for pleasure, surpassing oneself, perseverance, moral and physical strength, and respect for others.</p>
         </div>
     </div>
@@ -261,6 +298,8 @@
 </body>
 
 <script src="../assets/js/slides.js"></script>
+
+                   
 
 
 

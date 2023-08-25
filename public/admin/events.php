@@ -6,7 +6,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord</h2>
+        <h2 class="text-xl py-10">Dashbord / Events</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -16,44 +16,68 @@
 
                     <div class="py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
-                            Add user
+                            Add Event
                         </button>
                     </div>
                 
                     
-                    <!-- modal -->
-
-                    <?php
+                    <!-- Main modal -->
+                        <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             include '../../config/dbconnection.php';
                             
-                            $username = $_POST['username'];
-                            $email = $_POST['email'];
-                            $phone = $_POST['phone'];
-                            $address = $_POST['address'];
-                            $password = $_POST['password'];
+                            $title = $_POST['title'];
+                            $desc = $_POST['desc'];
+                            $date = $_POST['date'];
+                            $starttime = $_POST['starttime'];
+                            $venue = $_POST['venue'];
+                            $photo = $_FILES['photo'];
                             
                             $userData = [
-                                "username" => $username,
-                                "email" => $email,
-                                "phone" => $phone,
-                                "address" => $address,
-                                "password" => $password
+                                "title" => $title,
+                                "event_desc" => $desc,
+                                "event_date" => $date,
+                                "start_time" => $starttime,
+                                "venue" => $venue,
                             ];
-                            
-                            $add = new dbconnection();
-                            $result = $add->save("users", $userData);
-                            
-							if ($result['status'] == 'success') {
-								$response = $result['message'];
-							}else{
-								$response = "Failed to add User. Please aviod Duplicate" ;
-							}
-							$message = json_encode($response);
-							echo "<script>alert('$message'); window.history.pushState({}, '', 'users'); window.location.reload();</script>";
 
-							}
+                            $photoName = $photo['name'];
+                            $photoTmpName = $photo['tmp_name'];
+                            $photoError = $photo['error'];
+
+                            $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+                            $uploadedExtension = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
+
+                            if (!in_array($uploadedExtension, $allowedExtensions)) {
+                                $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
+                            } elseif ($photoError === UPLOAD_ERR_OK) {
+                                $targetDirectory =  '../../' ;
+                                $targetPath = $targetDirectory . $photoName;
+                                
+                                if (move_uploaded_file($photoTmpName, $targetPath)) {
+                                    $userData["photo"] = $targetPath;
+                                    
+                                    $add = new dbconnection();
+                                    $result = $add->save("events", $userData);
+                                    
+                                    if ($result['status'] == 'success') {
+                                        $response = $result['message'];
+                                    } else {
+                                        $response = "Failed to add event.";
+                                    }
+                                } else {
+                            $response = "Failed to move uploaded file. Error: " . $_FILES['photo']['error'];
+                        }
+                            } else {
+                                $response = "Error uploading the file.";
+                            }
+
+                            $message = json_encode($response);
+                            // echo json_encode($result);
+                            echo "<script>alert('$message'); window.history.pushState({}, '', 'events'); window.location.reload();</script>";
+                        }
                         ?>
+
 
 
                     <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
@@ -63,23 +87,26 @@
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
                                 </div>
                                 <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Add User Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Add Events Here</h2>
                                 </div>
-                                <form action="" method="POST">
+                                <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="username" placeholder="Enter userName" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="email" id="name" required name="email" placeholder="Enter Email address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <textarea required name="desc" placeholder="Enter Event Description" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="phone" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="date" required name="date" placeholder="Enter Event date " class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="address" placeholder="Enter address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="time" required name="starttime" placeholder="Enter Starting Time" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                    <input type="password" id="password" required name="password" placeholder="********" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" required name="venue" placeholder="Enter Venue" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                    </div>
+                                    <div class=" mb-4 px-3">
+                                        <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
@@ -97,8 +124,6 @@
 
 
 
-<!DOCTYPE html>
-<html lang="en" class="antialiased">
 
 <head>
 	<meta charset="UTF-8">
@@ -111,94 +136,6 @@
 	
 	<style>
 		
-
-		/*Form fields*/
-		.dataTables_wrapper select,
-		.dataTables_wrapper .dataTables_filter input {
-			color: #4a5568;
-			/*text-gray-700*/
-			padding-left: 1rem;
-			/*pl-4*/
-			padding-right: 1rem;
-			/*pl-4*/
-			padding-top: .5rem;
-			/*pl-2*/
-			padding-bottom: .5rem;
-			/*pl-2*/
-			line-height: 1.25;
-			/*leading-tight*/
-			border-width: 2px;
-			/*border-2*/
-			border-radius: .25rem;
-			border-color: #edf2f7;
-			/*border-gray-200*/
-			background-color: #edf2f7;
-			/*bg-gray-200*/
-		}
-
-		/*Row Hover*/
-		table.dataTable.hover tbody tr:hover,
-		table.dataTable.display tbody tr:hover {
-			background-color: #ebf4ff;
-			/*bg-indigo-100*/
-		}
-
-		/*Pagination Buttons*/
-		.dataTables_wrapper .dataTables_paginate .paginate_button {
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Pagination Buttons - Current selected */
-		.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-			color: #fff !important;
-			/*text-white*/
-			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-			/*shadow*/
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			background: #667eea !important;
-			/*bg-indigo-500*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Pagination Buttons - Hover */
-		.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-			color: #fff !important;
-			/*text-white*/
-			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-			/*shadow*/
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			background: #667eea !important;
-			/*bg-indigo-500*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Add padding to bottom border */
-		table.dataTable.no-footer {
-			border-bottom: 1px solid #e2e8f0;
-			/*border-b-1 border-gray-300*/
-			margin-top: 0.75em;
-			margin-bottom: 0.75em;
-		}
-
-		/*Change colour of responsive icon*/
-		table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-		table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
-			background-color: #667eea !important;
-			/*bg-indigo-500*/
-		}
 		.current-page{
 			background: #60a5fa;
 			
@@ -222,12 +159,14 @@
 			<table id="datatable" class=" table datatable stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
 				<thead class="text-left px-5">
 					<tr class="bg-gray-100">
-						<th class="py-2 px-5 border" data-priority="1">Name</th>
-						<th class="py-2 px-5 border" data-priority="2">Position</th>
-						<th class="py-2 px-5 border" data-priority="3">Office</th>
-						<th class="py-2 px-5 border" data-priority="4">Age</th>
-						<th class="py-2 px-5 border" data-priority="5">Start date</th>
-						<th class="py-2 px-5 border" data-priority="6">Salary</th>
+						<th class="py-2 px-5 border" data-priority="1">#</th>
+						<th class="py-2 px-5 border" data-priority="1">Title</th>
+						<th class="py-2 px-5 border" data-priority="1">Description</th>
+						<th class="py-2 px-5 border" data-priority="1">Date</th>
+						<th class="py-2 px-5 border" data-priority="2">Start Time</th>
+						<th class="py-2 px-5 border" data-priority="2">Venue</th>
+						<th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
+						<th class="py-2 px-5 border" data-priority="6">Actions</th>
 					</tr>
 				</thead>
 				<tbody class="font-light">
@@ -235,14 +174,16 @@
                         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             include '../../config/dbconnection.php';
                             $users = new dbconnection();
-                            $all =  $users->getAll("users");
+                            $all =  $users->getAll("events");
 
 							foreach ($all as $user) {?>
 							<tr>
-								<td class="px-5 py-1 border-b"><?php echo $user['username']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['email']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['phone']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['address']; ?></td>
+								<td class="px-5 py-1 border-b"><img src="<?php echo $user['photo']; ?>" class="w-10 h-10 rounded-full object-cover"></td>
+								<td class="px-5 py-1 border-b"><?php echo $user['title']; ?></td>
+								<td class="px-5 py-1 border-b"><?php echo $user['event_desc']; ?></td>
+								<td class="px-5 py-1 border-b"><?php echo $user['event_date']; ?></td>
+								<td class="px-5 py-1 border-b"><?php echo $user['start_time']; ?></td>
+								<td class="px-5 py-1 border-b"><?php echo $user['venue']; ?></td>
 								<td class="px-5 py-1 border-b"><?php echo $user['createdat']; ?></td>
 								<td class="px-5 py-1 border-b">$112,000</td>
 							</tr>

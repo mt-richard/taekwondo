@@ -52,7 +52,7 @@ class dbconnection {
         }
     }
     
-    
+    // retrieve all data
     function getAll($table){
         try {
             $stm = $this->db->prepare("SELECT * FROM ".$table);
@@ -64,16 +64,43 @@ class dbconnection {
         }
     }
 
-    function destroy($table, $id){
-        try {
-            $stm = $this->db->prepare("DELETE FROM ".$table."WHERE id=".$id);
-            $stm->execute($id);
-
-            // return $stm->fetchAll();
-        } catch (Exception $th) {
-            return $th.getMessage();
+   // latest champion
+        function getChampion(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM champions ORDER BY `period` DESC, `createdat`  DESC LIMIT 1");
+                $stm->execute();
+                $champion = $stm->fetch(PDO::FETCH_ASSOC);
+                return $champion;
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
         }
-    }
+
+        // latest events
+        function getlatestEvent(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM events ORDER BY `createdat`  ASC LIMIT 1");
+                $stm->execute();
+                $event = $stm->fetch(PDO::FETCH_ASSOC);
+                return $event;
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
+        
+
+
+    // delete
+        function destroy($table, $id){
+            try {
+                $stm = $this->db->prepare("DELETE FROM ".$table."WHERE id=".$id);
+                $stm->execute($id);
+
+                // return $stm->fetchAll();
+            } catch (Exception $th) {
+                return $th.getMessage();
+            }
+        }
         
 }
 

@@ -13,78 +13,27 @@
 
         <div class="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 flex-wrap gap-5 justify-center items-center w-full px-5 md:px-10 lg:px-20 xl:px-40">
 
+        <?php
+        if($_SERVER['REQUEST_METHOD'] == 'GET'){
+            include '../config/dbconnection.php';
+            $db = new dbconnection();
+            $champions = $db->getAll('champions');
+            foreach($champions as $champion){
+                ?>
             <div class="relative md:w-full newcard mb-3 rounded" >
                 <div class="w-full">
-                    <img src="../assets/images/ngabonziza_annick_dadual_wegukanye_imidari_ya_zahabu-f985c.jpg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
+                    <img src="<?php echo substr($champion['photo'], 3); ?>" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
                 </div>
                 <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Mike MIMOSA</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
+                    <h2 class="text-white font-bold text-2xl"><?php echo $champion['name'];?></h2>
+                    <span class="text-gray-200 font-semibold "><?php echo $champion['title'];?></span>
+                    <span class="text-gray-200 "><?php echo $champion['period'];?></span>
+                    <span class="text-gray-800 text-xl font-bold ">" <?php echo $champion['award'];?>"</span>
                 </div>
             </div>
 
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/isaro_ishwarya_wegukanye_umudari_wa_zahabu_mu_bakobwa_bakiri_bato-d7d87.jpg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Gaddy MUGISHA</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
-                </div>
-            </div>
+            <?php }} ?>
 
-        
-
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/mbonigaba_boniface_wegukanye_umudari_w_umuringa_mu_batarengeje_imyaka_40-94a34.jpg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Fred MUGABE</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
-                </div>
-            </div>
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/uwayo_clarisse_witwaye_neza_akabona_umudari_w_umuringa_mu_batarengeje_imyaka_30-35d1c.jpg" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Aurore MIMOSA</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
-                </div>
-            </div>
-            
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/FXmnuitXkAACudx.webp" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Aurore MIMOSA</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
-                </div>
-            </div>
-
-            <div class="relative md:w-full newcard mb-3 rounded" >
-                <div class="w-full">
-                    <img src="../assets/images/Ngabonziza-Annick-Dadual-wegukanye-imidari-ya-zahabu.webp" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
-                </div>
-                <div class="bg-blue-400 w-[90%] absolute bottom-0 left-4 flex flex-col items-center py-2">
-                    <h2 class="text-white font-bold text-2xl">Aurore MIMOSA</h2>
-                    <span class="text-gray-200 font-semibold ">African Youth Champion</span>
-                    <span class="text-gray-200 ">2022-2023</span>
-                    <span class="text-gray-800 text-xl font-bold ">" Gold Award "</span>
-                </div>
-            </div>
         </div>
     </div>
 </div>
