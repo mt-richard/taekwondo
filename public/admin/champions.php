@@ -111,7 +111,7 @@
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="adduser" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add user</button>
+                                        <button type="submit" name="addchampion" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add Champion</button>
                                     </div>
                                     
                                 </form>

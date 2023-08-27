@@ -15,14 +15,7 @@
     display: none;
   }
 
-  #myDiv{
-    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('../images/52221968793_3490622dbb_b.jpg');
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    background-size: cover;
-    width: 100%;
-  }
-
+ 
   .active-link{
     background-color: rebeccapurple;
   }

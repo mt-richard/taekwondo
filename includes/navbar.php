@@ -43,7 +43,7 @@
                 </ul>
             </li>
             <li class="text-center cursor-pointer">
-                <a href="<?php echo $newsUrl;?>" class=" mynavlink md:px-2 py-6 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600 <?php if ($currentURL ==  'http://localhost/taekwondo/public/news.php' || $currentURL ==  'http://localhost/taekwondo/public/news' ) echo'bg-blue-400' ;?>">News</a>
+                <a href="<?php echo $newsUrl;?>" class=" mynavlink md:px-2 py-6 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600 <?php if ($currentURL ==  'http://localhost/taekwondo/public/news.php' || $currentURL ==  'http://localhost/taekwondo/public/news' || $currentURL ==  'http://localhost/taekwondo/public/newpage' ) echo'bg-blue-400' ;?>">News</a>
             </li>
             
             <li class="text-center cursor-pointer">

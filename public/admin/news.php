@@ -4,22 +4,21 @@
     <div>
         <?php include '../../includes/leftbar.php'; ?>
     </div>
-    <!-- event page content -->
+    <!-- new page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Events</h2>
+        <h2 class="text-xl py-10">Dashbord / News</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
             <div class="container w-full mx-auto px-2">
 
-                <!-- add event -->
+                <!-- add new -->
 
                     <div class="py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
-                            Add Event
+                            Add News
                         </button>
                     </div>
-                
                     
                     <!-- Main modal -->
                         <?php
@@ -27,43 +26,37 @@
                             include '../../config/dbconnection.php';
                             
                             $title = $_POST['title'];
-                            $desc = $_POST['desc'];
-                            $date = $_POST['date'];
-                            $starttime = $_POST['starttime'];
-                            $venue = $_POST['venue'];
+                            $content = $_POST['content'];
                             $photo = $_FILES['photo'];
                             
-                            $eventData = [
+                            $newData = [
                                 "title" => $title,
-                                "event_desc" => $desc,
-                                "event_date" => $date,
-                                "start_time" => $starttime,
-                                "venue" => $venue,
+                                "content" => $content,
                             ];
 
                             $photoName = $photo['name'];
                             $photoTmpName = $photo['tmp_name'];
                             $photoError = $photo['error'];
 
-                            $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
+                            $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif', 'webp');
                             $uploadedExtension = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
 
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
-                                $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
+                                $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF and WEBP.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
                                 $targetDirectory =  '../../' ;
                                 $targetPath = $targetDirectory . $photoName;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
-                                    $eventData["photo"] = $targetPath;
+                                    $newData["photo"] = $targetPath;
                                     
                                     $add = new dbconnection();
-                                    $result = $add->save("events", $eventData);
+                                    $result = $add->save("news", $newData);
                                     
                                     if ($result['status'] == 'success') {
                                         $response = $result['message'];
                                     } else {
-                                        $response = "Failed to add event.";
+                                        $response = "Failed to add News.";
                                     }
                                 } else {
                             $response = "Failed to move uploaded file. Error: " . $_FILES['photo']['error'];
@@ -74,7 +67,7 @@
 
                             $message = json_encode($response);
                             // echo json_encode($result);
-                            echo "<script>alert('$message'); window.history.pushState({}, '', 'events'); window.location.reload();</script>";
+                            echo "<script>alert('$message'); window.history.pushState({}, '', 'news'); window.location.reload();</script>";
                         }
                         ?>
 
@@ -87,23 +80,14 @@
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
                                 </div>
                                 <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Add Events Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Add News Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
                                         <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <textarea required name="desc" placeholder="Enter Event Description" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="date" required name="date" placeholder="Enter Event date " class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="time" required name="starttime" placeholder="Enter Starting Time" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" required name="venue" placeholder="Enter Venue" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <textarea required name="content" placeholder="Enter Event Description" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -111,7 +95,7 @@
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addevent" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add Event</button>
+                                        <button type="submit" name="addnews" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add News</button>
                                     </div>
                                     
                                 </form>
@@ -119,7 +103,7 @@
                         </div>
                     </section>
 
-                <!-- end add event -->
+                <!-- end add new -->
 		
 
                     <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
@@ -137,9 +121,6 @@
                                             <th class="py-2 px-5 border" data-priority="1">#</th>
                                             <th class="py-2 px-5 border" data-priority="1">Title</th>
                                             <th class="py-2 px-5 border" data-priority="1">Description</th>
-                                            <th class="py-2 px-5 border" data-priority="1">Date</th>
-                                            <th class="py-2 px-5 border" data-priority="2">Start Time</th>
-                                            <th class="py-2 px-5 border" data-priority="2">Venue</th>
                                             <th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
                                             <th class="py-2 px-5 border" data-priority="6">Actions</th>
                                         </tr>
@@ -148,18 +129,15 @@
                                     <?php
                                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 include '../../config/dbconnection.php';
-                                                $events = new dbconnection();
-                                                $all =  $events->getAll("events");
+                                                $news = new dbconnection();
+                                                $all =  $news->getAll("news");
 
-                                                foreach ($all as $event) {?>
+                                                foreach ($all as $new) {?>
                                                 <tr>
-                                                    <td class="px-5 py-1 border-b"><img src="<?php echo $event['photo']; ?>" class="w-20 h-10 rounded-lg object-cover"></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $event['title']; ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo substr($event['event_desc'], 0, 50); ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $event['event_date']; ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $event['start_time']; ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $event['venue']; ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $event['createdat']; ?></td>
+                                                    <td class="px-5 py-1 border-b"><img src="<?php echo $new['photo']; ?>" class="w-20 h-10 rounded-lg object-cover"></td>
+                                                    <td class="px-5 py-1 border-b"><?php echo $new['title']; ?></td>
+                                                    <td class="px-5 py-1 border-b"><?php echo substr($new['content'], 0, 50); ?></td>
+                                                    <td class="px-5 py-1 border-b"><?php echo $new['createdat']; ?></td>
                                                     <td class="px-5 py-1 border-b">$112,000</td>
                                                 </tr>
                         
@@ -206,7 +184,7 @@
                                         } else {
                                             filteredData = data.filter(item => {
                                                 return (
-                                                    item.eventname.toLowerCase().includes(query) ||
+                                                    item.newname.toLowerCase().includes(query) ||
                                                     item.email.toLowerCase().includes(query) ||
                                                     item.phone.includes(query) ||
                                                     item.address.toLowerCase().includes(query) ||
@@ -230,7 +208,7 @@
                                             const row = document.createElement('tr');
                                             row.className = 'table-row';
                                             row.innerHTML = `
-                                                <td class="px-5 py-1 border-b">${filteredData[i].eventname}</td>
+                                                <td class="px-5 py-1 border-b">${filteredData[i].newname}</td>
                                                 <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
                                                 <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
                                                 <td class="px-5 py-1 border-b">${filteredData[i].address}</td>

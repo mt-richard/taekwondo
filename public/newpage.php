@@ -2,33 +2,47 @@
 <?php include '../includes/navbar.php'; ?>
 <body>
 
+
+<?php
+if($_SERVER['REQUEST_METHOD'] == 'GET'){
+    include '../config/dbconnection.php';
+    $db = new dbconnection();
+    $newsid = base64_decode($_GET['id']);
+    $new = $db->getNewsdetails('news',$newsid);
+    // echo $newsid;
+    // echo json_encode($new);
+    if($new){
+   
+        ?>
+
 <div>
     <div class="bg-gray-100 md:py-10">
 
         <div class="w-full flex gap-2 justify-center ">
             <div class="md:w-3/5 newslist px-5 md:py-10">
                 <div class="w-full py-5 flex justify-between ">
-                    <div class="flex justify-center cursor-pointer items-center py-5 bg-blue-400 rounded-full w-5 h-5 p-5">
+                    <a href="<?php echo $newsUrl; ?>" class="flex justify-center cursor-pointer items-center py-5 bg-blue-400 rounded-full w-5 h-5 p-5">
                         <h2 class="text-3xl font-bold text-white text-center mb-2 font-bold">&larr;</h2>
-                    </div>
+                    </a>
                     <span></span>
                 </div>
 
                 <div class="w-full bg-white drop-shadow-xl rounded drop-shadow-xl newcard">
                     <div class="w-full h-full bg-blue-700">
-                        <img class="w-full  object-cover" src="../assets/images/GettyImages-591755236 (1).jpg" alt="" />
+                        <img class="w-full  object-cover" src="<?php echo substr($new['photo'],3); ?>" alt="" />
                     </div>
                     <div class="px-10 py-2 w-full text-right ">
-                        <span>2021-09-09</span>
+                        <span><?php echo $new['createdat']; ?></span>
                     </div>
                     <div class="p-5">
 
                         <a href="#">
-                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Best Match for 2021 Competions</h5>
+                            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 "><?php echo $new['title']; ?></h5>
                         </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quidem maiores veniam quam quibusdam nesciunt eos enim similique quas in facilis non, facere a mollitia sunt quia consequuntur veritatis explicabo est! Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam sit nesciunt, facere eaque eius exercitationem distinctio quae, natus voluptatem et molestias, placeat quidem velit corporis dicta voluptatibus quos inventore vero modi nihil commodi minima hic! Reiciendis quas placeat odit sint debitis dolor iusto, sunt laudantium amet architecto quo iure unde! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias, beatae?</p>
+                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo $new['content']; ?></p>
                     </div>
                 </div>
+                <?php } }?>
 
                 <!-- comment section -->
                  <section class="relative flex flex-col items-center justify-center md:py-10 border-t antialiased bg-white bg-gray-100 ">

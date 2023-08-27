@@ -55,7 +55,7 @@ class dbconnection {
     // retrieve all data
     function getAll($table){
         try {
-            $stm = $this->db->prepare("SELECT * FROM ".$table);
+            $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY createdat DESC");
             $stm->execute();
             $stm->setFetchMode(PDO::FETCH_ASSOC);
             return $stm->fetchAll();
@@ -87,8 +87,33 @@ class dbconnection {
                 return $th->getMessage();
             }
         }
-        
 
+        // latest news
+        function getlatestNews(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM news ORDER BY `createdat`  DESC LIMIT 3");
+                $stm->execute();
+                $stm->setFetchMode(PDO::FETCH_ASSOC);
+                return $stm->fetchAll();
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
+
+        // Get by ID 
+        
+        function getNewsdetails($table, $id) {
+            try {
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " WHERE news_id = :id");
+                $stm->bindParam(':id', $id, PDO::PARAM_INT);
+                $stm->execute();
+                $new = $stm->fetch(PDO::FETCH_ASSOC);
+                return $new;
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
+        
 
     // delete
         function destroy($table, $id){

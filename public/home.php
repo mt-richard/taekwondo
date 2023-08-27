@@ -1,5 +1,9 @@
 <?php 
  include "../includes/navbar.php";
+ $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+ $eventsurl = dirname($currentURL) . "/events";
+ include '../config/dbconnection.php';
+ $db = new dbconnection();
 ?>
 
 <style>
@@ -8,45 +12,79 @@
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-size: cover;
+       
   }
 </style>
 
 <body>
 <!-- home banner -->
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    
+    $news = $db->getAll('news');
+
+    $slides = [];
+    foreach ($news as $new) {
+        $slide = [
+            'image' => substr($new['photo'], 3),
+            'title' => $new['title'],
+            'content' => substr($new['content'], 0, 300)
+        ];
+        $slides[] = $slide;
+    }
+    $slidesJSON = json_encode($slides);
+}
+?>
 <div class="w-full">
-    <div id="myDiv" class="w-full mx-auto md:py-40 md:h-[85vh] lg:h-[80vh]">
-        <div class="w-full z-10 md:flex justify-center md:gap-20">
-            <div class="md:w-1/3 px-5 py-5 md:py-10">
-                <div>
-                    <h4 class="drop-shadow-xl text-white font-bold text-3xl">Welcome to RFT</h4>
-                </div>
-                <div class="w-full items-center">
-                    <h1 class="drop-shadow-xl text-gray-200 font-bold text-4xl md:text-6xl py-2">Rwanda TAEKWONDO Federation</h1>
-                </div>
-                <div class="pb-10">
-                    <p class="text-white drop-shadow font-light text-xl py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel itaque sit dignissimos, quasi soluta unde quia excepturi consequuntur maiores, velit enim sed inventore eveniet perspiciatis non, placeat tempore natus hic..</p>
-                </div>
-                
-                <a href="" type="button" class="bg-blue-500 px-6 rounded-3xl py-3 uppercase font-semibold text-white border-none outline-none hover:bg-white hover:text-main hover:shadow">get in touch</a>
+    <div id="myDiv" class="w-full mx-auto md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col justify-center items-center">
+        <div class="md:full lg:w-4/5 xl:w-3/5 md:flex justify-center items-center md:gap-20">
+            <div class="slideshow-text md:w-2/3  px-5 py-0 md:py-10 " >
             </div>
-            <!--current  champion  -->
-            <?php
-             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                include '../config/dbconnection.php';
-                $db = new dbconnection();
-                $champion = $db->getChampion();
-                if ($champion){?>
-                <div class=" relative z-1 md:w-1/2 lg:w-2/5 xl:w-1/3 2xl:w-1/4 rounded-t px-10 py-10 md:mt-52 lg:mt-40 md:right-20">
-                    <h1 class="text-gray-100 py-3 font-bold uppercase text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
-                    
-                    <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[15px]"><?php echo $champion['title'];?></span></h1>
-                    <img src="<?php echo substr($champion['photo'], 3); ?>" alt="" class="object-cover w-full h-[400px] md:h-96 rounded-t-xl">
-                </div>
+            <div class="relative w-full md:w-1/3 md:px-2 ">
+                <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                
+                    $champion = $db->getChampion();
+                    if ($champion){?>
+                    <div class="absolute  z-1 w-full rounded-t ">
+                        <h1 class="text-gray-100 py-3 font-bold uppercase text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
+                        <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[15px]"><?php echo $champion['title'];?></span></h1>
+                        <img src="<?php echo substr($champion['photo'], 3); ?>" alt="" class="object-cover w-full  lg:h-[400px] h-80 md:h-96 rounded-t-xl">
+                    </div>
 
                <?php  }  } ?>
+            </div>
         </div>
     </div>
 </div>
+
+<script>
+  // home slide
+  window.addEventListener('DOMContentLoaded', function() {
+    var slideshow = document.getElementById('myDiv');
+    var textContainer = slideshow.querySelector('.slideshow-text');
+
+    var slides = <?php echo $slidesJSON; ?>; 
+
+    var currentIndex = 0;
+
+    function changeSlide() {
+        slideshow.style.backgroundPosition = '75% 25%';
+        slideshow.style.backgroundSize = 'cover';
+      slideshow.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${slides[currentIndex].image})`;
+      textContainer.innerHTML = `
+        <h1 class="text-left drop-shadow-xl text-white font-black text-5xl pb-5">${slides[currentIndex].title}</h1>
+        <p class="text-left text-white drop-shadow font-light md:text-lg xl:text-xl leading-8 py-5">${slides[currentIndex].content} ...</p>
+        <a href="<?php echo $contactUrl; ?>" type="button" class="bg-blue-500 px-6 rounded-3xl py-3 uppercase font-semibold text-white border-none outline-none hover:bg-white hover:text-blue-600 hover:shadow">get in touch</a>
+
+      `;
+      currentIndex = (currentIndex + 1) % slides.length;
+    }
+
+    changeSlide();
+    setInterval(changeSlide, 5000);
+  });
+</script>
 
 <!-- mission an dvission -->
 
@@ -94,73 +132,96 @@
 <!-- upcoming event -->
 <div class="relative bg-white pt-5">
 
-<!-- event -->
+             <!-- event -->
             <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $event = $db->getlatestEvent();
                     
-                    $events = $db->getLatestEvent();
-                    if($events){
-                        $eventStartDate = new DateTime($events['event_date']); 
-                        $currentDate = new DateTime();
-                        $interval = $eventStartDate->diff($currentDate);
+                    if ($event) {
+                        
+                            $eventStartDate = new DateTime($event['event_date']); 
+                            $currentDate = new DateTime();
+                            $interval = $eventStartDate->diff($currentDate);
 
-                        $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;
-                        $remainingHours = $eventStartDate > $currentDate ? $interval->h : 0;
-                        $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
-                        $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
-                        ?>
-                         <div class="flex flex-col justify-center items-center mb-5 ">
-                            <div class="absolute top-0 md:right-80 bg-gray-950 md:px-10 py-5">
-                                <h2 class="uppercase text-white">upcoming event</h2>
-                            </div>
-                            <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
-                                <div class="md:flex gap-6 px-5 py-5 md:px-10">
-                                    <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0 ">
-                                        <img src="<?php echo substr($events['photo'], 3); ?>" alt="" class="rounded w-full h-96 object-cover">
-                                    </div>
-                                    <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center "> 
-                                        <div class="flex gap-2 md:gap-5">
-                                        <div>
-                                                <h2 class="text-white capitalize">days</h2>
-                                                <h1 id="days-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingDays ?></h1>
-                                            </div>
-                                            <div>
-                                                <h2 class="text-white capitalize">hr</h2>
-                                                <h1 id="hours-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingHours ?></h1>
-                                            </div>
-                                            <div>
-                                                <h2 class="text-white capitalize">min</h2>
-                                                <h1 id="minutes-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingMinutes ?></h1>
-                                            </div>
-                                            <div>
-                                                <h2 class="text-white capitalize">sec</h2>
-                                                <h1 id="seconds-<?php echo $events['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingSeconds ?></h1>
-                                            </div>
-                                            <h2 class="text-white font-bold tetx-2xl capitalize">remaining</h2>
+                            $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;
+                            $remainingHours = $eventStartDate > $currentDate ? $interval->h : 0;
+                            $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
+                            $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
+
+                            $status = $eventStartDate > $currentDate ? 'Remaining' : 'Passed';
+                            $statusColor = $status === 'Passed' ? 'text-red-600' : 'text-gray-600'; 
+                            ?>
+                            
+                            <div class="flex flex-col justify-center items-center mb-5">
+                                <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
+                                    <div class="md:flex gap-6 px-5 py-5 md:px-10">
+                                        <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
+                                            <img src="<?php echo substr($event['photo'], 3); ?>" alt="" class="rounded w-full h-96 object-cover">
                                         </div>
-                                        <div class="md:py-5">
-                                            <h2 class="text-white font-bold py-3 text-4xl" ><?php echo $events['title'];?></h2>
-                                            <p class="text-white font-light"><?php echo $events['event_desc'];?></p>
-                                        </div>
-                                        <div class="pt-5">
-                                            <button class=" border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                                        <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center"> 
+                                            <div class="flex gap-2 md:gap-5">
+                                                <div>
+                                                    <h2 class="text-white capitalize">days</h2>
+                                                    <h1 id="days-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingDays ?></h1>
+                                                </div>
+                                                <div>
+                                                    <h2 class="text-white capitalize">hr</h2>
+                                                    <h1 id="hours-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingHours ?></h1>
+                                                </div>
+                                                <div>
+                                                    <h2 class="text-white capitalize">min</h2>
+                                                    <h1 id="minutes-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingMinutes ?></h1>
+                                                </div>
+                                                <div>
+                                                    <h2 class="text-white capitalize">sec</h2>
+                                                    <h1 id="seconds-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingSeconds ?></h1>
+                                                </div>
+                                                <h2 class="md:px-10 py-2 font-bold md:text-2xl capitalize <?php echo $statusColor ?>"><?= $status ?></h2>
+                                            </div>
+                                            <div class="md:py-5">
+                                                <h2 class="text-white font-bold py-3 text-4xl"><?= $event['title']; ?></h2>
+                                                <p class="text-white font-light"><?= $event['event_desc']; ?></p>
+                                            </div>
+                                            <div class="pt-5">
+                                                <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                        </div>
-                    <?php }} ?>
 
+                            <script>
+                                function updateCountdown_<?php echo $event['id']; ?>() {
+                                    const eventStartDate_<?php echo $event['id']; ?> = new Date('<?php echo $event['event_date']; ?>');
+                                    const now_<?php echo $event['id']; ?> = new Date();
+                                    const timeRemaining_<?php echo $event['id']; ?> = eventStartDate_<?php echo $event['id']; ?> - now_<?php echo $event['id']; ?>;
 
-   
+                                    const days_<?php echo $event['id']; ?> = Math.floor(timeRemaining_<?php echo $event['id']; ?> / (1000 * 60 * 60 * 24));
+                                    const hours_<?php echo $event['id']; ?> = Math.floor((timeRemaining_<?php echo $event['id']; ?> % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                    const minutes_<?php echo $event['id']; ?> = Math.floor((timeRemaining_<?php echo $event['id']; ?> % (1000 * 60 * 60)) / (1000 * 60));
+                                    const seconds_<?php echo $event['id']; ?> = Math.floor((timeRemaining_<?php echo $event['id']; ?> % (1000 * 60)) / 1000);
+
+                                    document.getElementById('days-<?php echo $event['id']; ?>').textContent = days_<?php echo $event['id']; ?>;
+                                    document.getElementById('hours-<?php echo $event['id']; ?>').textContent = hours_<?php echo $event['id']; ?>;
+                                    document.getElementById('minutes-<?php echo $event['id']; ?>').textContent = minutes_<?php echo $event['id']; ?>;
+                                    document.getElementById('seconds-<?php echo $event['id']; ?>').textContent = seconds_<?php echo $event['id']; ?>;
+                                }
+
+                                updateCountdown_<?php echo $event['id']; ?>();
+                                setInterval(updateCountdown_<?php echo $event['id']; ?>, 1000);
+                            </script>
+                            <?php
+                        
+                    }
+                }
+            ?>
 
     <div id="eventbanner" class="eventbanner py-10 md:flex gap-10 justify-center items-center bg-gray-800">
         <div>
             <h2 class="text-4xl text-white font-bold">Get more infomation about Events</h2>
         </div>
         <div>
-            <button class="rounded-2xl py-2 px-10 bg-white text-gray-950 uppercase hover:bg-blue-400 hover:text-white">View More Events</button>
+            <a href="<?php echo $eventsurl;?>" class="rounded-2xl py-2 px-10 bg-white text-gray-950 uppercase hover:bg-blue-400 hover:text-white">View More Events</a>
         </div>
     </div>
 </div>
@@ -227,63 +288,43 @@
         <h1 class="uppercase font-bold text-2xl">recent news</h1>
     </div>
     <div class="grid md:flex justify-center items-center gap-5">
-        <div class="max-w-sm bg-white drop-shadow-xl newcard mb-3">
-            <a href="#">
-                <img class="w-full h-80 object-cover" src="../assets/images/GettyImages-591755236 (1).jpg" alt="" />
-            </a>
-            <div class="p-5">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Best Match for 2021 Competions</h5>
-                </a>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias, beatae?</p>
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Read more
-                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
 
-        <div class="max-w-sm bg-white drop-shadow-xl newcard mb-3 ">
-            <a href="#">
-                <img class="w-full h-80 object-cover" src="../assets/images/1stpressreleasemontreuxphoto.webp" alt="" />
-            </a>
-            <div class="p-5">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Best Match for 2021 Competions</h5>
-                </a>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias, beatae?</p>
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Read more
-                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
+    <?php
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $news = $db->getlatestNews();
+                    // echo json_encode($news);
+                   
+                    foreach ($news as $new){
+                    
+                    ?>
 
-        <div class="max-w-sm bg-white drop-shadow-xl newcard mb-3 ">
-            <a href="#">
-                <img class="w-full h-80 object-cover" src="../assets/images/52222939374_7fb699d8dd_b.jpg" alt="" />
-            </a>
-            <div class="p-5">
-                <a href="#">
-                    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">Best Match for 2021 Competions</h5>
-                </a>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Molestias, beatae?</p>
-                <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                    Read more
-                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
+                    <div class="max-w-sm bg-white drop-shadow-xl rounded drop-shadow-xl newcard ">
+                    <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['news_id']); ?>">
+
+                        <div>
+                            <img class="w-full h-60 object-cover" src="<?php echo substr($new['photo'], 3); ?>" alt="" />
+                        </div>
+                        <div class="p-5">
+                           
+                                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 "><?php echo $new['title']; ?></h5>
+                            
+                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo substr($new['content'], 0, 80); ?> ...</p>
+                            <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['news_id']); ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                Read more
+                                <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                </svg>
+                            </a>
+                        </div>
+                    </a>
+                    </div>
+                <?php }} ?>
+
+
 
     </div>
     <div class="flex justify-center items-center pt-10">
-        <a href="#" class="inline-flex items-center px-10 py-3 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <a href="<?php echo $newsUrl; ?>" class="inline-flex items-center px-10 py-3 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                         Navigate to more
                         <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
@@ -297,7 +338,7 @@
 <?php  include "../includes/footer.php";  ?>
 </body>
 
-<script src="../assets/js/slides.js"></script>
+<!-- <script src="../assets/js/slides.js"></script> -->
 
                    
 
