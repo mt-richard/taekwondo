@@ -1,90 +1,110 @@
 
+<?php
+ include '../includes/head.php';
+ $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+ $dashboardUrl = dirname($currentURL) . "/dashboard";
+ $usersUrl = dirname($currentURL) . "/users";
+ $clubsUrl = dirname($currentURL) . "/clubs";
+ $newsUrl = dirname($currentURL) . "/news";
+ $eventsUrl = dirname($currentURL) . "/events";
+ $eventcategoryUrl = dirname($currentURL) . "/eventcategory";
+ $galleryUrl = dirname($currentURL) . "/gallery";
+ $championsUrl = dirname($currentURL) . "/champions";
+ $membersUrl = dirname($currentURL) . "/members";
+
+ $encodedURL = urlencode($currentURL);
+
+?>
 
 <body class="bg-gray-100">
-  
 
   <aside class="bg-gray-800 text-white md:w-80 md:min-h-screen w-full  p-4">
     <nav>
       <ul class="space-y-2">
-        <li class="opcion-con-desplegable">
-            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-              <div class="flex items-center">
-                <i class="fas fa-calendar-alt mr-2"></i>
-                <span>Dashboard</span>
+        <a href="<?php echo $dashboardUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/dashboard.php' || $currentURL == 'http://localhost/taekwondo/public/admin/dashboard') echo "text-blue-400"; ?>">
+          <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-tachometer-alt mr-2"></i>
+                  <span>Dashboard</span>
+                </div>
               </div>
-            </div>
           </li>
-        <li class="opcion-con-desplegable">
-          <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-            <div class="flex items-center">
-              <i class="fas fa-calendar-alt mr-2"></i>
-              <span>users</span>
-            </div>
-          </div>
-        </li>
-        <li class="opcion-con-desplegable">
-            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-              <div class="flex items-center">
-                <i class="fas fa-calendar-alt mr-2"></i>
-                <span>Athletes</span>
-              </div>
-            </div>
-          </li>
+        </a>
+        <a href="<?php echo $usersUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/users.php' || $currentURL == 'http://localhost/taekwondo/public/admin/users') echo "text-blue-400"; ?>">
           <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
-                <i class="fas fa-calendar-alt mr-2"></i>
-                <span>Committe</span>
+                <i class="fas fa-users mr-2"></i>
+                <span>Users</span>
               </div>
             </div>
           </li>
-        <li class="opcion-con-desplegable">
-          <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-            <div class="flex items-center">
-              <i class="fas fa-money-bill-wave mr-2"></i>
-              <span>Events</span>
+        </a>
+
+        <a href="<?php echo $clubsUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/clubs.php' || $currentURL == 'http://localhost/taekwondo/public/admin/clubs') echo "text-blue-400"; ?>">
+          <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-running mr-2"></i>
+                  <span>Clubs</span>
+                </div>
+              </div>
+            </li>
+        </a>
+
+          <a href="<?php echo $membersUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/members.php' || $currentURL == 'http://localhost/taekwondo/public/admin/members') echo "text-blue-400"; ?>">
+            <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-users mr-2"></i>
+                  <span>Committe</span>
+                </div>
+              </div>
+            </li>
+          </a>
+
+          <a href="#" class=" <?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/events.php' || $currentURL ==  'http://localhost/taekwondo/public/admin/eventcategory'  || $currentURL == 'http://localhost/taekwondo/public/admin/events') echo "text-blue-400"; ?>">
+            <li class="opcion-con-desplegable">
+            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+              <div class="flex items-center">
+                  <i class="fas fa-calendar-alt mr-2"></i>
+                  <span>Events</span>
+              </div>
+              <i class="fas fa-chevron-down text-xs"></i>
             </div>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </div>
-        </li>
-        <li class="opcion-con-desplegable">
-          <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-            <div class="flex items-center">
-              <i class="fas fa-chart-bar mr-2"></i>
-              <span>News</span>
-            </div>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </div>
-        </li>
-        <li class="opcion-con-desplegable">
-          <div class="flex items-center justify-between p-2 hover:bg-gray-700">
-            <div class="flex items-center">
-              <i class="fas fa-file-alt mr-2"></i>
-              <span>Gallery</span>
-            </div>
-            <i class="fas fa-chevron-down text-xs"></i>
-          </div>
-          <ul class="desplegable ml-4 hidden">
-            <li>
-              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                Home Page
+            <ul class="desplegable ml-4 hidden">
+              <a href="<?php echo $eventsUrl;?>" >
+                <li>
+                  <div class="block p-2 hover:bg-gray-700 flex items-center">
+                    <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                    Events List
+                 </div>
+                </li>
               </a>
-            </li>
-            <li>
-              <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                About page
+              <a href="<?php echo $eventcategoryUrl;?>" >
+                <li>
+                  <div class="block p-2 hover:bg-gray-700 flex items-center">
+                    <i class="fas fa-chevron-right mr-2 text-xs"></i>
+                    Category
+                  </div>
+                </li>
               </a>
-            </li>
-            <li>
-                <a href="#" class="block p-2 hover:bg-gray-700 flex items-center">
-                  <i class="fas fa-chevron-right mr-2 text-xs"></i>
-                  Contact page
-                </a>
-            </li>
-          </ul>
-        </li>
+            </ul>
+          </li>
+          </a>
+
+        <a href="<?php echo $newsUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/news.php' || $currentURL == 'http://localhost/taekwondo/public/admin/news') echo "text-blue-400"; ?>">
+          <li class="opcion-con-desplegable">
+            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+              <div class="flex items-center">
+                <i class="fas fa-newspaper mr-2"></i>
+                <span>News</span>
+              </div>
+            </div>
+          </li>
+        </a>
+
       </ul>
     </nav>
   </aside>

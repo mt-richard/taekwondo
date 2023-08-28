@@ -8,13 +8,18 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
     include '../config/dbconnection.php';
     $db = new dbconnection();
     $newsid = base64_decode($_GET['id']);
-    $new = $db->getNewsdetails('news',$newsid);
+    $new = $db->getByid('news', $newsid);
     // echo $newsid;
     // echo json_encode($new);
     if($new){
    
         ?>
 
+<style>
+    .textcontent{
+         white-space: pre-line;
+    }
+</style>
 <div>
     <div class="bg-gray-100 md:py-10">
 
@@ -39,7 +44,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                         <a href="#">
                             <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 "><?php echo $new['title']; ?></h5>
                         </a>
-                        <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo $new['content']; ?></p>
+                        <p class="textcontent mb-3 font-normal text-gray-600"><?php echo $new['content']; ?></p>
                     </div>
                 </div>
                 <?php } }?>

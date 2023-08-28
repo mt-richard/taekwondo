@@ -4,23 +4,17 @@
     <div>
         <?php include '../../includes/leftbar.php'; ?>
     </div>
-    <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord</h2>
-
+        <h2 class="text-xl py-10">Dashbord / Users</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
-
             <div class="container w-full mx-auto px-2">
 
                 <!-- add user -->
-
                     <div class="py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
                             Add user
                         </button>
                     </div>
-                
-                    
                     <!-- modal -->
 
                     <?php
@@ -93,321 +87,236 @@
                     </section>
 
                 <!-- end add user -->
-		
+
+                <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
+                    <div class="container w-full  mx-auto px-2">
+
+                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+                    <div class="flex justify-center items-center py-5">
+                        <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
+                    </div>
+
+                    <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
+                        <thead class="text-left px-5">
+                            <tr class="bg-gray-100">
+                                <th class="py-2 px-5 border" data-priority="1">Username</th>
+                                <th class="py-2 px-5 border" data-priority="2">Email</th>
+                                <th class="py-2 px-5 border" data-priority="3">Phone</th>
+                                <th class="py-2 px-5 border" data-priority="4">Address</th>
+                                <th class="py-2 px-5 border" data-priority="5">Created At</th>
+                                <th class="py-2 px-5 border" data-priority="6">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="font-light">
+                            <?php
+                            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                                include '../../config/dbconnection.php';
+                                $users = new dbconnection();
+                                $all =  $users->getAll("users");
+
+                                foreach ($all as $user) { ?>
+                                   
+                            <?php }
+                            } ?>
+
+
+                        </tbody>
+
+
+                    </table>
+                    <div class="msg w-full hidden flex justify-center items-center ">
+                        <span class="text-center ">No records found</span>
+                    </div>
+                    <!-- paginnation with rows -->
+
+                    <div class="pagination flex justify-between py-5">
+                        <span></span>
+                        <div class="flex gap-1">
+                            <button id="prevBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&lt;</button>
+                            <span id="pageInfo" class="hidden p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
+                            <span id="pageList" class="p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
+                            <button id="nextBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer ">&gt;</button>
+                        </div>
+
+                    </div>
+                   
+
+                    <script>
+                                   
+                        const table = document.getElementById('datatable');
+                        const tbody = table.querySelector('tbody');
+                        const prevBtn = document.getElementById('prevBtn');
+                        const nextBtn = document.getElementById('nextBtn');
+                        const pageInfo = document.getElementById('pageInfo');
+                        const pageList = document.getElementById('pageList');
+                        const rowsPerPage = 10;
+                        let currentPage = 1;
+                        let filteredData = <?php echo json_encode($all); ?>;
+
+                        const data = <?php echo json_encode($all); ?>;
+
+                        function filterTable(query) {
+                            if (query === '') {
+                                filteredData = data;
+                            } else {
+                                filteredData = data.filter(item => {
+                                    return (
+                                        item.username.toLowerCase().includes(query) ||
+                                        item.email.toLowerCase().includes(query) ||
+                                        item.phone.includes(query) ||
+                                        item.address.toLowerCase().includes(query) ||
+                                        item.createdat.toLowerCase().includes(query)
+                                    );
+                                });
+                            }
+
+                            currentPage = 1;
+                            renderTableRows(currentPage);
+                            updatePageInfo();
+                            renderPageList();
+                        }
+
+                        function renderTableRows(page) {
+                            const start = (page - 1) * rowsPerPage;
+                            const end = start + rowsPerPage;
+                            tbody.innerHTML = '';
+
+                            for (let i = start; i < end && i < filteredData.length; i++) {
+                                const row = document.createElement('tr');
+                                row.className = 'table-row';
+                                row.innerHTML = `
+                                <td class="px-5 py-1 border-b">${filteredData[i].username}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].address}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
+                                <td class="px-5 py-1 border-b">
+                                    <div class="flex gap-10">
+                                        <a href="updateuser?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
+                                        <a onclick="return openConfirm()" href="users?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
+                                    </div>
+                                </td>
+                            `;
+                                tbody.appendChild(row);
+                            }
+                        }
+                            function updatePageInfo() {
+                                pageInfo.textContent = `${currentPage}`;
+                            }
+
+                            function renderPageList() {
+                                pageList.innerHTML = '';
+                                const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+                                const maxDisplayedPages = 10;
+                                const lastPage = totalPages;
+
+                                let startPage = Math.max(1, currentPage - Math.floor(maxDisplayedPages / 2));
+                                let endPage = Math.min(lastPage, startPage + maxDisplayedPages - 1);
+
+                                if (endPage - startPage < maxDisplayedPages - 1) {
+                                    startPage = Math.max(1, endPage - maxDisplayedPages + 1);
+                                }
+
+                                for (let i = startPage; i <= endPage; i++) {
+                                    const pageItem = document.createElement('span');
+                                    pageItem.textContent = i;
+
+                                    if (i === currentPage) {
+                                        pageItem.classList.add('current-page'); 
+                                    }
+
+                                    pageItem.addEventListener('click', () => {
+                                        currentPage = i;
+                                        renderTableRows(currentPage);
+                                        updatePageInfo();
+                                        renderPageList();
+                                    });
+
+                                    pageList.appendChild(pageItem);
+                                }
+
+                                if (totalPages > maxDisplayedPages) {
+                                    const lastPageItem = document.createElement('span');
+                                    lastPageItem.textContent = '... ' + totalPages;
+                                    lastPageItem.addEventListener('click', () => {
+                                        currentPage = lastPage;
+                                        renderTableRows(currentPage);
+                                        updatePageInfo();
+                                        renderPageList();
+                                    });
+                                    pageList.appendChild(lastPageItem);
+                                }
+                            }
+
+
+                            prevBtn.addEventListener('click', () => {
+                                if (currentPage > 1) {
+                                    currentPage--;
+                                    renderTableRows(currentPage);
+                                    updatePageInfo();
+                                    renderPageList();
+                                }
+                            });
+
+                            nextBtn.addEventListener('click', () => {
+                                const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+                                if (currentPage < totalPages) {
+                                    currentPage++;
+                                    renderTableRows(currentPage);
+                                    updatePageInfo();
+                                    renderPageList();
+                                }
+                            });
+
+                            const searchInput = document.getElementById('searchInput');
+                            searchInput.addEventListener('input', function () {
+                                const input = this.value.trim().toLowerCase();
+                                filterTable(input);
+                            });
+
+                            window.onload = () => {
+                                renderTableRows(1)
+                                renderPageList();
+                            };
+                   </script>
+
+		           </div>
+	            </div>
+                 <!-- delete row -->
+                 <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
+                        $userid = $_GET['id'];
+                    
+                        // include '../../config/dbconnection.php';
+                        $del = new dbconnection();
+                        $userdel = $del->destroy('users', $userid);
+
+                        if ($userdel) {
+                            echo "<script>alert('Record deleted successfully'); window.location.href = 'users';</script>";
+                        } else {
+                            echo "<script>alert('Failed to delete record'); window.location.href = 'users';</script>";
+                        }
+                    }
+                    ?>
+
+                    <script>
+                        function openConfirm() {
+                            return confirm("Are you sure you want to Delete this user?");
+                        }
+                    </script>
 
 
 
-<!DOCTYPE html>
-<html lang="en" class="antialiased">
-
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>DataTables </title>
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	<link href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css" rel=" stylesheet">
 	
-	<style>
-		
 
-		/*Form fields*/
-		.dataTables_wrapper select,
-		.dataTables_wrapper .dataTables_filter input {
-			color: #4a5568;
-			/*text-gray-700*/
-			padding-left: 1rem;
-			/*pl-4*/
-			padding-right: 1rem;
-			/*pl-4*/
-			padding-top: .5rem;
-			/*pl-2*/
-			padding-bottom: .5rem;
-			/*pl-2*/
-			line-height: 1.25;
-			/*leading-tight*/
-			border-width: 2px;
-			/*border-2*/
-			border-radius: .25rem;
-			border-color: #edf2f7;
-			/*border-gray-200*/
-			background-color: #edf2f7;
-			/*bg-gray-200*/
-		}
+            </div>
+        </div>
+    </main>
 
-		/*Row Hover*/
-		table.dataTable.hover tbody tr:hover,
-		table.dataTable.display tbody tr:hover {
-			background-color: #ebf4ff;
-			/*bg-indigo-100*/
-		}
+<script>
 
-		/*Pagination Buttons*/
-		.dataTables_wrapper .dataTables_paginate .paginate_button {
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Pagination Buttons - Current selected */
-		.dataTables_wrapper .dataTables_paginate .paginate_button.current {
-			color: #fff !important;
-			/*text-white*/
-			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-			/*shadow*/
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			background: #667eea !important;
-			/*bg-indigo-500*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Pagination Buttons - Hover */
-		.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-			color: #fff !important;
-			/*text-white*/
-			box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .1), 0 1px 2px 0 rgba(0, 0, 0, .06);
-			/*shadow*/
-			font-weight: 700;
-			/*font-bold*/
-			border-radius: .25rem;
-			/*rounded*/
-			background: #667eea !important;
-			/*bg-indigo-500*/
-			border: 1px solid transparent;
-			/*border border-transparent*/
-		}
-
-		/*Add padding to bottom border */
-		table.dataTable.no-footer {
-			border-bottom: 1px solid #e2e8f0;
-			/*border-b-1 border-gray-300*/
-			margin-top: 0.75em;
-			margin-bottom: 0.75em;
-		}
-
-		/*Change colour of responsive icon*/
-		table.dataTable.dtr-inline.collapsed>tbody>tr>td:first-child:before,
-		table.dataTable.dtr-inline.collapsed>tbody>tr>th:first-child:before {
-			background-color: #667eea !important;
-			/*bg-indigo-500*/
-		}
-		.current-page{
-			background: #60a5fa;
-			
-			padding-left: 5px;
-			padding-right: 5px;
-			border-radius: 6px;
-			color:white;
-		}
-	</style>
-</head>
-
-<body class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-	<div class="container w-full  mx-auto px-2">
-
-		<div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-			<div class="flex justify-center items-center py-5">
-				<input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search"  id="searchInput" class="form-control" placeholder="Search by here .....">
-			</div>
-		
-
-			<table id="datatable" class=" table datatable stripe hover" style="width:100%; padding-top: 1em;  padding-bottom: 1em;">
-				<thead class="text-left px-5">
-					<tr class="bg-gray-100">
-						<th class="py-2 px-5 border" data-priority="1">Name</th>
-						<th class="py-2 px-5 border" data-priority="2">Position</th>
-						<th class="py-2 px-5 border" data-priority="3">Office</th>
-						<th class="py-2 px-5 border" data-priority="4">Age</th>
-						<th class="py-2 px-5 border" data-priority="5">Start date</th>
-						<th class="py-2 px-5 border" data-priority="6">Salary</th>
-					</tr>
-				</thead>
-				<tbody class="font-light">
-				<?php
-                        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                            include '../../config/dbconnection.php';
-                            $users = new dbconnection();
-                            $all =  $users->getAll("users");
-
-							foreach ($all as $user) {?>
-							<tr>
-								<td class="px-5 py-1 border-b"><?php echo $user['username']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['email']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['phone']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['address']; ?></td>
-								<td class="px-5 py-1 border-b"><?php echo $user['createdat']; ?></td>
-								<td class="px-5 py-1 border-b">$112,000</td>
-							</tr>
-    
-						<?php }} ?>
-                       
-                       
-				</tbody>
-				
-
-			</table>
-			<div class=" msg w-full hidden flex justify-center items-center ">
-				<span class="text-center ">No records found</span>
-			</div>
-			<!-- paginnation with rows -->
-
-			<div class="pagination flex justify-between py-5">
-				<span></span>
-				<div class="flex gap-1">
-					<button id="prevBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&lt;</button>
-					<span id="pageInfo" class="bg-blue-400 p-3 hidden rounded text-white">1</span>
-					<span id="pageList" class="p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
-					<button id="nextBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer ">&gt;</button>
-				</div>
-				
-			</div>
-
-			<script>
-				const table = document.getElementById('datatable');
-				const tbody = table.querySelector('tbody');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const pageInfo = document.getElementById('pageInfo');
-const pageList = document.getElementById('pageList');
-const rowsPerPage = 10;
-let currentPage = 1;
-let filteredData = [];
-
-const data = <?php echo json_encode($all); ?>;
-
-
-function filterTable(query) {
-    if (query === '') {
-        filteredData = data;
-    } else {
-        filteredData = data.filter(item => {
-            return (
-                item.username.toLowerCase().includes(query) ||
-                item.email.toLowerCase().includes(query) ||
-                item.phone.includes(query) ||
-                item.address.toLowerCase().includes(query) ||
-                item.createdat.toLowerCase().includes(query)
-            );
-        });
-    }
-
-    currentPage = 1;
-    renderTableRows(currentPage);
-    updatePageInfo();
-    renderPageList();
-}
-
-function renderTableRows(page) {
-    const start = (page - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    tbody.innerHTML = '';
-
-    for (let i = start; i < end && i < filteredData.length; i++) {
-        const row = document.createElement('tr');
-        row.className = 'table-row';
-        row.innerHTML = `
-            <td class="px-5 py-1 border-b">${filteredData[i].username}</td>
-            <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
-            <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
-            <td class="px-5 py-1 border-b">${filteredData[i].address}</td>
-            <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-            <td class="px-5 py-1 border-b">$112,000</td>
-        `;
-        tbody.appendChild(row);
-    }
-}
-
-function updatePageInfo() {
-    pageInfo.textContent = `${currentPage}`;
-}
-
-function renderPageList() {
-    pageList.innerHTML = '';
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
-    const maxDisplayedPages = 10;
-    const lastPage = totalPages;
-
-    let startPage = Math.max(1, currentPage - Math.floor(maxDisplayedPages / 2));
-    let endPage = Math.min(lastPage, startPage + maxDisplayedPages - 1);
-
-    if (endPage - startPage < maxDisplayedPages - 1) {
-        startPage = Math.max(1, endPage - maxDisplayedPages + 1);
-    }
-
-    for (let i = startPage; i <= endPage; i++) {
-        const pageItem = document.createElement('span');
-        pageItem.textContent = i;
-        if (i === currentPage) {
-            pageItem.classList.add('current-page');
-        }
-        pageItem.addEventListener('click', () => {
-            currentPage = i;
-            renderTableRows(currentPage);
-            updatePageInfo();
-            renderPageList();
-        });
-        pageList.appendChild(pageItem);
-    }
-
-    if (totalPages > maxDisplayedPages) {
-        const lastPageItem = document.createElement('span');
-        lastPageItem.textContent = '... ' + totalPages;
-        lastPageItem.addEventListener('click', () => {
-            currentPage = lastPage;
-            renderTableRows(currentPage);
-            updatePageInfo();
-            renderPageList();
-        });
-        pageList.appendChild(lastPageItem);
-    }
-}
-
-prevBtn.addEventListener('click', () => {
-    if (currentPage > 1) {
-        currentPage--;
-        renderTableRows(currentPage);
-        updatePageInfo();
-        renderPageList();
-    }
-});
-
-nextBtn.addEventListener('click', () => {
-    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-    if (currentPage < totalPages) {
-        currentPage++;
-        renderTableRows(currentPage);
-        updatePageInfo();
-        renderPageList();
-    }
-});
-
-
-
-
-
-const searchInput = document.getElementById('searchInput');
-searchInput.addEventListener('input', function () {
-    const input = this.value.trim().toLowerCase();
-    filterTable(input);
-});
-
-			</script>
-
-		</div>
-	</div>
-
-	<script>
-
-		const openModalBtn = document.getElementById('openModalBtn');
+		    const openModalBtn = document.getElementById('openModalBtn');
             const closeModalBtn = document.getElementById('closeModalBtn');
             const modal = document.getElementById('overlay');
 
@@ -418,13 +327,12 @@ searchInput.addEventListener('input', function () {
             function closeModal() {
                 modal.style.display = 'none';
             }
+            
 
             openModalBtn.addEventListener('click', openModal);
             closeModalBtn.addEventListener('click', closeModal);
 
+ 
+
 
 	</script>
-
-</div>
-</div>
-</main>

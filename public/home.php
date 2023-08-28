@@ -14,14 +14,19 @@
         background-size: cover;
        
   }
+  
+    .textcontent{
+         white-space: pre-line;
+    }
 </style>
 
 <body>
 <!-- home banner -->
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-    
-    $news = $db->getAll('news');
+    $state= 'top';
+    $limit = 3;
+    $news = $db->getNews('news', $state, $limit);
 
     $slides = [];
     foreach ($news as $new) {
@@ -35,8 +40,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $slidesJSON = json_encode($slides);
 }
 ?>
-<div class="w-full">
-    <div id="myDiv" class="w-full mx-auto md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col justify-center items-center">
+<div class="w-full ">
+    <div id="myDiv" class=" w-full mx-auto md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col justify-center items-center">
+       
         <div class="md:full lg:w-4/5 xl:w-3/5 md:flex justify-center items-center md:gap-20">
             <div class="slideshow-text md:w-2/3  px-5 py-0 md:py-10 " >
             </div>
@@ -131,6 +137,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <!-- upcoming event -->
 <div class="relative bg-white pt-5">
+        
 
              <!-- event -->
             <?php
@@ -153,6 +160,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             ?>
                             
                             <div class="flex flex-col justify-center items-center mb-5">
+
+                            <div class="bg-gray-600 py-5 px-2 md:px-10 absolute top-0 ml-[60%] ">
+                                <h2 class="uppercase text-white font-light">upcoming event</h2>
+                            </div>
                                 <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
                                     <div class="md:flex gap-6 px-5 py-5 md:px-10">
                                         <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
@@ -230,8 +241,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <div>
     <div class="w-full lg:flex justify-center md:gap-10 px-10 py-10 md:py-20 bg-gray-100">
+        <?php
+
+                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                    $hot = $db->getHotNews();
+                    if ($hot) {?>
+                
         <div class="md:w-full lg:w-1/3 h-[600px] ">
-            <img src="../assets/images/FWvAzJxWYAEIMPQ.jpeg" alt="" class="w-full h-full object-cover rounded-tl-2xl rounded-br-2xl">
+            <img src="<?php echo substr($hot['photo'], 3); ?>" alt="" class="w-full h-full object-cover rounded-tl-2xl rounded-br-2xl">
         </div>
         <div class="md:w-full lg:w-1/3 flex flex-col justify-center  px-5 md:px-1">
             <div class="flex gap-1 py-5">
@@ -241,9 +258,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
             </div>
-            <h1 class="font-bold py-3 text-4xl">African Youth Taekwondo Competition</h1>
-            <p class="font-light leading-8 py-5 mb-5">World Taekwondo (WT) is the International Federation (IF) governing the sport of Taekwondo and is a member of the Association of Summer Olympic International Federations (ASOIF) and International Paralympic Committee (IPC). WT leads the most inclusive and accessible combat sport, which combines the values of an ancient Asian heritage with the values of a global elite sport. Taekwondo evolves on a solid base, mixing the traditional and the modern. The values recognized by practitioners and partners are the strength of our sport. They are distilled from those found in our society: the search for pleasure, surpassing oneself, perseverance, moral and physical strength, and respect for others.</p>
+            <h1 class="font-bold py-3 text-4xl"><?php echo $hot['title']; ?></h1>
+            <p class="textcontent font-light leading-8 py-5 mb-5"><?php echo substr($hot['content'], 0, 500); ?> ...</p>
         </div>
+        <?php }} ?>
     </div>
 </div>
 
@@ -253,14 +271,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <div class="flex gap-6 md:w-1/6 rounded justify-center">
             <img src="../assets/icons/icons8-member-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">200</h2>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $members = $db->countTotal('members');
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $members; ?></h2>
+                <?php } ?>
                 <span class="capitalize ">members</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
             <img src="../assets/icons/icons8-knock-down-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">455</h2>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $athletes = $db->countTotal('athletes');
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $athletes; ?></h2>
+                <?php } ?>
                 <span class="capitalize ">Athletes</span>
             </div>
         </div>
@@ -274,14 +302,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
             <img src="../assets/icons/icons8-events-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">120</h2>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $events = $db->countTotal('events');
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $events; ?></h2>
+                <?php } ?>
                 <span class="capitalize ">events</span>
             </div>
         </div>
     </div>
 </div>
 
-<!-- News -->
+<!--Normal News -->
 
 <div class="w-full px-5 py-10 md:py-20">
     <div class="flex flex-col justify-center items-center  w-full py-5">
@@ -291,7 +324,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                    $news = $db->getlatestNews();
+                    $state = 'NORMAL';
+                    $limit = 3;
+                    $news = $db->getNews("news", $state, $limit);
                     // echo json_encode($news);
                    
                     foreach ($news as $new){
@@ -299,7 +334,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     ?>
 
                     <div class="max-w-sm bg-white drop-shadow-xl rounded drop-shadow-xl newcard ">
-                    <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['news_id']); ?>">
+                    <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['id']); ?>">
 
                         <div>
                             <img class="w-full h-60 object-cover" src="<?php echo substr($new['photo'], 3); ?>" alt="" />

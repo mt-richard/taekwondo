@@ -45,12 +45,12 @@
             </div>
             <h1 class="font-bold text-xl py-5">Our values</h1>
             <ul class="font-light leading-6">
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Inclusiveness</li>
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Leadership</li>
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Respect</li>
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Tolerance</li>
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Excellence</li>
-                <li><span class="text-[19px] leading-8 px-3">	&rarr;</span>Integrity</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Inclusiveness</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Leadership</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Respect</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Tolerance</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Excellence</li>
+                <li class="py-1.5"><span class="text-[19px] leading-8 px-3">	&rarr;</span>Integrity</li>
             </ul>
         </div>
 
@@ -128,6 +128,65 @@
         </div>
     </div>
 </div>
+
+
+<!-- Nationa team -->
+<div>
+    <div class="w-full flex flex-col justify-center items-center mb-5 py-10 bg-white ">
+        <h2 class="text-4xl font-bold py-10">National Team</h2>
+    
+
+        <div class="md:flex flex-wrap gap-10 justify-center items-center w-full">
+            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold uppercase py-3">PARACOMANDO Team</h2>
+                <p class="font-light pb-2 border-b">this is our national PARACOMANDO Team</p>
+                <div>
+                    <ul class="px-10">
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold uppercase py-3">COMBAT Team</h2>
+                <p class="font-light pb-2 border-b">this is our national COMBAT Team</p>
+                <div>
+                    <ul class="px-10">
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold uppercase py-3">KATA Team</h2>
+                <p class="font-light pb-2 border-b">this is our national KATA Team</p>
+                <div>
+                    <ul class="px-10">
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                        <li class="py-1.5">Iran MUGABE</li>
+                    </ul>
+                </div>
+            </div>
+       
+
+        </div>
+    </div>
+</div>
+
 
 <!-- footer -->
 <?php include '../includes/footer.php'; ?>

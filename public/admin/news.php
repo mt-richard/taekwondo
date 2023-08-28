@@ -27,6 +27,7 @@
                             
                             $title = $_POST['title'];
                             $content = $_POST['content'];
+                            $state = $_POST['state'];
                             $photo = $_FILES['photo'];
                             
                             $newData = [
@@ -74,7 +75,7 @@
 
 
                     <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="w-full justify-center">
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
@@ -84,10 +85,18 @@
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" required name="title" placeholder="Enter News Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <textarea required name="content" placeholder="Enter Event Description" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
+                                        <textarea required name="content" placeholder="Enter News Description" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
+                                    </div>
+                                    <div class=" mb-4 px-3">
+                                        <select required name="state" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                            <option>Choose the News State</option>
+                                            <option value="TOP">Top</option>
+                                            <option value="HOT">Hot</option>
+                                            <option value="NORMAL">Normal</option>
+                                        </select>
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -120,7 +129,7 @@
                                         <tr class="bg-gray-100">
                                             <th class="py-2 px-5 border" data-priority="1">#</th>
                                             <th class="py-2 px-5 border" data-priority="1">Title</th>
-                                            <th class="py-2 px-5 border" data-priority="1">Description</th>
+                                            <th class="py-2 px-5 border" data-priority="1">Content</th>
                                             <th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
                                             <th class="py-2 px-5 border" data-priority="6">Actions</th>
                                         </tr>
@@ -133,13 +142,6 @@
                                                 $all =  $news->getAll("news");
 
                                                 foreach ($all as $new) {?>
-                                                <tr>
-                                                    <td class="px-5 py-1 border-b"><img src="<?php echo $new['photo']; ?>" class="w-20 h-10 rounded-lg object-cover"></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $new['title']; ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo substr($new['content'], 0, 50); ?></td>
-                                                    <td class="px-5 py-1 border-b"><?php echo $new['createdat']; ?></td>
-                                                    <td class="px-5 py-1 border-b">$112,000</td>
-                                                </tr>
                         
                                             <?php }} ?>
                                         
@@ -165,6 +167,7 @@
                                 </div>
 
                                 <script>
+                                   
                                     const table = document.getElementById('datatable');
                                     const tbody = table.querySelector('tbody');
                                     const prevBtn = document.getElementById('prevBtn');
@@ -173,10 +176,9 @@
                                     const pageList = document.getElementById('pageList');
                                     const rowsPerPage = 10;
                                     let currentPage = 1;
-                                    let filteredData = [];
+                                    let filteredData = <?php echo json_encode($all); ?>;
 
                                     const data = <?php echo json_encode($all); ?>;
-
 
                                     function filterTable(query) {
                                         if (query === '') {
@@ -184,10 +186,8 @@
                                         } else {
                                             filteredData = data.filter(item => {
                                                 return (
-                                                    item.newname.toLowerCase().includes(query) ||
-                                                    item.email.toLowerCase().includes(query) ||
-                                                    item.phone.includes(query) ||
-                                                    item.address.toLowerCase().includes(query) ||
+                                                    item.title.toLowerCase().includes(query) ||
+                                                    item.content.toLowerCase().includes(query) ||
                                                     item.createdat.toLowerCase().includes(query)
                                                 );
                                             });
@@ -205,99 +205,131 @@
                                         tbody.innerHTML = '';
 
                                         for (let i = start; i < end && i < filteredData.length; i++) {
-                                            const row = document.createElement('tr');
-                                            row.className = 'table-row';
-                                            row.innerHTML = `
-                                                <td class="px-5 py-1 border-b">${filteredData[i].newname}</td>
-                                                <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
-                                                <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
-                                                <td class="px-5 py-1 border-b">${filteredData[i].address}</td>
-                                                <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                                <td class="px-5 py-1 border-b">$112,000</td>
-                                            `;
-                                            tbody.appendChild(row);
-                                        }
+                                                    const row = document.createElement('tr');
+                                                    row.className = 'table-row';
+                                                    row.innerHTML = `
+                                                    <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-10 h-10 rounded-full object-cover"></td>
+                                                    <td class="px-5 py-1 border-b">${filteredData[i].title.substring(0, 80)}</td>
+                                                    <td class="px-5 py-1 border-b">${filteredData[i].content.substring(0, 100)}</td>
+                                                    <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
+                                                    <td class="px-5 py-1 border-b">
+                                                        <div class="flex gap-10">
+                                                            <a href="updatenew?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
+                                                            <a onclick="return openConfirm()" href="news?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
+                                                        </div>
+                                                    </td>
+                                                `;
+                                                    tbody.appendChild(row);
+                                                }
                                     }
-
-                                    function updatePageInfo() {
-                                        pageInfo.textContent = `${currentPage}`;
-                                    }
-
-                                    function renderPageList() {
-                                        pageList.innerHTML = '';
-                                        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-
-                                        const maxDisplayedPages = 10;
-                                        const lastPage = totalPages;
-
-                                        let startPage = Math.max(1, currentPage - Math.floor(maxDisplayedPages / 2));
-                                        let endPage = Math.min(lastPage, startPage + maxDisplayedPages - 1);
-
-                                        if (endPage - startPage < maxDisplayedPages - 1) {
-                                            startPage = Math.max(1, endPage - maxDisplayedPages + 1);
+                                        function updatePageInfo() {
+                                            pageInfo.textContent = `${currentPage}`;
                                         }
 
-                                        for (let i = startPage; i <= endPage; i++) {
-                                            const pageItem = document.createElement('span');
-                                            pageItem.textContent = i;
-                                            if (i === currentPage) {
-                                                pageItem.classList.add('current-page');
+                                        function renderPageList() {
+                                            pageList.innerHTML = '';
+                                            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+                                            const maxDisplayedPages = 10;
+                                            const lastPage = totalPages;
+
+                                            let startPage = Math.max(1, currentPage - Math.floor(maxDisplayedPages / 2));
+                                            let endPage = Math.min(lastPage, startPage + maxDisplayedPages - 1);
+
+                                            if (endPage - startPage < maxDisplayedPages - 1) {
+                                                startPage = Math.max(1, endPage - maxDisplayedPages + 1);
                                             }
-                                            pageItem.addEventListener('click', () => {
-                                                currentPage = i;
+
+                                            for (let i = startPage; i <= endPage; i++) {
+                                                const pageItem = document.createElement('span');
+                                                pageItem.textContent = i;
+
+                                                if (i === currentPage) {
+                                                    pageItem.classList.add('current-page'); 
+                                                }
+
+                                                pageItem.addEventListener('click', () => {
+                                                    currentPage = i;
+                                                    renderTableRows(currentPage);
+                                                    updatePageInfo();
+                                                    renderPageList();
+                                                });
+
+                                                pageList.appendChild(pageItem);
+                                            }
+
+                                            if (totalPages > maxDisplayedPages) {
+                                                const lastPageItem = document.createElement('span');
+                                                lastPageItem.textContent = '... ' + totalPages;
+                                                lastPageItem.addEventListener('click', () => {
+                                                    currentPage = lastPage;
+                                                    renderTableRows(currentPage);
+                                                    updatePageInfo();
+                                                    renderPageList();
+                                                });
+                                                pageList.appendChild(lastPageItem);
+                                            }
+                                        }
+
+
+                                        prevBtn.addEventListener('click', () => {
+                                            if (currentPage > 1) {
+                                                currentPage--;
                                                 renderTableRows(currentPage);
                                                 updatePageInfo();
                                                 renderPageList();
-                                            });
-                                            pageList.appendChild(pageItem);
-                                        }
+                                            }
+                                        });
 
-                                        if (totalPages > maxDisplayedPages) {
-                                            const lastPageItem = document.createElement('span');
-                                            lastPageItem.textContent = '... ' + totalPages;
-                                            lastPageItem.addEventListener('click', () => {
-                                                currentPage = lastPage;
+                                        nextBtn.addEventListener('click', () => {
+                                            const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+                                            if (currentPage < totalPages) {
+                                                currentPage++;
                                                 renderTableRows(currentPage);
                                                 updatePageInfo();
                                                 renderPageList();
-                                            });
-                                            pageList.appendChild(lastPageItem);
-                                        }
-                                    }
+                                            }
+                                        });
 
-                                    prevBtn.addEventListener('click', () => {
-                                        if (currentPage > 1) {
-                                            currentPage--;
-                                            renderTableRows(currentPage);
-                                            updatePageInfo();
+                                        const searchInput = document.getElementById('searchInput');
+                                        searchInput.addEventListener('input', function () {
+                                            const input = this.value.trim().toLowerCase();
+                                            filterTable(input);
+                                        });
+
+                                        window.onload = () => {
+                                            renderTableRows(1)
                                             renderPageList();
-                                        }
-                                    });
-
-                                    nextBtn.addEventListener('click', () => {
-                                        const totalPages = Math.ceil(filteredData.length / rowsPerPage);
-                                        if (currentPage < totalPages) {
-                                            currentPage++;
-                                            renderTableRows(currentPage);
-                                            updatePageInfo();
-                                            renderPageList();
-                                        }
-                                    });
-
-
-
-
-
-                                    const searchInput = document.getElementById('searchInput');
-                                    searchInput.addEventListener('input', function () {
-                                        const input = this.value.trim().toLowerCase();
-                                        filterTable(input);
-                                    });
-
-                                </script>
-
+                                        };
+                            </script>
+                                </div>
                             </div>
-                        </div>
+                                        <!-- delete row -->
+                            <?php
+                                if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
+                                    $id = $_GET['id'];
+                                    $del = new dbconnection();
+                                    $userdel = $del->destroy('news', $id);
+
+                                    if ($userdel) {
+                                        echo "<script>alert('Record deleted successfully'); window.location.href = 'news';</script>";
+                                    } else {
+                                        echo "<script>alert('Failed to delete record'); window.location.href = 'news';</script>";
+                                    }
+                                }
+                                ?>
+
+                                <script>
+                                    function openConfirm() {
+                                        return confirm("Are you sure you want to Delete this member?");
+                                    }
+                                </script>         
+
+
+
+            </div>
+        </div>
+    </main>
 
                         <script>
 
@@ -319,6 +351,4 @@
 
                         </script>
 
-            </div>
-        </div>
-    </main>
+

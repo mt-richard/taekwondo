@@ -10,61 +10,85 @@ class dbconnection {
         ]);
     }
 
-    function login($email, $password) {
-        try {
-            $query = "SELECT * FROM users WHERE email = ?";
-            $stm = $this->db->prepare($query);
-            $stm->execute([$email]);
-            $user = $stm->fetch(PDO::FETCH_ASSOC);
-    
-            if ($user && ($password == $user['password'])) {
-                return ["message" => "Login successful", "status" => 1, "user" => $user];
-            } else {
-                return ["message" => "Invalid email or password", "status" => 0];
+        // login function
+        function login($email, $password) {
+            try {
+                $query = "SELECT * FROM users WHERE email = ?";
+                $stm = $this->db->prepare($query);
+                $stm->execute([$email]);
+                $user = $stm->fetch(PDO::FETCH_ASSOC);
+        
+                if ($user && ($password == $user['password'])) {
+                    return ["message" => "Login successful", "status" => 1, "user" => $user];
+                } else {
+                    return ["message" => "Invalid email or password", "status" => 0];
+                }
+            } catch (PDOException $e) {
+                return ["message" => $e->getMessage(), "status" => 0];
             }
-        } catch (PDOException $e) {
-            return ["message" => $e->getMessage(), "status" => 0];
         }
-    }
+        
     
-    
-
-    function save($table, $data){
-        try {
-            $query = "INSERT INTO ".$table."(";
-            $i =0;
-            $ph ="";
-            $values =[];
-            foreach($data as $field => $value){
-                $query .= $i==0? $field:",".$field;
-                $ph .= $i==0? "?": ",?";
-                array_push($values, $value);
-                $i++;
+        // inserting data into db table
+        function save($table, $data){
+            try {
+                $query = "INSERT INTO ".$table."(";
+                $i =0;
+                $ph ="";
+                $values =[];
+                foreach($data as $field => $value){
+                    $query .= $i==0? $field:",".$field;
+                    $ph .= $i==0? "?": ",?";
+                    array_push($values, $value);
+                    $i++;
+                }
+                $query .= ")values(".$ph.")";
+                $stm = $this->db->prepare($query);
+                $stm->execute($values);
+                $lastInsertId = intval($this->db->lastInsertId());
+                
+                return ["status" => "success", "message" => "Record added successfully", "id" => $lastInsertId];
+            } catch (PDOException $e) {
+                return ["status" => "error", "message" => $e->getMessage()];
             }
-            $query .= ")values(".$ph.")";
-            $stm = $this->db->prepare($query);
-            $stm->execute($values);
-            $lastInsertId = intval($this->db->lastInsertId());
+        }
             
-            return ["status" => "success", "message" => "Record added successfully", "id" => $lastInsertId];
-        } catch (PDOException $e) {
-            return ["status" => "error", "message" => $e->getMessage()];
-        }
-    }
-    
-    // retrieve all data
-    function getAll($table){
-        try {
-            $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY createdat DESC");
-            $stm->execute();
-            $stm->setFetchMode(PDO::FETCH_ASSOC);
-            return $stm->fetchAll();
-        } catch (Exception $th) {
-            return $th.getMessage();
-        }
-    }
+        
+        // updating data in db table
+            function update($table, $data, $id) {
+                try {
+                    $query = "UPDATE ".$table." SET ";
+                    $i = 0;
+                    $values = [];
+                    foreach ($data as $field => $value) {
+                        $query .= $i == 0 ? $field."=?" : ",".$field."=?";
+                        array_push($values, $value);
+                        $i++;
+                    }
+                    $query .= " WHERE id=?";
+                    array_push($values, $id);
+                    $stm = $this->db->prepare($query);
+                    $stm->execute($values);
 
-   // latest champion
+                    return ["status" => "success", "message" => "Record updated successfully"];
+                } catch (PDOException $e) {
+                    return ["status" => "error", "message" => $e->getMessage()];
+                }
+            }
+
+        // retrieve all data
+        function getAll($table){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY createdat DESC");
+                $stm->execute();
+                $stm->setFetchMode(PDO::FETCH_ASSOC);
+                return $stm->fetchAll();
+            } catch (Exception $th) {
+                return $th.getMessage();
+            }
+        }
+
+        // latest champion
         function getChampion(){
             try {
                 $stm = $this->db->prepare("SELECT * FROM champions ORDER BY `period` DESC, `createdat`  DESC LIMIT 1");
@@ -87,11 +111,10 @@ class dbconnection {
                 return $th->getMessage();
             }
         }
-
-        // latest news
-        function getlatestNews(){
+        // get all events
+        function getEvents($table) {
             try {
-                $stm = $this->db->prepare("SELECT * FROM news ORDER BY `createdat`  DESC LIMIT 3");
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY event_date DESC, CASE WHEN event_date < NOW() THEN 1 ELSE 0 END, createdat DESC");
                 $stm->execute();
                 $stm->setFetchMode(PDO::FETCH_ASSOC);
                 return $stm->fetchAll();
@@ -99,31 +122,81 @@ class dbconnection {
                 return $th->getMessage();
             }
         }
-
-        // Get by ID 
         
-        function getNewsdetails($table, $id) {
+        
+
+        // // latest news
+        // function getlatestNews(){
+        //     try {
+        //         $stm = $this->db->prepare("SELECT * FROM news ORDER BY `createdat`  DESC LIMIT 3");
+        //         $stm->execute();
+        //         $stm->setFetchMode(PDO::FETCH_ASSOC);
+        //         return $stm->fetchAll();
+        //     } catch (Exception $th) {
+        //         return $th->getMessage();
+        //     }
+        // }
+
+        // Get user by ID 
+        function getByid($table, $id) {
             try {
-                $stm = $this->db->prepare("SELECT * FROM " . $table . " WHERE news_id = :id");
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " WHERE id = :id");
                 $stm->bindParam(':id', $id, PDO::PARAM_INT);
                 $stm->execute();
-                $new = $stm->fetch(PDO::FETCH_ASSOC);
-                return $new;
+                $result = $stm->fetch(PDO::FETCH_ASSOC);
+                return $result;
             } catch (Exception $th) {
                 return $th->getMessage();
             }
         }
         
-
-    // delete
-        function destroy($table, $id){
+       // Get News by state 
+       function getNews($table, $state, $limit) {
             try {
-                $stm = $this->db->prepare("DELETE FROM ".$table."WHERE id=".$id);
-                $stm->execute($id);
+                $stm = $this->db->prepare("SELECT * FROM $table WHERE state = :state ORDER BY createdat DESC LIMIT :limit");
+                $stm->bindParam(':limit', $limit, PDO::PARAM_INT);
+                $stm->bindParam(':state', $state);
+                $stm->execute();
+                $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (PDOException $th) {
+                return $th->getMessage();
+            }
+        }
 
-                // return $stm->fetchAll();
+        // Get Hot News 
+        function getHotNews() {
+            try {
+                $stm = $this->db->prepare("SELECT * FROM news WHERE state = 'HOT' ORDER BY createdat DESC LIMIT 1");
+                $stm->execute();
+                $new = $stm->fetch(PDO::FETCH_ASSOC); 
+                return $new;
+            } catch (PDOException $th) {
+                return $th->getMessage();
+            }
+        }
+
+        //  count total rows
+        function countTotal($table) {
+            try {
+                $stm = $this->db->prepare("SELECT COUNT(*) as total FROM $table ");
+                $stm->execute();
+                $result = $stm->fetch(PDO::FETCH_ASSOC);
+                return $result['total'];
+            } catch (PDOException $th) {
+                return 0; 
+            }
+        }
+
+        // delete
+        function destroy($table, $id) {
+            try {
+                $stm = $this->db->prepare("DELETE FROM ".$table." WHERE id = :id");
+                $stm->bindParam(':id', $id, PDO::PARAM_INT);
+                $stm->execute();
+                return "Record deleted successfully.";
             } catch (Exception $th) {
-                return $th.getMessage();
+                return "Error deleting record: " . $th->getMessage();
             }
         }
         

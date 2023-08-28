@@ -23,7 +23,7 @@
                     ?>
                 
                     <div class="max-w-sm bg-white drop-shadow-xl rounded drop-shadow-xl newcard ">
-                    <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['news_id']); ?>">
+                    <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['id']); ?>">
 
                         <div>
                             <img class="w-full h-60 object-cover" src="<?php echo substr($new['photo'], 3); ?>" alt="" />

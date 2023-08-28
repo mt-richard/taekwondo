@@ -7,44 +7,15 @@
         <h2 class="text-2xl font-bold">All Event Archive</h2>
         <p class="font-light">Let see whats trending</p>
     </div>
-    <div class="filter py-5"> 
-      <form action="">
-        <div class="md:flex gap-10 justify-center items-center px-10">
-                
-                <div class="border border-blue-400 px-1 mb-2"> 
-                    <select class=" w-full px-6 py-3 bg-white outline-none">
-                        <option value="">Year</option>
-                        <option value="">2023</option>
-                        <option value="">2022</option>
-                        <option value="">2021</option>
-                    </select>
-                </div>
-                <div class="border border-blue-400 px-1 mb-2">
-                    <select class=" w-full px-6 py-3 bg-white outline-none">
-                        <option value="">Place</option>
-                        <option value="">KIGALI</option>
-                        <option value="">RUSIZI</option>
-                        <option value="">RUBAVU</option>
-                        <option value="">RWAMAGANA</option>
-                        <option value="">KAYONZA</option>
-                    </select>
-                </div>
-                <div class="border border-blue-400 px-1 mb-2">
-                    <select class="w-full px-6 py-3 bg-white outline-none">
-                        <option value="">Type</option>
-                        <option value="">Competions</option>
-                        <option value="">Club</option>
-                        <option value="">Entertainment</option>
-                    </select>
-                </div>
-                <div>
-                    <input type="button" value="FILTER" class="cursor-pointer bg-blue-400 text-white py-2 px-6 ">
-                </div>
 
+
+    <div class="filter py-5"> 
+        <div class="flex justify-center items-center py-5">
+            <input class="form-control border-end-0 border w-1/3 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
         </div>
-      </form>
-            
     </div>
+
+    
 
     <div class="events py-10">
         <div >
@@ -54,12 +25,23 @@
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     include '../config/dbconnection.php';
                     $db = new dbconnection();
-                    $events = $db->getAll('events');
+                    $events = $db->getEvents('events', 'event_date', 'ASC');
                     
                     
                     foreach ($events as $event) {
-                        $eventStartDate = new DateTime($event['event_date']); 
+                        $eventStartDate = new DateTime($event['event_date']);
                         $currentDate = new DateTime();
+                    
+                        if ($eventStartDate <= $currentDate) {
+                            $status = 'passed';
+                            $data = [
+                                'status' => $status
+                            ];
+                            $updateStatus = $db->update("events",$data,$event['id']);
+                            // echo json_encode($updateStatus);
+                        }
+                    
+                        
                         $interval = $eventStartDate->diff($currentDate);
 
                         $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;

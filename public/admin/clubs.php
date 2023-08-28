@@ -4,19 +4,19 @@
     <div>
         <?php include '../../includes/leftbar.php'; ?>
     </div>
-    <!-- event page content -->
+    <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Events</h2>
+        <h2 class="text-xl py-10">Dashbord / Clubs</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
             <div class="container w-full mx-auto px-2">
 
-                <!-- add event -->
+                <!-- add user -->
 
                     <div class="py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
-                            Add Event
+                            Add club
                         </button>
                     </div>
                 
@@ -26,21 +26,17 @@
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             include '../../config/dbconnection.php';
                             
-                            $category = $_POST['category'];
-                            $title = $_POST['title'];
-                            $desc = $_POST['desc'];
-                            $date = $_POST['date'];
-                            $starttime = $_POST['starttime'];
-                            $venue = $_POST['venue'];
+                            $name = $_POST['name'];
+                            $master = $_POST['master'];
+                            $phone = $_POST['phone'];
+                            $address = $_POST['address'];
                             $photo = $_FILES['photo'];
                             
-                            $eventData = [
-                                "event_category" => $category,
-                                "title" => $title,
-                                "event_desc" => $desc,
-                                "event_date" => $date,
-                                "start_time" => $starttime,
-                                "venue" => $venue,
+                            $userData = [
+                                "name" => $name,
+                                "master" => $master,
+                                "phone" => $phone,
+                                "address" => $address,
                             ];
 
                             $photoName = $photo['name'];
@@ -57,15 +53,15 @@
                                 $targetPath = $targetDirectory . $photoName;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
-                                    $eventData["photo"] = $targetPath;
+                                    $userData["photo"] = $targetPath;
                                     
                                     $add = new dbconnection();
-                                    $result = $add->save("events", $eventData);
+                                    $result = $add->save("clubs", $userData);
                                     
                                     if ($result['status'] == 'success') {
                                         $response = $result['message'];
                                     } else {
-                                        $response = "Failed to add event.";
+                                        $response = "Failed to add Clubs. avoid Duplications.";
                                     }
                                 } else {
                             $response = "Failed to move uploaded file. Error: " . $_FILES['photo']['error'];
@@ -76,59 +72,41 @@
 
                             $message = json_encode($response);
                             // echo json_encode($result);
-                            echo "<script>alert('$message'); window.history.pushState({}, '', 'events'); window.location.reload();</script>";
+                            echo "<script>alert('$message'); window.history.pushState({}, '', 'clubs'); window.location.reload();</script>";
                         }
                         ?>
 
 
+
                     <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/4 rounded-lg shadow-lg md:mt-20">
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="w-full justify-center">
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
                                 </div>
                                 <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Add Events Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Add Club Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
-                                        <?php
-                                        //    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                        //     include '../../config/dbconnection.php';
-                                        //     $cats = new dbconnection();
-                                        //     $alls =  $db->getAll("events");
-                                        //     echo json_encode($alls);
-                                        //     } 
-                                            ?>
-                                        <select required name="category" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                            <option>Choose the Event Category</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                        </select>
+                                        <input type="text" required name="name" placeholder="Enter Name" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" required name="master" placeholder="Enter Master's name address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <textarea required name="desc" placeholder="Enter Event Description" class="w-full h-40 py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
+                                        <input type="text" required name="phone" placeholder="Enter Phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="date" required name="date" placeholder="Enter Event date " class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="text" required name="address" placeholder="Enter address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="time" required name="starttime" placeholder="Enter Starting Time" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" required name="venue" placeholder="Enter Venue" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="file"  name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addevent" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add Event</button>
+                                        <button type="submit" name="addathletes" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add Athletes</button>
                                     </div>
                                     
                                 </form>
@@ -136,9 +114,7 @@
                         </div>
                     </section>
 
-                <!-- end add event -->
-		
-
+                <!-- end add user -->
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                     <div class="container w-full  mx-auto px-2">
 
@@ -150,14 +126,12 @@
                         <thead class="text-left px-5">
                             <tr class="bg-gray-100">
                                 <th class="py-2 px-5 border" data-priority="1">#</th>
-                                <th class="py-2 px-5 border" data-priority="1">Category</th>
-                                <th class="py-2 px-5 border" data-priority="1">Title</th>
-                                <th class="py-2 px-5 border" data-priority="1">Description</th>
-                                <th class="py-2 px-5 border" data-priority="1">Date</th>
-                                <th class="py-2 px-5 border" data-priority="2">Start Time</th>
-                                <th class="py-2 px-5 border" data-priority="2">Venue</th>
-                                <th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
-                                <th class="py-2 px-5 border" data-priority="6">Actions</th>
+                                <th class="py-2 px-5 border" data-priority="2">Club Name</th>
+                                <th class="py-2 px-5 border" data-priority="3">Master</th>
+                                <th class="py-2 px-5 border" data-priority="3">Phone</th>
+                                <th class="py-2 px-5 border" data-priority="3">Address</th>
+                                <th class="py-2 px-5 border" data-priority="5">Created At</th>
+                                <th class="py-2 px-5 border" data-priority="6">Action</th>
                             </tr>
                         </thead>
                         <tbody class="font-light">
@@ -165,7 +139,7 @@
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 include '../../config/dbconnection.php';
                                 $data = new dbconnection();
-                                $all =  $data->getAll("events");
+                                $all =  $data->getAll("clubs");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -213,8 +187,10 @@
                             } else {
                                 filteredData = data.filter(item => {
                                     return (
-                                        item.title.toLowerCase().includes(query) ||
-                                        item.event_desc.toLowerCase().includes(query) ||
+                                        item.name.toLowerCase().includes(query) ||
+                                        item.master.toLowerCase().includes(query) ||
+                                        item.phone.toLowerCase().includes(query) ||
+                                        item.address.toLowerCase().includes(query) ||
                                         item.createdat.toLowerCase().includes(query)
                                     );
                                 });
@@ -229,31 +205,27 @@
                         function renderTableRows(page) {
                             const start = (page - 1) * rowsPerPage;
                             const end = start + rowsPerPage;
-                            const MAX_LENGHT = 50;
                             tbody.innerHTML = '';
 
                             for (let i = start; i < end && i < filteredData.length; i++) {
-                                const row = document.createElement('tr');
-                                row.className = 'table-row';
-                                row.innerHTML = `
-                                    <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-10 h-10 rounded-full object-cover"></td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].event_category.length > 20 ? filteredData[i].event_category.substring(0, 20) + '...' : filteredData[i].event_category}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].title}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].event_desc.length > 50 ? filteredData[i].event_desc.substring(0, 40) + '...' : filteredData[i].event_desc}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].event_date}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].start_time}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].venue}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                    <td class="px-5 py-1 border-b">
-                                        <div class="flex gap-10">
-                                            <a href="updateevent?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
-                                            <a onclick="return openConfirm()" href="events?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
-                                        </div>
-                                    </td>
-                                `;
-                                tbody.appendChild(row);
-                            }
-
+                                           const row = document.createElement('tr');
+                                           row.className = 'table-row';
+                                           row.innerHTML = `
+                                           <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-10 h-10 rounded-full object-cover"></td>
+                                           <td class="px-5 py-1 border-b">${filteredData[i].name}</td>
+                                           <td class="px-5 py-1 border-b">${filteredData[i].master}</td>
+                                           <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
+                                           <td class="px-5 py-1 border-b">${filteredData[i].address}</td>
+                                           <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
+                                           <td class="px-5 py-1 border-b">
+                                               <div class="flex gap-10">
+                                                   <a href="updateclub?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
+                                                   <a onclick="return openConfirm()" href="clubs?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
+                                               </div>
+                                           </td>
+                                       `;
+                                           tbody.appendChild(row);
+                                       }
                         }
                             function updatePageInfo() {
                                 pageInfo.textContent = `${currentPage}`;
@@ -343,12 +315,12 @@
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
                         $del = new dbconnection();
-                        $userdel = $del->destroy('events', $id);
+                        $userdel = $del->destroy('clubs', $id);
 
                         if ($userdel) {
-                            echo "<script>alert('Record deleted successfully'); window.location.href = 'events';</script>";
+                            echo "<script>alert('Record deleted successfully'); window.location.href = 'clubs';</script>";
                         } else {
-                            echo "<script>alert('Failed to delete record'); window.location.href = 'events';</script>";
+                            echo "<script>alert('Failed to delete record'); window.location.href = 'clubs';</script>";
                         }
                     }
                     ?>
@@ -358,34 +330,31 @@
                             return confirm("Are you sure you want to Delete this Club?");
                         }
                     </script> 
-                            </div>
-                        </div>
-
-                        
-
-            </div>
-        </div>
-    </main>
-
-                        <script>
-
-                            const openModalBtn = document.getElementById('openModalBtn');
-                                const closeModalBtn = document.getElementById('closeModalBtn');
-                                const modal = document.getElementById('overlay');
-
-                                function openModal() {
-                                    modal.style.display = 'block';
-                                }
-
-                                function closeModal() {
-                                    modal.style.display = 'none';
-                                }
-
-                                openModalBtn.addEventListener('click', openModal);
-                                closeModalBtn.addEventListener('click', closeModal);
 
 
-                        </script>
+		</div>
+	</div>
+
+</div>
+</div>
+</main>
+
+	<script>
+
+		const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modal = document.getElementById('overlay');
+
+            function openModal() {
+                modal.style.display = 'block';
+            }
+
+            function closeModal() {
+                modal.style.display = 'none';
+            }
+
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
 
 
-                                       
+	</script>
