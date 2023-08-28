@@ -11,6 +11,7 @@
  $galleryUrl = dirname($currentURL) . "/gallery";
  $championsUrl = dirname($currentURL) . "/champions";
  $membersUrl = dirname($currentURL) . "/members";
+ $logoutUrl = dirname($currentURL) . "/logout";
 
  $encodedURL = urlencode($currentURL);
 
@@ -100,6 +101,17 @@
               <div class="flex items-center">
                 <i class="fas fa-newspaper mr-2"></i>
                 <span>News</span>
+              </div>
+            </div>
+          </li>
+        </a>
+
+        <a href="<?php echo $logoutUrl;?>" >
+          <li class="opcion-con-desplegable">
+            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+              <div class="flex items-center">
+                <i class="fas fa-newspaper mr-2"></i>
+                <span>Logout</span>
               </div>
             </div>
           </li>

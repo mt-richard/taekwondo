@@ -43,6 +43,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $loginResult = $dbConnection->login($email, $password);
 
     if ($loginResult['status'] == 1) {
+        session_start();
+        $_SESSION['username'] = $loginResult['user'];
         header('Location: dashboard.php');
         exit();
     } else {

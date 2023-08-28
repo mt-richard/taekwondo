@@ -6,7 +6,7 @@
     </div>
     <!-- new page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / News</h2>
+        <h2 class="text-xl py-3">Dashbord / News</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -118,8 +118,8 @@
                     <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                         <div class="container w-full  mx-auto px-2">
 
-                            <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-                                <div class="flex justify-center items-center py-5">
+                            <div id='recipients' class="px-8  py-3 mt-6 lg:mt-0 rounded shadow bg-white">
+                                <div class="flex justify-center items-center py-2">
                                     <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search"  id="searchInput" class="form-control" placeholder="Search by here .....">
                                 </div>
                             
@@ -130,6 +130,7 @@
                                             <th class="py-2 px-5 border" data-priority="1">#</th>
                                             <th class="py-2 px-5 border" data-priority="1">Title</th>
                                             <th class="py-2 px-5 border" data-priority="1">Content</th>
+                                            <th class="py-2 px-5 border" data-priority="1">state</th>
                                             <th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
                                             <th class="py-2 px-5 border" data-priority="6">Actions</th>
                                         </tr>
@@ -208,9 +209,10 @@
                                                     const row = document.createElement('tr');
                                                     row.className = 'table-row';
                                                     row.innerHTML = `
-                                                    <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-10 h-10 rounded-full object-cover"></td>
+                                                    <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-7 h-7 rounded-full object-cover"></td>
                                                     <td class="px-5 py-1 border-b">${filteredData[i].title.substring(0, 80)}</td>
                                                     <td class="px-5 py-1 border-b">${filteredData[i].content.substring(0, 100)}</td>
+                                                    <td class="px-5 py-1 border-b">${filteredData[i].state}</td>
                                                     <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
                                                     <td class="px-5 py-1 border-b">
                                                         <div class="flex gap-10">

@@ -1,3 +1,18 @@
+<?php
+session_start();
+function isUserLoggedIn() {
+    return isset($_SESSION['username']);
+}
+
+if (isUserLoggedIn()) {
+  echo "User logged in";
+} else {
+ echo "User not logged in";
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

@@ -22,17 +22,15 @@ $db = new dbconnection();
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $id = $_GET['editid'];
-                            $name = $_POST['name'];
-                            $master = $_POST['master'];
-                            $phone = $_POST['phone'];
-                            $address = $_POST['address'];
+                            $title = $_POST['title'];
+                            $content = $_POST['content'];
+                            $state = $_POST['state'];
                             $photo = $_FILES['photo'];
 
                             $userData = [
-                                "name" => $name,
-                                "master" => $master,
-                                "phone" => $phone,
-                                "address" => $address,
+                                "title" => $title,
+                                "content" => $content,
+                                "state" => $state,
                             ];
 
                             if (!empty($photo['name'])) {
@@ -60,16 +58,16 @@ $db = new dbconnection();
                                 }
                             }
 
-                            $result = $db->update("clubs", $userData, $id);
+                            $result = $db->update("news", $userData, $id);
                             if ($result['status'] == 'success') {
                                 $response = $result['message'];
                             } else {
-                                $response = "Failed to update club.";
+                                $response = "Failed to update News.";
                             }
 
                             $message = json_encode($response);
                             //  echo json_encode($result);
-                            echo "<script>alert('$message'); window.history.pushState({}, '', 'clubs'); window.location.reload();</script>";
+                            echo "<script>alert('$message'); window.history.pushState({}, '', 'news'); window.location.reload();</script>";
                         }
                         ?>
 
@@ -77,32 +75,35 @@ $db = new dbconnection();
 
                         <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                $userid = $_GET['editid'];
-                                $user = $db->getByid('clubs', $userid);
+                                $id = $_GET['editid'];
+                                $new = $db->getByid('news', $id);
                                 // echo json_encode($user);
-                                if($user){
+                                if($new){
                         ?>
                    
-                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
+                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-4/5 rounded-lg shadow-lg ">
                             <div class="md:w-full pb-5">
-                                <div class="py-5 flex justify-center items-cenetr">
+                                <div class="py-3 flex justify-center items-cenetr">
                                     <h2 class="text-2xl font-bold text-gray-600">Update  News Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" required name="name" placeholder="Enter Name" value="<?php echo $user['name']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                <div class=" mb-4 px-3">
+                                        <input type="text" required name="title" placeholder="Enter News Title" value="<?php echo $new['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="master" placeholder="Enter Master's Name" value="<?php echo $user['master']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <textarea required name="content" placeholder="Enter News Description"  value="<?php echo $new['content']; ?>" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "> <?php echo $new['content']; ?></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="phone" placeholder="Enter Phone" value="<?php echo $user['phone']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <select required name="state" class="w-full py-2 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                            <option><?php echo $new['state']; ?></option>
+                                            <option>Choose News State</option>
+                                            <option value="TOP">Top</option>
+                                            <option value="HOT">Hot</option>
+                                            <option value="NORMAL">Normal</option>
+                                        </select>
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="address" placeholder="Enter Address" value="<?php echo $user['address']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="file"  name="photo" placeholder="Choose Photo" value="<?php echo $user['photo']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="file"  name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     

@@ -19,6 +19,8 @@ class dbconnection {
                 $user = $stm->fetch(PDO::FETCH_ASSOC);
         
                 if ($user && ($password == $user['password'])) {
+                    session_start();
+                    $_SESSION['username'] = $user['username'];
                     return ["message" => "Login successful", "status" => 1, "user" => $user];
                 } else {
                     return ["message" => "Invalid email or password", "status" => 0];
