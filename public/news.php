@@ -102,28 +102,23 @@ $(document).ready(function() {
             newsContainer.append(newsCard);
         }
         
-        // If no news to display, show a message
         if (data.length === 0) {
             newsContainer.append('<p>No news found.</p>');
         }
     }
 
     function updatePagination() {
-        // Calculate the total number of pages
         const totalPages = Math.ceil(newsData.length / itemsPerPage);
 
-        // Build the list of available pages
         const pageLinks = [];
         for (let i = 1; i <= Math.min(totalPages, 10); i++) {
             pageLinks.push(i);
         }
 
-        // Add "Last Page" link
         if (totalPages > 10) {
             pageLinks.push('Last Page');
         }
 
-        // Update the page list
         pageList.empty();
         pageLinks.forEach(page => {
             const link = $('<span></span>').addClass('p-[3px] rounded text-lg flex gap-2 cursor-pointer').text(page);
@@ -137,7 +132,6 @@ $(document).ready(function() {
                 updatePagination();
             });
 
-            // Add active class to the current page link
             if ((page === currentPage) || (page === 'Last Page' && currentPage === totalPages)) {
                 link.addClass('active-btn');
             }
@@ -146,7 +140,6 @@ $(document).ready(function() {
         });
     }
 
-    // Function to filter news based on search input
     function filterNews(searchText, data) {
         const filteredNews = data.filter(newsItem => {
             const titleMatches = newsItem.title.toLowerCase().includes(searchText.toLowerCase());
@@ -156,11 +149,9 @@ $(document).ready(function() {
         return filteredNews;
     }
 
-    // Function to update the news list based on search input
     function updateNewsList(searchText) {
         const filteredNews = filterNews(searchText, newsData);
 
-        // Reset current page to 1 if no data is found
         if (filteredNews.length === 0) {
             currentPage = 1;
         }
@@ -169,13 +160,11 @@ $(document).ready(function() {
         updatePagination();
     }
 
-    // Live search input event handler
     $('#liveSearch').on('input', function() {
         const searchText = $(this).val();
         updateNewsList(searchText);
     });
 
-    // Initial page load
     showNews(currentPage, newsData);
     updatePagination();
 
