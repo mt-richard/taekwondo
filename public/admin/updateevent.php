@@ -13,8 +13,6 @@
         <div class="text-gray-900 tracking-wider leading-normal">
 
             <div class="container w-full mx-auto px-2">
-
-            
                     <!-- modal -->
 
                     <?php

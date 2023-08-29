@@ -1,114 +1,172 @@
-<?php 
-    include '../includes/navbar.php';
-
+<?php include '../includes/navbar.php'; ?>
+<?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $events = $db->getEvents('events', 'event_date', 'ASC');
+        $news = $db->getEvents('events', 'event_date', 'ASC');
     }
 ?>
 <body>
+    <style>
+        .active-btn{
+            background-color: #2563eb;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 3px;
+            color: white;
+        }
+    </style>
 
-<div class="py-10">
-    <div class="w-full flex flex-col justify-center items-center mb-5 py-5">
-        <h2 class="text-2xl font-bold">All Event Archive</h2>
-        <p class="font-light">Let's see what's trending</p>
-    </div>
-
-    <div class="filter py-5"> 
-        <div class="flex justify-center items-center py-5">
-            <input class="form-control border-end-0 border w-1/3 py-3 px-10 rounded-xl outline-none" type="search" id="searchInput" placeholder="Search here ...">
+<div>
+    <div class="bg-gray-100 md:py-10">
+        <div class="w-full flex flex-col justify-center items-center mb-5 py-5">
+            <h2 class="text-2xl font-bold">All Event Archive</h2>
+            <p class="font-light">Let's see what's trending</p>
         </div>
-    </div>
-
-    <div id="eventsContainer" class="events py-10">
-        <!-- Events will be dynamically added here -->
-    </div>
-
-    <div class="pagination flex justify-between py-5">
-        <span></span>
-        <div class="flex gap-1">
-            <button id="prevBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&lt;</button>
-            <span id="pageInfo" class="hidden p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
-            <span id="pageList" class="p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</span>
-            <button id="nextBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer ">&gt;</button>
+                <div class="w-full mb-2 p-5 rounded flex items-center justify-center">
+                    <form action="">
+                        <input type="search" id="liveSearch" class="outline-none focus:border-blue-400 w-100 bg-white border rounded-lg px-10 py-4" placeholder="Search here ..">
+                    </form>
+                </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <div class="w-full grid md:flex gap-2 justify-center">
+            <div class=" flex flex-col">
+                <div id="newsContainer" class="newslist  md:py-10">
+                </div>
+                <div class="pagination flex justify-center items-center py-5">
+                    <div class="flex gap-1">
+                        <button id="prevBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&lt;</button>
+                        <button id="pageInfo" class="hidden p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</button>
+                        <button id="pageList" class="p-[3px] rounded text-lg flex gap-2 cursor-pointer">1</button>
+                        <button id="nextBtn" class="bg-gray-200 border font-bold rounded px-2 cursor-pointer">&gt;</button>
+                    </div>
+                </div>
+            </div>
+            
         </div>
     </div>
 </div>
 
 <!-- footer -->
 <?php include '../includes/footer.php'; ?>
+</body>
 
 <script>
-
 $(document).ready(function() {
-    const eventsContainer = $('#eventsContainer'); // Container for event cards
-    const prevBtn = $('#prevBtn'); // Previous button
-    const nextBtn = $('#nextBtn'); // Next button
-    const pageInfo = $('#pageInfo'); // Page info (not used in this script)
-    const pageList = $('#pageList'); // Page list for pagination
+    const newsContainer = $('#newsContainer');
+    const prevBtn = $('#prevBtn');
+    const nextBtn = $('#nextBtn');
+    const pageInfo = $('#pageInfo');
+    const pageList = $('#pageList');
 
-    const eventsData = <?php echo json_encode($events) ?>; // Event data from PHP
+    const newsData = <?php echo json_encode($news)?>;
 
-    const itemsPerPage = 3; // Number of events per page
-    let currentPage = 1; // Current page
+    const itemsPerPage = 3;
+    let currentPage = 1;
 
-    function showEvents(page, data) {
-        eventsContainer.empty(); // Clear the container
-        const startIndex = (page - 1) * itemsPerPage;
-        const endIndex = startIndex + itemsPerPage;
+    function showNews(page, data) {
+    newsContainer.empty();
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, data.length);
 
-        for (let i = startIndex; i < endIndex && i < data.length; i++) {
-            const event = data[i];
-            const eventDiv = document.createElement('div');
-            eventDiv.className = 'flex flex-col justify-center items-center mb-5';
-            eventDiv.innerHTML = `
-                                    <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
-                                        <div class="md:flex gap-6 px-5 py-5 md:px-10">
-                                            <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
-                                                <img src="${event.photo.substring(3)}" alt="" class="rounded w-full h-96 object-cover">
-                                            </div>
-                                            <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center">
-                                                <div class="flex gap-2 md:gap-5">
-                                                    <div>
-                                                        <h2 class="text-white capitalize">days</h2>
-                                                        <h1 id="days-${event.id}" class="bg-gray-950 text-white px-5 py-3">${remainingDays}</h1>
-                                                    </div>
-                                                    <div>
-                                                        <h2 class="text-white capitalize">hr</h2>
-                                                        <h1 id="hours-${event.id}" class="bg-gray-950 text-white px-5 py-3">${remainingHours}</h1>
-                                                    </div>
-                                                    <div>
-                                                        <h2 class="text-white capitalize">min</h2>
-                                                        <h1 id="minutes-${event.id}" class="bg-gray-950 text-white px-5 py-3">${remainingMinutes}</h1>
-                                                    </div>
-                                                    <div>
-                                                        <h2 class="text-white capitalize">sec</h2>
-                                                        <h1 id="seconds-${event.id}" class="bg-gray-950 text-white px-5 py-3">${remainingSeconds}</h1>
-                                                    </div>
-                                                    <h2 class="md:px-10 py-2 font-bold text-2xl capitalize ${statusColor}">${status}</h2>
-                                                </div>
-                                                <div class="md:py-5">
-                                                    <h2 class="text-white font-bold py-3 text-4xl">${event.title}</h2>
-                                                    <p class="text-white font-light">${event.event_desc}</p>
-                                                </div>
-                                                <div class="pt-5">
-                                                    <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                `;
+    for (let i = startIndex; i < endIndex; i++) {
+        const newsItem = data[i];
+        const eventStartDate = new Date(newsItem.event_date);
+        const currentDate = new Date();
+        const interval = eventStartDate - currentDate;
 
-                                eventContainer.appendChild(eventDiv);
-        }
+        const remainingDays = eventStartDate > currentDate ? Math.floor(interval / (1000 * 60 * 60 * 24)) : 0;
+        const remainingHours = eventStartDate > currentDate ? Math.floor((interval % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) : 0;
+        const remainingMinutes = eventStartDate > currentDate ? Math.floor((interval % (1000 * 60 * 60)) / (1000 * 60)) : 0;
+        const remainingSeconds = eventStartDate > currentDate ? Math.floor((interval % (1000 * 60)) / 1000) : 0;
 
-        // If no events found, show a message
-        if (data.length === 0) {
-            eventsContainer.append('<p>No events found.</p>');
-        }
+        const status = eventStartDate > currentDate ? 'Remaining' : 'Passed';
+        const statusColor = status === 'Passed' ? 'text-red-600' : 'text-gray-600';
+
+        const newsCard = `
+        <div class=" w-full flex flex-col justify-center items-center mb-5">
+                <div class="w-full md:w-full lg:w-4/5 xl:w-4/5 bg-blue-400">
+                    <div class="md:flex gap-6 px-5 py-5 md:px-10">
+                        <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
+                            <img src="${newsItem.photo.substring(3)}" alt="" class="rounded w-full h-60 md:h-96 object-cover">
+                        </div>
+                        <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center">
+                            <div class="flex gap-2 md:gap-5">
+                                <div>
+                                    <h2 class="text-white capitalize">days</h2>
+                                    <h1 id="days-${newsItem.id}" class="bg-gray-950 text-white px-5 py-3">${remainingDays}</h1>
+                                </div>
+                                <div>
+                                    <h2 class="text-white capitalize">hr</h2>
+                                    <h1 id="hours-${newsItem.id}" class="bg-gray-950 text-white px-5 py-3">${remainingHours}</h1>
+                                </div>
+                                <div>
+                                    <h2 class="text-white capitalize">min</h2>
+                                    <h1 id="minutes-${newsItem.id}" class="bg-gray-950 text-white px-5 py-3">${remainingMinutes}</h1>
+                                </div>
+                                <div>
+                                    <h2 class="text-white capitalize">sec</h2>
+                                    <h1 id="seconds-${newsItem.id}" class="bg-gray-950 text-white px-5 py-3">${remainingSeconds}</h1>
+                                </div>
+                                <h2 class="md:px-10 py-2 font-bold text-2xl capitalize ${statusColor}">${status}</h2>
+                            </div>
+                            <div class="md:py-5">
+                                <h2 class="text-white font-bold py-3 text-4xl">${newsItem.title}</h2>
+                                <p class="text-white font-light">${newsItem.event_desc}</p>
+                            </div>
+                            <div class="pt-5">
+                                <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        newsContainer.append(newsCard);
+
+        // Call the updateCountdown function immediately
+        updateCountdown(newsItem.id, eventStartDate);
+
+        // Set interval to update countdown every second
+        setInterval(() => {
+            updateCountdown(newsItem.id, eventStartDate);
+        }, 1000);
     }
 
+    if (data.length === 0) {
+        newsContainer.append('<p>No event found.</p>');
+    }
+}
+
+function updateCountdown(newsItemId, eventStartDate) {
+    const now = new Date();
+    const timeRemaining = eventStartDate - now;
+
+    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+    const daysElement = document.getElementById(`days-${newsItemId}`);
+    const hoursElement = document.getElementById(`hours-${newsItemId}`);
+    const minutesElement = document.getElementById(`minutes-${newsItemId}`);
+    const secondsElement = document.getElementById(`seconds-${newsItemId}`);
+
+    if (eventStartDate > now) {
+        daysElement.textContent = days;
+        hoursElement.textContent = hours;
+        minutesElement.textContent = minutes;
+        secondsElement.textContent = seconds;
+    } else {
+        daysElement.textContent = '00';
+        hoursElement.textContent = '00';
+        minutesElement.textContent = '00';
+        secondsElement.textContent = '00';
+    }
+}
+
+
     function updatePagination() {
-        const totalPages = Math.ceil(eventsData.length / itemsPerPage);
+        const totalPages = Math.ceil(newsData.length / itemsPerPage);
 
         const pageLinks = [];
         for (let i = 1; i <= Math.min(totalPages, 10); i++) {
@@ -128,7 +186,7 @@ $(document).ready(function() {
                 } else {
                     currentPage = page;
                 }
-                showEvents(currentPage, eventsData);
+                showNews(currentPage, newsData);
                 updatePagination();
             });
 
@@ -140,72 +198,52 @@ $(document).ready(function() {
         });
     }
 
-    // Similar to your news filtering logic
-    function filterEvents(searchText, data) {
-        // Customize this function according to your event data structure
-        const filteredEvents = data.filter(event => {
-            const titleMatches = event.title.toLowerCase().includes(searchText.toLowerCase());
-            const descriptionMatches = event.event_desc.toLowerCase().includes(searchText.toLowerCase());
-            return titleMatches || descriptionMatches;
+    function filterNews(searchText, data) {
+        const filteredNews = data.filter(newsItem => {
+            const titleMatches = newsItem.title.toLowerCase().includes(searchText.toLowerCase());
+            const descMatches = newsItem.event_desc.toLowerCase().includes(searchText.toLowerCase());
+            const venueMatches = newsItem.venue.toLowerCase().includes(searchText.toLowerCase());
+            const dateMatches = newsItem.event_date.toLowerCase().includes(searchText.toLowerCase());
+            return titleMatches || descMatches || venueMatches || dateMatches;
         });
-        return filteredEvents;
+        return filteredNews;
     }
 
-    function updateEventList(searchText) {
-        const filteredEvents = filterEvents(searchText, eventsData);
+    function updateNewsList(searchText) {
+        const filteredNews = filterNews(searchText, newsData);
 
-        // Reset the page to 1 when filtering results in no events
-        if (filteredEvents.length === 0) {
+        if (filteredNews.length === 0) {
             currentPage = 1;
         }
 
-        showEvents(currentPage, filteredEvents);
+        showNews(currentPage, filteredNews);
         updatePagination();
     }
 
-    // Input event listener for live search
-    $('#searchInput').on('input', function() {
+    $('#liveSearch').on('input', function() {
         const searchText = $(this).val();
-        updateEventList(searchText);
+        updateNewsList(searchText);
     });
 
-    // Initial load of events and pagination
-    showEvents(currentPage, eventsData);
+    showNews(currentPage, newsData);
     updatePagination();
 
-    // Previous button click event
     prevBtn.on('click', function() {
         if (currentPage > 1) {
             currentPage--;
-            showEvents(currentPage, eventsData);
+            showNews(currentPage, newsData);
             updatePagination();
         }
     });
 
-    // Next button click event
     nextBtn.on('click', function() {
-        if (currentPage < Math.ceil(eventsData.length / itemsPerPage)) {
+        if (currentPage < Math.ceil(newsData.length / itemsPerPage)) {
             currentPage++;
-            showEvents(currentPage, eventsData);
+            showNews(currentPage, newsData);
             updatePagination();
         }
     });
 });
-
-                       
 </script>
 
-</body>
 
-  
-                    <script>
-                        
-                       
-</script>
-        </div>
-    </div>
-</div>
-
-<!-- footer -->
-<?php include '../includes/footer.php'; ?>
-</body>
