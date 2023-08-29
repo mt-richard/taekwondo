@@ -2,7 +2,9 @@
 <?php include '../../includes/header.php'; ?>
 <div class="md:flex">
     <div>
-        <?php include '../../includes/leftbar.php'; ?>
+        <?php include '../../includes/leftbar.php';
+        include_once "./FileUploader.php"; ?>
+        ?>
     </div>
     <!-- event page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
@@ -24,7 +26,6 @@
                     <!-- Main modal -->
                         <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            include '../../config/dbconnection.php';
                             
                             $category = $_POST['category'];
                             $title = $_POST['title'];
@@ -50,17 +51,17 @@
                             $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
                             $uploadedExtension = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
 
+                           
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../' ;
+                                $targetDirectory =  '../../upload/' ;
                                 $targetPath = $targetDirectory . $photoName;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $eventData["photo"] = $targetPath;
                                     
-                                    $add = new dbconnection();
-                                    $result = $add->save("events", $eventData);
+                                    $result = $db->save("events", $eventData);
                                     
                                     if ($result['status'] == 'success') {
                                         $response = $result['message'];
@@ -90,7 +91,7 @@
                                 <div class="py-5 flex justify-center items-cenetr">
                                     <h2 class="text-2xl font-bold text-gray-600">Add Events Here</h2>
                                 </div>
-                                <form action="" method="POST" enctype="multipart/form-data">
+                                <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
                                         <?php
                                         //    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -163,9 +164,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                include '../../config/dbconnection.php';
-                                $data = new dbconnection();
-                                $all =  $data->getAll("events");
+                                $all =  $db->getAll("events");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -342,8 +341,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $del = new dbconnection();
-                        $userdel = $del->destroy('events', $id);
+                        $userdel = $db->destroy('events', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'events';</script>";
@@ -355,7 +353,7 @@
 
                     <script>
                         function openConfirm() {
-                            return confirm("Are you sure you want to Delete this Club?");
+                            return confirm("Are you sure you want to Delete this Event?");
                         }
                     </script> 
                             </div>

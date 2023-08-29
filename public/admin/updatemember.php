@@ -1,8 +1,5 @@
 
 <?php include '../../includes/header.php';
-
-include '../../config/dbconnection.php';
-$db = new dbconnection();
 ?>
 <div class="md:flex">
     <div>
@@ -39,7 +36,7 @@ $db = new dbconnection();
                                 if (!in_array($uploadedExtension, $allowedExtensions)) {
                                     $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                                 } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory = '../../';
+                                    $targetDirectory = '../../upload/';
                                     $targetPath = $targetDirectory . $photoName;
 
                                     if (move_uploaded_file($photoTmpName, $targetPath)) {

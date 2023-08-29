@@ -24,7 +24,6 @@
                     <!-- Main modal -->
                         <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            include '../../config/dbconnection.php';
                             
                             $name = $_POST['name'];
                             $master = $_POST['master'];
@@ -49,14 +48,13 @@
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../' ;
+                                $targetDirectory =  '../../upload/' ;
                                 $targetPath = $targetDirectory . $photoName;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $userData["photo"] = $targetPath;
                                     
-                                    $add = new dbconnection();
-                                    $result = $add->save("clubs", $userData);
+                                    $result = $db->save("clubs", $userData);
                                     
                                     if ($result['status'] == 'success') {
                                         $response = $result['message'];
@@ -137,10 +135,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                include '../../config/dbconnection.php';
-                                $data = new dbconnection();
-                                $all =  $data->getAll("clubs");
-
+                                $all =  $db->getAll("clubs");
                                 foreach ($all as $user) { ?>
                                    
                             <?php }
@@ -314,8 +309,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $del = new dbconnection();
-                        $userdel = $del->destroy('clubs', $id);
+                        $userdel = $db->destroy('clubs', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'clubs';</script>";

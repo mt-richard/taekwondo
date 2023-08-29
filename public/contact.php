@@ -47,26 +47,46 @@
         <div class=" rounded md:w-1/2 lg:w-2/3 xl:w-1/2 flex flex-col w-full">
            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d249.2185201974341!2d30.11352280814739!3d-1.9548479327345025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca701c8c9c5f5%3A0x113f758b9eabaa6f!2sRwanda%20Taekwondo%20Federation!5e0!3m2!1sen!2srw!4v1692746076954!5m2!1sen!2srw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
-        
+        <!-- add message -->
+                      <?php
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            
+                            $name = $_POST['name'];
+                            $email = $_POST['email'];
+                            $message = $_POST['message'];
+                            $userData = [
+                                "name" => $name,
+                                "email" => $email,
+                                "message" => $message,
+                            ];
+                            
+                            $result = $db->save("notifications", $userData);
+                            
+                          if ($result['status'] == 'success') {
+                            $response = $result['message'];
+                          }else{
+                            $response = "Failed to add Message" ;
+                          }
+                          $message = json_encode($response);
+                          echo "<script>alert('$message'); window.history.pushState({}, '', 'contact'); window.location.reload();</script>";
+
+                          }
+                      ?>
       
         <div class=" md:w-full lg:w-1/3 flex flex-col w-full px-2">
-        
-              <div class=" mb-4 px-3">
-              <form action="" method="POST">
-                    <input type="text" id="name" required name="name" placeholder="Name" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+        <form action="" method="POST">
+              <p class="text-center py-5 leading-8 text-lg font-light">Leave a message Please, Don't hesitate to ask any thing or to thank.</p>
+              
+                  <div class=" mb-4 px-3">
+                    <input type="text" required name="name" placeholder="Enter Name" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                   </div>
                   <div class=" mb-4 px-3">
-                    <input type="email" id="email" required name="email" placeholder="Email" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                    <input type="email" required name="email" placeholder="Enter Email" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                   </div>
                   <div class=" mb-4 px-3">
-                    <input type="number" id="number" required name="phone" placeholder="Phone Number" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                    <textarea required name="message"  placeholder="Enter the Message"  class="w-full h-44  py-2 px-6 bg-white outline-none border border-gray-300 rounded"></textarea>
                   </div>
                   <div class=" mb-4 px-3">
-                    
-                    <textarea id="message" placeholder="Message" required name="message" class="w-full h-44  py-2 px-6 bg-white outline-none border border-gray-300 rounded"></textarea>
-                  </div>
-                  <div class=" mb-4 px-3">
-                    
                   <button type="submit" name="send" class="text-white bg-blue-400  py-2 rounded font-[500] w-full">Send</button>
                   </div>
               </form>

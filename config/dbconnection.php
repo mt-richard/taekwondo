@@ -86,7 +86,7 @@ class dbconnection {
                 $stm->setFetchMode(PDO::FETCH_ASSOC);
                 return $stm->fetchAll();
             } catch (Exception $th) {
-                return $th.getMessage();
+                return $th->getMessage();
             }
         }
 
@@ -105,7 +105,7 @@ class dbconnection {
         // latest events
         function getlatestEvent(){
             try {
-                $stm = $this->db->prepare("SELECT * FROM events ORDER BY `createdat`  ASC LIMIT 1");
+                $stm = $this->db->prepare("SELECT * FROM events ORDER BY `event_date`  DESC LIMIT 1");
                 $stm->execute();
                 $event = $stm->fetch(PDO::FETCH_ASSOC);
                 return $event;
@@ -125,19 +125,17 @@ class dbconnection {
             }
         }
         
-        
-
-        // // latest news
-        // function getlatestNews(){
-        //     try {
-        //         $stm = $this->db->prepare("SELECT * FROM news ORDER BY `createdat`  DESC LIMIT 3");
-        //         $stm->execute();
-        //         $stm->setFetchMode(PDO::FETCH_ASSOC);
-        //         return $stm->fetchAll();
-        //     } catch (Exception $th) {
-        //         return $th->getMessage();
-        //     }
-        // }
+        // latest news
+        function getOverview(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM overview ORDER BY `createdat`  DESC LIMIT 3");
+                $stm->execute();
+                $result = $stm->fetch(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
 
         // Get user by ID 
         function getByid($table, $id) {
@@ -174,6 +172,19 @@ class dbconnection {
                 $new = $stm->fetch(PDO::FETCH_ASSOC); 
                 return $new;
             } catch (PDOException $th) {
+                return $th->getMessage();
+            }
+        }
+
+        // latest comment
+        function getComments($id){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM comments WHERE news_id = :id ORDER BY `createdat`  DESC LIMIT 2");
+                $stm->bindParam(':id', $id, PDO::PARAM_INT);
+                $stm->execute();
+                $stm->setFetchMode(PDO::FETCH_ASSOC);
+                return $stm->fetchAll();
+            } catch (Exception $th) {
                 return $th->getMessage();
             }
         }

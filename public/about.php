@@ -67,34 +67,53 @@
         <div class="flex gap-6 md:w-1/6 rounded justify-center">
             <img src="../assets/icons/icons8-member-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">200</h2>
-                <span class="capitalize ">members</span>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $athletes = $db->getOverview();
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $athletes['athletes']; ?></h2>
+                <?php } ?>
+                <span class="capitalize ">Athletes</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
             <img src="../assets/icons/icons8-knock-down-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">455</h2>
-                <span class="capitalize ">Athletes</span>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $clubs = $db->countTotal('clubs');
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $clubs; ?></h2>
+                <?php } ?>
+                <span class="capitalize ">Clubs</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
-            <img src="../assets/icons/icons8-winners-medal-80.png" alt="">
+            <img src="../assets/icons/icons8-member-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">432</h2>
-                <span class="capitalize ">awards</span>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $athletes = $db->getOverview();
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $athletes['awards']; ?></h2>
+                <?php } ?>
+                <span class="capitalize ">Awards</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
             <img src="../assets/icons/icons8-events-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">120</h2>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $events = $db->countTotal('events');
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $events; ?></h2>
+                <?php } ?>
                 <span class="capitalize ">events</span>
             </div>
         </div>
     </div>
 </div>
-
 <!-- committe -->
 
 <div>
@@ -106,13 +125,10 @@
 
         <?php
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
-            include '../config/dbconnection.php';
-            $db = new dbconnection();
             $members = $db->getAll('members');
             foreach($members as $member){
                 ?>
 
-            
             <div class="relative md:w-[400px] newcard" >
                 <div class="w-full">
                 <img src="<?php echo substr($member['photo'], 3); ?>" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
@@ -130,56 +146,28 @@
 </div>
 
 
-<!-- Nationa team -->
+<!-- National team -->
 <div>
     <div class="w-full flex flex-col justify-center items-center mb-5 py-10 bg-white ">
         <h2 class="text-4xl font-bold py-10">National Team</h2>
+        <p class="font-light py-5 w-3/5 leading-8 text-lg text-center text-gray-500 pb-10">National teams in taekwondo are the elite groups of athletes who represent their respective countries in international competitions. These teams consist of highly skilled taekwondo practitioners who have undergone rigorous training and have proven their abilities through national-level competitions. National teams often compete in events such as the Olympic Games, World Taekwondo Championships, and regional championships.</p>
     
 
         <div class="md:flex flex-wrap gap-10 justify-center items-center w-full">
-            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
-                <h2 class="text-xl font-semibold uppercase py-3">PARACOMANDO Team</h2>
-                <p class="font-light pb-2 border-b">this is our national PARACOMANDO Team</p>
-                <div>
-                    <ul class="px-10">
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                    </ul>
-                </div>
+            <div class="py-10 px-10 bg-gray-50 rounded-lg shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold border-b uppercase pb-5">PARA TAEKWONDO Team</h2>
+                <p class="font-light py-5 ">this is our national PARA TAEKWONDO Team</p>
+               
             </div>
 
-            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
-                <h2 class="text-xl font-semibold uppercase py-3">COMBAT Team</h2>
-                <p class="font-light pb-2 border-b">this is our national COMBAT Team</p>
-                <div>
-                    <ul class="px-10">
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                    </ul>
-                </div>
+            <div class="py-10 px-10 bg-gray-50 rounded-lg shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold border-b uppercase pb-5">COMBAT Team</h2>
+                <p class="font-light py-5 ">this is our national COMBAT Team</p>
             </div>
 
-            <div class="py-5 px-10 bg-white shadow-xl md:w-1/4">
-                <h2 class="text-xl font-semibold uppercase py-3">KATA Team</h2>
-                <p class="font-light pb-2 border-b">this is our national KATA Team</p>
-                <div>
-                    <ul class="px-10">
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                        <li class="py-1.5">Iran MUGABE</li>
-                    </ul>
-                </div>
+            <div class="py-10 px-10 bg-gray-50 rounded-lg shadow-xl md:w-1/4">
+                <h2 class="text-xl font-semibold border-b uppercase pb-5">KATA Team</h2>
+                <p class="font-light py-5 ">this is our national KATA Team</p>
             </div>
        
 

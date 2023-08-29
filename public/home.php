@@ -2,8 +2,6 @@
  include "../includes/navbar.php";
  $currentURL = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
  $eventsurl = dirname($currentURL) . "/events";
- include '../config/dbconnection.php';
- $db = new dbconnection();
 ?>
 
 <style>
@@ -238,7 +236,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 </div>
 
 <!-- hot news  -->
-
 <div>
     <div class="w-full lg:flex justify-center md:gap-10 px-10 py-10 md:py-20 bg-gray-100">
         <?php
@@ -273,11 +270,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="text-white flex flex-col justify-center">
                 <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                        $members = $db->countTotal('members');
+                        $athletes = $db->getOverview();
                         ?>
-                        <h2 class="font text-4xl"><?php echo $members; ?></h2>
+                        <h2 class="font text-4xl"><?php echo $athletes['athletes']; ?></h2>
                 <?php } ?>
-                <span class="capitalize ">members</span>
+                <span class="capitalize ">Athletes</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
@@ -285,18 +282,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <div class="text-white flex flex-col justify-center">
                 <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                        $athletes = $db->countTotal('athletes');
+                        $clubs = $db->countTotal('clubs');
                         ?>
-                        <h2 class="font text-4xl"><?php echo $athletes; ?></h2>
+                        <h2 class="font text-4xl"><?php echo $clubs; ?></h2>
                 <?php } ?>
-                <span class="capitalize ">Athletes</span>
+                <span class="capitalize ">Clubs</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
-            <img src="../assets/icons/icons8-winners-medal-80.png" alt="">
+            <img src="../assets/icons/icons8-member-80.png" alt="">
             <div class="text-white flex flex-col justify-center">
-                <h2 class="font text-4xl">432</h2>
-                <span class="capitalize ">awards</span>
+                <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                        $athletes = $db->getOverview();
+                        ?>
+                        <h2 class="font text-4xl"><?php echo $athletes['awards']; ?></h2>
+                <?php } ?>
+                <span class="capitalize ">Awards</span>
             </div>
         </div>
         <div class="flex gap-6 md:w-1/5 rounded justify-center mb-3">
@@ -344,7 +346,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 "><?php echo $new['title']; ?></h5>
                             
                             <p class="mb-3 font-normal text-gray-700 dark:text-gray-400"><?php echo substr($new['content'], 0, 80); ?> ...</p>
-                            <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['news_id']); ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['id']); ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                 Read more
                                 <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
                                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>

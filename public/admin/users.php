@@ -19,7 +19,6 @@
 
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            include '../../config/dbconnection.php';
                             
                             $username = $_POST['username'];
                             $email = $_POST['email'];
@@ -35,8 +34,7 @@
                                 "password" => $password
                             ];
                             
-                            $add = new dbconnection();
-                            $result = $add->save("users", $userData);
+                            $result = $db->save("users", $userData);
                             
 							if ($result['status'] == 'success') {
 								$response = $result['message'];
@@ -110,9 +108,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                include '../../config/dbconnection.php';
-                                $users = new dbconnection();
-                                $all =  $users->getAll("users");
+                                $all =  $db->getAll("users");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -287,10 +283,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $userid = $_GET['id'];
-                    
-                        // include '../../config/dbconnection.php';
-                        $del = new dbconnection();
-                        $userdel = $del->destroy('users', $userid);
+                        $userdel = $db->destroy('users', $userid);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'users';</script>";

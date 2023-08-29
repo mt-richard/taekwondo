@@ -1,8 +1,5 @@
 
 <?php include '../../includes/header.php';
-
-include '../../config/dbconnection.php';
-$db = new dbconnection();
 ?>
 <div class="md:flex">
     <div>
@@ -37,8 +34,7 @@ $db = new dbconnection();
                                 "password" => $password
                             ];
                             
-                            $add = new dbconnection();
-                            $result = $add->update("users", $userData, $userid);
+                            $result = $db->update("users", $userData, $userid);
                             
 							if ($result['status'] == 'success') {
 								$response = $result['message'];

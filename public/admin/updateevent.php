@@ -8,7 +8,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update News</h2>
+        <h2 class="text-xl py-10">Dashbord / Update Event</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -56,7 +56,7 @@
                                 }
                             }
 
-                            $result = $db->update("news", $userData, $id);
+                            $result = $db->update("events", $userData, $id);
                             if ($result['status'] == 'success') {
                                 $response = $result['message'];
                             } else {
@@ -74,7 +74,7 @@
                         <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                 $id = $_GET['editid'];
-                                $new = $db->getByid('news', $id);
+                                $new = $db->getByid('events', $id);
                                 // echo json_encode($user);
                                 if($new){
                         ?>
@@ -82,14 +82,14 @@
                    <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-4/5 rounded-lg shadow-lg ">
                             <div class="md:w-full pb-5">
                                 <div class="py-3 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Update  News Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Update  Event Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                 <div class=" mb-4 px-3">
                                         <input type="text" required name="title" placeholder="Enter News Title" value="<?php echo $new['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <textarea required name="content" placeholder="Enter News Description"  value="<?php echo $new['content']; ?>" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "> <?php echo $new['content']; ?></textarea>
+                                        <textarea required name="content" placeholder="Enter News Description"  value="<?php echo $new['event_desc']; ?>" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "> <?php echo $new['content']; ?></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <select required name="state" class="w-full py-2 px-6 bg-white outline-none border border-gray-300 rounded ">

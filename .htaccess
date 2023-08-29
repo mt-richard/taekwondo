@@ -1,17 +1,58 @@
-#for page not found
-ErrorDocument 404 /public/404.php
-ErrorDocument 403 /public/403.php
+# # #for page not found
+# # ErrorDocument 404 /public/404.php
+# # ErrorDocument 403 /public/403.php
 
-#Prevent directory listing in all  of my folder
+# # #Prevent directory listing in all  of my folder
 
+# # IndexIgnore *
+# # Options -Indexes
+# # #make pages rend without their extension
+# # RewriteEngine on
+# # Options +MultiViews
+# # RewriteCond %{SCRIPT_FILENAME} !-d
+# # RewriteCond %{SCRIPT_FILENAME} !-f
+# # RewriteRule ^home$ /public/home.php [NC,L]
+# # RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
+
+# # Options -Indexes
+
+
+
+# # Use home.php as the default page
+# DirectoryIndex public/home.php
+
+# # Error pages
+# ErrorDocument 404 /public/404.php
+# ErrorDocument 403 /public/403.php
+
+# # Prevent directory listing in all folders
+# Options -Indexes
+
+# # Rewrite rules
+# RewriteEngine On
+# RewriteBase /
+
+# # Handle URL rewriting
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
+
+# # Make sure to redirect /home to /public/home.php
+# RewriteRule ^home$ /public/home.php [NC,L]
+
+
+
+
+# prevent directory listing in all  of my folder
+Order allow,deny
+Allow from all
 IndexIgnore *
 Options -Indexes
-#make pages rend without their extension
-RewriteEngine on
-Options +MultiViews
-RewriteCond %{SCRIPT_FILENAME} !-d
-RewriteCond %{SCRIPT_FILENAME} !-f
-RewriteRule ^home$ /public/home.php [NC,L]
-RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
 
-Options -Indexes
+# turn on url rewriting
+RewriteEngine on
+
+# remove the need for .php extention
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php

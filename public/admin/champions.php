@@ -51,14 +51,13 @@
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../' ;
+                                $targetDirectory =  '../../upload/' ;
                                 $targetPath = $targetDirectory . $photoName;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $userData["photo"] = $targetPath;
                                     
-                                    $add = new dbconnection();
-                                    $result = $add->save("champions", $userData);
+                                    $result = $db->save("champions", $userData);
                                     
                                     if ($result['status'] == 'success') {
                                         $response = $result['message'];
@@ -145,9 +144,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                include '../../config/dbconnection.php';
-                                $data = new dbconnection();
-                                $all =  $data->getAll("champions");
+                                $all =  $db->getAll("champions");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -325,8 +322,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $del = new dbconnection();
-                        $userdel = $del->destroy('champions', $id);
+                        $userdel = $db->destroy('champions', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'champions';</script>";

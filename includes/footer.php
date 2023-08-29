@@ -4,11 +4,14 @@
 <div class="w-full">
     <div class=" md:flex  justify-center gap-5 bg-gray-950 px-5 md:px-10 lg:px-40 xl:px-60 py-10 w-full pt-20">
         <div class="md:w-1/3">
-            <h3 class="text-white font-bold text-3xl pb-5 ">Taekwondo Federation</h3>
+            <div class="flex justify-center gap-5 py-5">
+                <img src="../assets/images/RTF-Logo-Circle.png" alt="" class="w-24">
+                <h3 class="text-white font-bold text-3xl flex justify-center items-center">Taekwondo Federation</h3>
+            </div>
+           
             
                 <p class="text-gray-400 font-light leading-2 ">Make Rwanda a leading and influencing country in Africa recognized as a reference and innovative Nation by peers within the international sport Movement. World Taekwondo Headquarters</p>
                 <p class="text-gray-400 font-light leading-2 ">Booyoung Taepyung Building 10th Floor,</p>
-                <p class="text-gray-400 font-light leading-2 ">55, Sejong-daero (Taepyung-ro 2ga), Jung-gu,</p>
                 <p class="text-gray-400 font-light leading-2 pb-4">Seoul, Republic of Korea, 04513</p>
                 
                 <p class="text-gray-400 font-light leading-2 ">Tel : +250 788 566 250</p>

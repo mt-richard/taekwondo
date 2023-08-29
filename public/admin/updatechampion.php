@@ -16,7 +16,6 @@ $db = new dbconnection();
 
             <div class="container w-full mx-auto px-2">
 
-            
                     <!-- modal -->
 
                     <?php
@@ -49,7 +48,7 @@ $db = new dbconnection();
                                 if (!in_array($uploadedExtension, $allowedExtensions)) {
                                     $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                                 } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory = '../../';
+                                    $targetDirectory = '../../upload/';
                                     $targetPath = $targetDirectory . $photoName;
 
                                     if (move_uploaded_file($photoTmpName, $targetPath)) {

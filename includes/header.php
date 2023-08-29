@@ -1,16 +1,15 @@
 <?php
-session_start();
-function isUserLoggedIn() {
-    return isset($_SESSION['username']);
-}
+include '../../config/dbconnection.php';
+$db = new dbconnection();
 
-if (isUserLoggedIn()) {
-  echo "User logged in";
-} else {
- echo "User not logged in";
-}
+    session_start();
+    function isUserLoggedIn() {
+        return isset($_SESSION['username']);
+    }
 
-?>
+    if (isUserLoggedIn()) {
+ ?>
+
 
 
 <!DOCTYPE html>
@@ -57,3 +56,11 @@ if (isUserLoggedIn()) {
       <i class="fas fa-user-circle text-white text-2xl"></i>
     </div>
   </nav>
+
+
+  <?php 
+  } else {
+    header('location: index.php');
+  }
+
+?>

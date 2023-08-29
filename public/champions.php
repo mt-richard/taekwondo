@@ -15,8 +15,6 @@
 
         <?php
         if($_SERVER['REQUEST_METHOD'] == 'GET'){
-            include '../config/dbconnection.php';
-            $db = new dbconnection();
             $champions = $db->getAll('champions');
             foreach($champions as $champion){
                 ?>

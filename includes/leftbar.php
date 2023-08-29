@@ -12,6 +12,9 @@
  $championsUrl = dirname($currentURL) . "/champions";
  $membersUrl = dirname($currentURL) . "/members";
  $logoutUrl = dirname($currentURL) . "/logout";
+ $overviewUrl = dirname($currentURL) . "/overview";
+ $notificationUrl = dirname($currentURL) . "/notifications";
+ 
 
  $encodedURL = urlencode($currentURL);
 
@@ -28,6 +31,16 @@
                 <div class="flex items-center">
                   <i class="fas fa-tachometer-alt mr-2"></i>
                   <span>Dashboard</span>
+                </div>
+              </div>
+          </li>
+        </a>
+        <a href="<?php echo $overviewUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/overview.php' || $currentURL == 'http://localhost/taekwondo/public/admin/overview') echo "text-blue-400"; ?>">
+          <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-eye mr-2"></i>
+                  <span>Overview</span>
                 </div>
               </div>
           </li>
@@ -106,11 +119,21 @@
           </li>
         </a>
 
+        <a href="<?php echo $notificationUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/notifications.php' || $currentURL == 'http://localhost/taekwondo/public/admin/notifications') echo "text-blue-400"; ?>">
+          <li class="opcion-con-desplegable">
+            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+              <div class="flex items-center">
+                <i class="fas fa-bell mr-2"></i>
+                <span>Notifications</span>
+              </div>
+            </div>
+          </li>
+        </a>
         <a href="<?php echo $logoutUrl;?>" >
           <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
-                <i class="fas fa-newspaper mr-2"></i>
+                <i class="fas fa-sign-out-alt mr-2"></i>
                 <span>Logout</span>
               </div>
             </div>

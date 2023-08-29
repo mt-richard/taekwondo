@@ -4,124 +4,101 @@
     <div>
         <?php include '../../includes/leftbar.php'; ?>
     </div>
-    <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-5">Dashbord / Members</h2>
-
+        <h2 class="text-xl py-10">Dashbord / Overview</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
-
             <div class="container w-full mx-auto px-2">
 
                 <!-- add user -->
                     <div class="py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
-                            Add Member
+                            Update Overview
                         </button>
                     </div>
-                    <!--  modal -->
-                        <?php
-                            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                                
-                                $name = $_POST['name'];
-                                $post = $_POST['post'];
-                                $photo = $_FILES['photo'];
-                                
-                                $userData = [
-                                    "name" => $name,
-                                    "post" => $post,
-                                ];
+                    <!-- modal -->
 
-                                $photoName = $photo['name'];
-                                $photoTmpName = $photo['tmp_name'];
-                                $photoError = $photo['error'];
+                    <?php
+                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                            
+                            $athletes = $_POST['athletes'];
+                            $awards = $_POST['awards'];
+                            
+                            $userData = [
+                                "athletes" => $athletes,
+                                "awards" => $awards,
+                            ];
+                            
+                            $result = $db->update("overview", $userData, 1);
+                            
+							if ($result['status'] == 'success') {
+								$response = $result['message'];
+							}else{
+								$response = "Failed to update status. Please aviod Duplicate" ;
+							}
+							$message = json_encode($response);
+							echo "<script>alert('$message'); window.history.pushState({}, '', 'overview'); window.location.reload();</script>";
 
-                                $allowedExtensions = array('jpg', 'jpeg', 'png', 'gif');
-                                $uploadedExtension = strtolower(pathinfo($photoName, PATHINFO_EXTENSION));
-
-                                if (!in_array($uploadedExtension, $allowedExtensions)) {
-                                    $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
-                                } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory =  '../../upload/' ;
-                                    $targetPath = $targetDirectory . $photoName;
-                                    
-                                    if (move_uploaded_file($photoTmpName, $targetPath)) {
-                                        $userData["photo"] = $targetPath;
-                                        
-                                        $result = $db->save("members", $userData);
-                                        
-                                        if ($result['status'] == 'success') {
-                                            $response = $result['message'];
-                                        } else {
-                                            $response = "Failed to add member.";
-                                        }
-                                    } else {
-                                $response = "Failed to move uploaded file. Error: " . $_FILES['photo']['error'];
-                            }
-                                } else {
-                                    $response = "Error uploading the file.";
-                                }
-
-                                $message = json_encode($response);
-                                echo "<script>alert('$message'); window.history.pushState({}, '', 'members'); window.location.reload();</script>";
-                            }
+							}
                         ?>
 
 
-
                     <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
+                    <?php
+                            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                                $user = $db->getByid('overview', 1);
+                                // echo json_encode($user);
+                                if($user){
+                        ?>
+                   
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="w-full justify-center">
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
                                 </div>
+                               
                                 <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Add a Member Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Update Status Here</h2>
                                 </div>
-                                <form action="" method="POST" enctype="multipart/form-data">
+                                <form action="" method="POST">
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="name" placeholder="Enter userName" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="number" required name="athletes" placeholder="Enter Number of Athlets"  value="<?php echo $user['athletes']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="post" placeholder="Enter Email address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="file" id="name"  name="photo" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="number" required name="awards" placeholder="Enter Number of Awards" value="<?php echo $user['awards']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
-                                    
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add member</button>
+                                        <button type="submit" name="updates" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update user</button>
                                     </div>
                                     
                                 </form>
+                                <?php }} ?>
                             </div>
                         </div>
                     </section>
 
                 <!-- end add user -->
-		
+
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                     <div class="container w-full  mx-auto px-2">
 
                     <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
-                    <div class="flex justify-center items-center py-2">
+                    <div class="flex justify-center items-center py-5">
                         <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
                     </div>
 
                     <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                         <thead class="text-left px-5">
                             <tr class="bg-gray-100">
-                                <th class="py-2 px-5 border" data-priority="1">#</th>
-                                <th class="py-2 px-5 border" data-priority="2">Name</th>
-                                <th class="py-2 px-5 border" data-priority="3">Post</th>
-                                <th class="py-2 px-5 border" data-priority="5">Created At</th>
-                                <th class="py-2 px-5 border" data-priority="6">Action</th>
+                                <th class="py-2 px-5 border" data-priority="1">Athletes</th>
+                                <th class="py-2 px-5 border" data-priority="2">Awards</th>
+                                <th class="py-2 px-5 border" data-priority="5">Updated At</th>
                             </tr>
                         </thead>
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                $all =  $db->getAll("members");
+                                $all =  $db->getAll("overview");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -170,8 +147,8 @@
                             } else {
                                 filteredData = data.filter(item => {
                                     return (
-                                        item.name.toLowerCase().includes(query) ||
-                                        item.post.toLowerCase().includes(query) ||
+                                        item.athletes.toLowerCase().includes(query) ||
+                                        item.awards.toLowerCase().includes(query) ||
                                         item.createdat.toLowerCase().includes(query)
                                     );
                                 });
@@ -189,22 +166,15 @@
                             tbody.innerHTML = '';
 
                             for (let i = start; i < end && i < filteredData.length; i++) {
-                                           const row = document.createElement('tr');
-                                           row.className = 'table-row';
-                                           row.innerHTML = `
-                                           <td class="px-5 py-1 border-b"><img src="${filteredData[i].photo}" class="w-8 h-8 rounded-full object-cover"></td>
-                                           <td class="px-5 py-1 border-b">${filteredData[i].name}</td>
-                                           <td class="px-5 py-1 border-b">${filteredData[i].post}</td>
-                                           <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                           <td class="px-5 py-1 border-b">
-                                               <div class="flex gap-10">
-                                                   <a href="updatemember?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
-                                                   <a onclick="return openConfirm()" href="members?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
-                                               </div>
-                                           </td>
-                                       `;
-                                           tbody.appendChild(row);
-                                       }
+                                const row = document.createElement('tr');
+                                row.className = 'table-row';
+                                row.innerHTML = `
+                                <td class="px-5 py-1 border-b">${filteredData[i].athletes}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].awards}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].updatedat}</td>
+                            `;
+                                tbody.appendChild(row);
+                            }
                         }
                             function updatePageInfo() {
                                 pageInfo.textContent = `${currentPage}`;
@@ -292,44 +262,50 @@
                  <!-- delete row -->
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
-                        $id = $_GET['id'];
-                        $userdel = $db->destroy('members', $id);
+                        $userid = $_GET['id'];
+                        $userdel = $db->destroy('users', $userid);
 
                         if ($userdel) {
-                            echo "<script>alert('Record deleted successfully'); window.location.href = 'members';</script>";
+                            echo "<script>alert('Record deleted successfully'); window.location.href = 'users';</script>";
                         } else {
-                            echo "<script>alert('Failed to delete record'); window.location.href = 'members';</script>";
+                            echo "<script>alert('Failed to delete record'); window.location.href = 'users';</script>";
                         }
                     }
                     ?>
 
                     <script>
                         function openConfirm() {
-                            return confirm("Are you sure you want to Delete this member?");
+                            return confirm("Are you sure you want to Delete this user?");
                         }
-                    </script>         
+                    </script>
 
+
+
+	
+
+            </div>
         </div>
-        </div>
-    </main> 
-    
-    
-                        <script>
+    </main>
 
-                            const openModalBtn = document.getElementById('openModalBtn');
-                                const closeModalBtn = document.getElementById('closeModalBtn');
-                                const modal = document.getElementById('overlay');
+<script>
 
-                                function openModal() {
-                                    modal.style.display = 'block';
-                                }
+		    const openModalBtn = document.getElementById('openModalBtn');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modal = document.getElementById('overlay');
 
-                                function closeModal() {
-                                    modal.style.display = 'none';
-                                }
+            function openModal() {
+                modal.style.display = 'block';
+            }
 
-                                openModalBtn.addEventListener('click', openModal);
-                                closeModalBtn.addEventListener('click', closeModal);
+            function closeModal() {
+                modal.style.display = 'none';
+            }
+            
+
+            openModalBtn.addEventListener('click', openModal);
+            closeModalBtn.addEventListener('click', closeModal);
+
+ 
 
 
-                        </script>
+	</script>

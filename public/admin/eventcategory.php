@@ -21,15 +21,13 @@
                     <!--  modal -->
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            include '../../config/dbconnection.php';
                             
                             $eventname = $_POST['eventname'];
                             $userData = [
                                 "eventname" => $eventname,
                             ];
                             
-                            $add = new dbconnection();
-                            $result = $add->save("eventcategory", $userData);
+                            $result = $db->save("eventcategory", $userData);
                             
 							if ($result['status'] == 'success') {
 								$response = $result['message'];
@@ -87,9 +85,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                include '../../config/dbconnection.php';
-                                $cats = new dbconnection();
-                                $all =  $cats->getAll("eventcategory");
+                                $all =  $db->getAll("eventcategory");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -257,8 +253,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $del = new dbconnection();
-                        $userdel = $del->destroy('eventcategory', $id);
+                        $userdel = $db->destroy('eventcategory', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'eventcategory';</script>";
