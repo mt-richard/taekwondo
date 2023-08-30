@@ -60,7 +60,7 @@ $db = new dbconnection();
 
   <?php 
   } else {
-    header('location: index.php');
+    header('location: /public/admin/index.php');
   }
 
 ?>

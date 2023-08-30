@@ -1,32 +1,58 @@
+# # #for page not found
+# # ErrorDocument 404 /public/404.php
+# # ErrorDocument 403 /public/403.php
+
+# # #Prevent directory listing in all  of my folder
+
+# # IndexIgnore *
+# # Options -Indexes
+# # #make pages rend without their extension
+# # RewriteEngine on
+# # Options +MultiViews
+# # RewriteCond %{SCRIPT_FILENAME} !-d
+# # RewriteCond %{SCRIPT_FILENAME} !-f
+# # RewriteRule ^home$ /public/home.php [NC,L]
+# # RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
+
+# # Options -Indexes
+
+
+
 # Use home.php as the default page
-DirectoryIndex /public/home.php
+# DirectoryIndex public/home.php
 
-# Error pages
-ErrorDocument 404 /public/404.php
-ErrorDocument 403 /public/403.php
+# # Error pages
+# ErrorDocument 404 /public/404.php
+# ErrorDocument 403 /public/403.php
 
-# Prevent directory listing in all folders
+# # Prevent directory listing in all folders
+# Options -Indexes
+
+# # Rewrite rules
+# RewriteEngine On
+# RewriteBase /
+
+# # Handle URL rewriting
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteRule ^institution/([0-9]+)$ display.php?id=$1 [NC,L]
+
+# # Make sure to redirect /home to /public/home.php
+# RewriteRule ^home$ /public/home.php [NC,L]
+
+
+
+
+# prevent directory listing in all  of my folder
+Order allow,deny
+Allow from all
+IndexIgnore *
 Options -Indexes
 
-# Turn on URL rewriting
-RewriteEngine On
+# turn on url rewriting
+RewriteEngine on
 
-# Rewrite URLs to remove .php extension for public pages
+# remove the need for .php extention
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^(.*)$ /public/$1.php [L]
-
-# Rewrite URLs for friendly URLs for public pages
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(.*)$ /public/$1.php [L]
-
-# Rewrite URLs for admin pages
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^admin/(.*)$ /public/admin/$1.php [L]
-
-# Rewrite URLs for friendly URLs for admin pages
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^admin/(.*)$ /public/admin/$1.php [L]
+RewriteRule ^(.*)$ $1.php
