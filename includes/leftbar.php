@@ -22,7 +22,7 @@
 
 <body class="bg-gray-100">
 
-  <aside class="bg-gray-800 text-white md:w-80 md:min-h-screen w-full  p-4">
+  <aside class="bg-gray-800 text-white md:w-80 md:min-h-screen h-full w-full  p-4">
     <nav>
       <ul class="space-y-2">
         <a href="<?php echo $dashboardUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/dashboard.php' || $currentURL == 'http://localhost/taekwondo/public/admin/dashboard') echo "text-blue-400"; ?>">
@@ -73,6 +73,17 @@
                 <div class="flex items-center">
                   <i class="fas fa-users mr-2"></i>
                   <span>Committe</span>
+                </div>
+              </div>
+            </li>
+          </a>
+
+          <a href="<?php echo $championsUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/champions.php' || $currentURL == 'http://localhost/taekwondo/public/admin/champions') echo "text-blue-400"; ?>">
+            <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-trophy mr-2"></i>
+                  <span>Champions</span>
                 </div>
               </div>
             </li>

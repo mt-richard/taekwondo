@@ -119,6 +119,7 @@
 <div>
     <div class="w-full flex flex-col justify-center items-center mb-5 py-10 bg-gray-100 ">
         <h2 class="text-4xl font-bold py-10">Our Committe</h2>
+        <p class="font-light py-5 w-3/5 leading-8 text-lg text-center text-gray-500 pb-10">At RTF we believe in the power of collaboration and dedicated efforts. Our committees play a pivotal role in driving various initiatives, projects, and activities that shape our vision and goals. Each committee is composed of passionate individuals who bring unique skills and perspectives to the table, working together to achieve a common objective. Explore the diverse range of committees below, and get to know the incredible teams that are driving positive change and innovation within our community.</p>
     
 
         <div class="md:flex flex-wrap gap-5 justify-center items-center w-full">

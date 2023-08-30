@@ -32,6 +32,7 @@
                             $newData = [
                                 "title" => $title,
                                 "content" => $content,
+                                "state" => $state,
                             ];
 
                             $photoName = $photo['name'];
@@ -44,8 +45,9 @@
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF and WEBP.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../upload/' ;
-                                $targetPath = $targetDirectory . $photoName;
+                                $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $newData["photo"] = $targetPath;

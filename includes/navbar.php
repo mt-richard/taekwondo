@@ -25,8 +25,8 @@
         <img src="../assets/images/RTF-Logo.png" alt="" class="w-52 ">
        <!-- <h1 class="md:w-60 w-60 text-white font-black text-2xl py-2"> RTFederation  </h1> -->
 
-       <div class="md:flex justify-center ">
-        <img src="../assets/icons/icons8-menu-50.png" alt="menu" class="w-8 hidden md:hidden  ">
+       <div class="md:flex ">
+          <button onclick="openSide()" id="opensidebar"><img src="../assets/icons/icons8-menu-50.png" alt="menu" class="w-8  md:hidden  mt-5"></button>
        </div>
       </div>
 
@@ -68,3 +68,64 @@
     </div>
   </div>
 </navbar>
+
+
+<div id="sidebar" class="top-o left-0 fixed hidden z-1 absolute min-h-screen bg-gray-950 w-full opacity-95">
+
+      <div class="w-2/3 z-20 min-h-screen bg-white opacity-100 py-20">
+          
+
+          <ul class="">
+               
+              <a href="<?php echo $homeUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-4 px-5">home</li></a>
+              <a href="<?php echo $aboutUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-4 px-5">about us</li></a>
+              <a href="#" class="w-full text-gray-900 capitalize  "><li class=" w-full border-b py-4 px-5 "> <span class="flex justify-between ">media<img src="../assets/icons/icons8-expand-arrow-24.png"></span>
+
+                <ul class=" text-gray-700 capitalize w-full py-2 ">
+                    <a href="<?php echo $eventsUrl;?>" ><li class="py-2 px-10 hover:text-white hover:bg-blue-400">Events</li></a>
+                    <a href="<?php echo $clubsUrl;?>" ><li class="py-2 px-10 hover:text-white hover:bg-blue-400">Clubs</li></a>
+                    <a href="<?php echo $galleryUrl;?>" ><li class="py-2 px-10 hover:text-white hover:bg-blue-400">Gallery</li></a>
+                    <a href="<?php echo $championUrl;?>" ><li class="py-2 px-10 hover:text-white hover:bg-blue-400">our champions</li></a>
+                </ul>
+              </li></a>
+              <a href="<?php echo $newsUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-4 px-5">news</li></a>
+              <a href="<?php echo $contactUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-4 px-5">contact</li></a>
+            
+          </ul>
+
+      </div>
+  
+</div>
+
+<script>
+  let side = document.getElementById('sidebar');
+  let openside = document.getElementById('opensidebar');
+  let closeside = document.getElementById('closesidebar');
+
+  function openSide() {
+  var body = document.body;
+
+  side.style.display = "block";
+  body.style.overflow = "hidden";
+
+  var mediaQuery = window.matchMedia("(max-width: 769px)");
+
+  function handleScreenWidthChange(mediaQuery) {
+    if (!mediaQuery.matches) {
+      closeSide();
+    }
+  }
+
+  mediaQuery.addListener(handleScreenWidthChange);
+
+  handleScreenWidthChange(mediaQuery);
+}
+
+function closeSide() {
+  var body = document.body;
+
+  side.style.display = "none";
+  body.style.overflow = "auto";
+}
+
+</script>

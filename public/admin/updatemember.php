@@ -36,8 +36,9 @@
                                 if (!in_array($uploadedExtension, $allowedExtensions)) {
                                     $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                                 } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory = '../../upload/';
-                                    $targetPath = $targetDirectory . $photoName;
+                                    $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
 
                                     if (move_uploaded_file($photoTmpName, $targetPath)) {
                                         $userData["photo"] = $targetPath;
@@ -88,7 +89,7 @@
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add member</button>
+                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update member</button>
                                     </div>
                                     
                                 </form>

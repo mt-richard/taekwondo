@@ -59,7 +59,7 @@ $(document).ready(function() {
 
     const newsData = <?php echo json_encode($news)?>;
 
-    const itemsPerPage = 3;
+    const itemsPerPage = 10;
     let currentPage = 1;
 
     function showNews(page, data) {
@@ -85,8 +85,8 @@ $(document).ready(function() {
         <div class=" w-full flex flex-col justify-center items-center mb-5">
                 <div class="w-full md:w-full lg:w-4/5 xl:w-4/5 bg-blue-400">
                     <div class="md:flex gap-6 px-5 py-5 md:px-10">
-                        <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
-                            <img src="${newsItem.photo.substring(3)}" alt="" class="rounded w-full h-60 md:h-96 object-cover">
+                        <div class="image-container md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
+                            <img src="${newsItem.photo.substring(3)}" alt="" class=" rounded w-full h-60 md:h-96 object-cover">
                         </div>
                         <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center">
                             <div class="flex gap-2 md:gap-5">
@@ -112,8 +112,9 @@ $(document).ready(function() {
                                 <h2 class="text-white font-bold py-3 text-4xl">${newsItem.title}</h2>
                                 <p class="text-white font-light">${newsItem.event_desc}</p>
                             </div>
-                            <div class="pt-5">
+                            <div class="pt-5 flex justify-between ">
                                 <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                                <h2 class="text-gray-800 leading-8 font-bold flex justify-center px-5 py-2 border-2 border-yellow-300"><span class="font-light">Venue Details :</span> ${newsItem.venue}</h2>
                             </div>
                         </div>
                     </div>

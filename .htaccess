@@ -18,7 +18,7 @@
 
 
 
-# # Use home.php as the default page
+# Use home.php as the default page
 # DirectoryIndex public/home.php
 
 # # Error pages

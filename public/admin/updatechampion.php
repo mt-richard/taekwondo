@@ -1,8 +1,5 @@
 
 <?php include '../../includes/header.php';
-
-include '../../config/dbconnection.php';
-$db = new dbconnection();
 ?>
 <div class="md:flex">
     <div>
@@ -48,8 +45,9 @@ $db = new dbconnection();
                                 if (!in_array($uploadedExtension, $allowedExtensions)) {
                                     $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                                 } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory = '../../upload/';
-                                    $targetPath = $targetDirectory . $photoName;
+                                    $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
 
                                     if (move_uploaded_file($photoTmpName, $targetPath)) {
                                         $userData["photo"] = $targetPath;
@@ -96,7 +94,7 @@ $db = new dbconnection();
                                         <input type="text" required name="title" placeholder="Enter Champion title" value="<?php echo $user['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="period" placeholder="Enter Period" value="<?php echo $user['period']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="number" required name="period" placeholder="Enter Period" value="<?php echo $user['period']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="text" required name="award" placeholder="Enter Award gained" value="<?php echo $user['award']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -110,7 +108,7 @@ $db = new dbconnection();
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add member</button>
+                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Champion</button>
                                     </div>
                                     
                                 </form>

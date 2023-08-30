@@ -16,6 +16,7 @@
     .textcontent{
          white-space: pre-line;
     }
+   
 </style>
 
 <body>
@@ -39,10 +40,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 ?>
 <div class="w-full ">
-    <div id="myDiv" class=" w-full mx-auto md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col justify-center items-center">
+    <div id="myDiv" class=" w-full mx-auto py-20 md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col md:justify-center items-center">
        
-        <div class="md:full lg:w-4/5 xl:w-3/5 md:flex justify-center items-center md:gap-20">
-            <div class="slideshow-text md:w-2/3  px-5 py-0 md:py-10 " >
+        <div class="md:full lg:w-4/5 xl:w-3/5 md:flex md:justify-center items-center md:gap-20">
+            <div class="slideshow-text md:w-2/3  px-5 py-0 md:py-10 mb-5  " >
             </div>
             <div class="relative w-full md:w-1/3 md:px-2 ">
                 <?php
@@ -53,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     <div class="absolute  z-1 w-full rounded-t ">
                         <h1 class="text-gray-100 py-3 font-bold uppercase text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
                         <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[15px]"><?php echo $champion['title'];?></span></h1>
-                        <img src="<?php echo substr($champion['photo'], 3); ?>" alt="" class="object-cover w-full  lg:h-[400px] h-80 md:h-96 rounded-t-xl">
+                        <img src="<?php echo substr($champion['photo'], 3); ?>" alt=""  class=" object-cover w-full  lg:h-[400px] h-100 md:h-96 rounded-t-xl">
                     </div>
 
                <?php  }  } ?>
@@ -191,8 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <h2 class="text-white font-bold py-3 text-4xl"><?= $event['title']; ?></h2>
                                                 <p class="text-white font-light"><?= $event['event_desc']; ?></p>
                                             </div>
-                                            <div class="pt-5">
+                                            <div class="pt-5 flex justify-between">
                                                 <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
+                                                <h2 class="text-gray-800 leading-8 font-bold flex justify-center px-5 py-2 border-2 border-yellow-300"><span class="font-light">Venue Details :</span> <?php echo $event['venue']; ?></h2>
                                             </div>
                                         </div>
                                     </div>

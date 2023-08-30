@@ -51,8 +51,9 @@
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../upload/' ;
-                                $targetPath = $targetDirectory . $photoName;
+                                $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $userData["photo"] = $targetPath;
@@ -96,7 +97,7 @@
                                         <input type="text" required name="title" placeholder="Enter Champion title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" required name="period" placeholder="Enter Period" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <input type="number" required name="period" placeholder="Enter Period" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="text" required name="award" placeholder="Enter Award gained" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">

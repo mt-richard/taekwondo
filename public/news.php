@@ -70,7 +70,7 @@ $(document).ready(function() {
 
     const newsData = <?php echo json_encode($news)?>;
 
-    const itemsPerPage = 3;
+    const itemsPerPage = 12;
     let currentPage = 1;
 
     function showNews(page, data) {

@@ -30,8 +30,7 @@
                             $category = $_POST['category'];
                             $title = $_POST['title'];
                             $desc = $_POST['desc'];
-                            $date = $_POST['date'];
-                            $starttime = $_POST['starttime'];
+                            $date = $_POST['event_date'];
                             $venue = $_POST['venue'];
                             $photo = $_FILES['photo'];
                             
@@ -40,7 +39,6 @@
                                 "title" => $title,
                                 "event_desc" => $desc,
                                 "event_date" => $date,
-                                "start_time" => $starttime,
                                 "venue" => $venue,
                             ];
 
@@ -55,8 +53,9 @@
                             if (!in_array($uploadedExtension, $allowedExtensions)) {
                                 $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                             } elseif ($photoError === UPLOAD_ERR_OK) {
-                                $targetDirectory =  '../../upload/' ;
-                                $targetPath = $targetDirectory . $photoName;
+                                $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
                                 
                                 if (move_uploaded_file($photoTmpName, $targetPath)) {
                                     $eventData["photo"] = $targetPath;
@@ -93,20 +92,21 @@
                                 </div>
                                 <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
-                                        <?php
-                                        //    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                        //     include '../../config/dbconnection.php';
-                                        //     $cats = new dbconnection();
-                                        //     $alls =  $db->getAll("events");
-                                        //     echo json_encode($alls);
-                                        //     } 
-                                            ?>
+                                        
+                                          
                                         <select required name="category" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                             <option>Choose the Event Category</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
-                                        </select>
+                                            <?php
+                                                if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                                                    $alls =  $db->getAll("eventcategory");
+                                                    // echo json_encode($alls);
+                                                    foreach ($alls as $cat){
+                                                        ?>
+                                            
+                                            <option value="<?php echo $cat['eventname'];?>"><?php echo $cat['eventname'];?></option>
+                                            <?php }} ?>
+                                        </select> 
+                                       
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -114,11 +114,9 @@
                                     <div class=" mb-4 px-3">
                                         <textarea required name="desc" placeholder="Enter Event Description" class="w-full h-40 py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
                                     </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="date" required name="date" placeholder="Enter Event date " class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="time" required name="starttime" placeholder="Enter Starting Time" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                    <div class="mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Date :</label>
+                                        <input type="datetime-local" required name="event_date" placeholder="Enter Event Date" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
                                     <div class=" mb-4 px-3">
                                         <input type="text" required name="venue" placeholder="Enter Venue" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
@@ -155,7 +153,6 @@
                                 <th class="py-2 px-5 border" data-priority="1">Title</th>
                                 <th class="py-2 px-5 border" data-priority="1">Description</th>
                                 <th class="py-2 px-5 border" data-priority="1">Date</th>
-                                <th class="py-2 px-5 border" data-priority="2">Start Time</th>
                                 <th class="py-2 px-5 border" data-priority="2">Venue</th>
                                 <th class="py-2 px-5 border" data-priority="5">CreatedAt</th>
                                 <th class="py-2 px-5 border" data-priority="6">Actions</th>
@@ -240,7 +237,6 @@
                                     <td class="px-5 py-1 border-b">${filteredData[i].title}</td>
                                     <td class="px-5 py-1 border-b">${filteredData[i].event_desc.length > 50 ? filteredData[i].event_desc.substring(0, 40) + '...' : filteredData[i].event_desc}</td>
                                     <td class="px-5 py-1 border-b">${filteredData[i].event_date}</td>
-                                    <td class="px-5 py-1 border-b">${filteredData[i].start_time}</td>
                                     <td class="px-5 py-1 border-b">${filteredData[i].venue}</td>
                                     <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
                                     <td class="px-5 py-1 border-b">
