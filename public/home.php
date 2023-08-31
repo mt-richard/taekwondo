@@ -78,8 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         slideshow.style.backgroundSize = 'cover';
       slideshow.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${slides[currentIndex].image})`;
       textContainer.innerHTML = `
-        <h1 class="text-left drop-shadow-xl text-white font-black text-5xl pb-5">${slides[currentIndex].title}</h1>
-        <p class="text-left text-white drop-shadow font-light md:text-lg xl:text-xl leading-8 py-5">${slides[currentIndex].content} ...</p>
+        <h1 class="text-left drop-shadow-xl text-white font-black text-2xl md:text-5xl pb-5">${slides[currentIndex].title}</h1>
+        <p class="text-left text-white drop-shadow font-light text-sm md:text-lg xl:text-xl leading-6 md:leading-8 py-5">${slides[currentIndex].content} ...</p>
         <a href="<?php echo $contactUrl; ?>" type="button" class="bg-blue-500 px-6 rounded-3xl py-3 uppercase font-semibold text-white border-none outline-none hover:bg-white hover:text-blue-600 hover:shadow">get in touch</a>
 
       `;
@@ -94,8 +94,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 <!-- mission an dvission -->
 
 <div>
-    <div class=" md:grid grid-cols-2 lg:grid-cols-3 xl:flex justify-center md:gap-10 lg:gap-3 md:py-20 px-10">
-        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl">
+    <div class=" md:grid grid-cols-2 lg:grid-cols-3 xl:flex justify-center md:gap-10 lg:gap-3 md:py-20 px-5">
+        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl mb-2">
             <div class="flex justify-between">
                 <span></span>
                 <img src="../assets/icons/icons8-mission-50.png" alt="">
@@ -103,7 +103,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <h1 class="font-bold text-xl py-5">Our Mission</h1>
             <p class="font-light leading-8 ">Develop and grow Taekwondo throughout the world, from a grass roots level all the way through to an elite level, to provide all with the opportunity to play, watch and enjoy the sport regardless of age, gender, religion, ethnicity or ability.</p>
         </div>
-        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl">
+        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl mb-2">
             <div class="flex justify-between">
                 <span></span>
                 <img src="../assets/icons/icons8-vission-50.png" alt="">
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             <h1 class="font-bold text-xl py-5">Our Vission</h1>
             <p class="font-light leading-8 ">Taekwondo For All.</p>
         </div>
-        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl">
+        <div class="md:w-full lg:w-full xl:w-2/5 shadow-xl px-10 py-10 rounded-tl-2xl rounded-br-2xl mb-2">
             <div class="flex justify-between">
                 <span></span>
                 <img src="../assets/icons/icons8-values-50.png" alt="">
@@ -154,13 +154,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
                             $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
 
-                            $status = $eventStartDate > $currentDate ? 'Remaining' : 'Passed';
-                            $statusColor = $status === 'Passed' ? 'text-red-600' : 'text-gray-600'; 
+                            // $status = $eventStartDate > $currentDate ? 'Remaining' : 'Passed';
+                            // $statusColor = $status === 'Passed' ? 'text-red-600' : 'text-gray-600'; 
+                            if($eventStartDate > $currentDate ){
+                                $status = 'Remaining';
+                                $statusColor = "bg-gray-600";
+                          }else if($eventStartDate < $eventCloseDate && $eventCloseDate > $currentDate){
+                               $status = 'Ongoing';
+                               $statusColor = "bg-green-600";
+                          }else{
+                               $status = 'Passed'; 
+                               $statusColor = "bg-red-600";
+                          }
                             ?>
                             
                             <div class="flex flex-col justify-center items-center mb-5">
 
-                            <div class="bg-gray-600 py-5 px-2 md:px-10 absolute top-0 ml-[60%] ">
+                            <div class="bg-gray-600 py-5 px-2 md:px-10 absolute top-0 md:ml-[60%] ">
                                 <h2 class="uppercase text-white font-light">upcoming event</h2>
                             </div>
                                 <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
@@ -168,33 +178,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                         <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
                                             <img src="<?php echo substr($event['photo'], 3); ?>" alt="" class="rounded w-full h-96 object-cover">
                                         </div>
-                                        <div class="md:w-2/3 px-5 py-5 flex flex-col justify-center"> 
-                                            <div class="flex gap-2 md:gap-5">
-                                                <div>
-                                                    <h2 class="text-white capitalize">days</h2>
-                                                    <h1 id="days-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingDays ?></h1>
+                                        <div class="md:w-2/3 md:px-5 py-5 flex flex-col justify-center"> 
+                                            <div class="flex gap-2 md:gap-5 justify-between">
+                                                <div class="flex gap-2 ">
+                                                    <div>
+                                                        <h2 class="text-white capitalize">days</h2>
+                                                        <h1 id="days-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingDays ?></h1>
+                                                    </div>
+                                                    <div>
+                                                        <h2 class="text-white capitalize">hr</h2>
+                                                        <h1 id="hours-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingHours ?></h1>
+                                                    </div>
+                                                    <div>
+                                                        <h2 class="text-white capitalize">min</h2>
+                                                        <h1 id="minutes-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingMinutes ?></h1>
+                                                    </div>
+                                                    <div>
+                                                        <h2 class="text-white capitalize">sec</h2>
+                                                        <h1 id="seconds-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingSeconds ?></h1>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <h2 class="text-white capitalize">hr</h2>
-                                                    <h1 id="hours-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingHours ?></h1>
+                                                <div class="bg-white flex items-center h-10 px-3 mt-6 <?php echo $statusColor; ?>">
+                                                    <h2 class="md:text-xl capitalize  items-center text-white "><?php echo $status; ?></h2>
                                                 </div>
-                                                <div>
-                                                    <h2 class="text-white capitalize">min</h2>
-                                                    <h1 id="minutes-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingMinutes ?></h1>
-                                                </div>
-                                                <div>
-                                                    <h2 class="text-white capitalize">sec</h2>
-                                                    <h1 id="seconds-<?php echo $event['id']; ?>" class="bg-gray-950 text-white px-5 py-3"><?= $remainingSeconds ?></h1>
-                                                </div>
-                                                <h2 class="md:px-10 py-2 font-bold md:text-2xl capitalize <?php echo $statusColor ?>"><?= $status ?></h2>
                                             </div>
                                             <div class="md:py-5">
-                                                <h2 class="text-white font-bold py-3 text-4xl"><?= $event['title']; ?></h2>
+                                                <h2 class="text-white font-bold py-3 text-2xl tmd:ext-4xl"><?= $event['title']; ?></h2>
                                                 <p class="text-white font-light"><?= $event['event_desc']; ?></p>
                                             </div>
-                                            <div class="pt-5 flex justify-between">
-                                                <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2">join with us</button>
-                                                <h2 class="text-gray-800 leading-8 font-bold flex justify-center px-5 py-2 border-2 border-yellow-300"><span class="font-light">Venue Details :</span> <?php echo $event['venue']; ?></h2>
+                                            <div class="pt-5 md:flex justify-between">
+                                                <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2 mb-2">join with us</button>
+                                                <h2 class="text-[15px] md:text-normal text-gray-800 leading-8 font-bold flex justify-center px-3 py-2 border-2 border-yellow-300"><span class="font-light">Venue Details :</span> <?php echo $event['venue']; ?></h2>
                                             </div>
                                         </div>
                                     </div>
@@ -228,10 +242,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             ?>
 
     <div id="eventbanner" class="eventbanner py-10 md:flex gap-10 justify-center items-center bg-gray-800">
-        <div>
-            <h2 class="text-4xl text-white font-bold">Get more infomation about Events</h2>
+        <div class="md:py-0 py-2 flex justify-center items-center">
+            <h2 class="text-2xl text-center md:text-4xl text-white font-bold">Get more infomation about Events</h2>
         </div>
-        <div>
+        <div class="md:py-0 py-2 flex justify-center items-center">
             <a href="<?php echo $eventsurl;?>" class="rounded-2xl py-2 px-10 bg-white text-gray-950 uppercase hover:bg-blue-400 hover:text-white">View More Events</a>
         </div>
     </div>
@@ -239,17 +253,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 <!-- hot news  -->
 <div>
-    <div class="w-full lg:flex justify-center md:gap-10 px-10 py-10 md:py-20 bg-gray-100">
+    <div class="w-full lg:flex justify-center md:gap-10 px-2 lg:px-10 py-10 md:py-20 bg-gray-100">
         <?php
 
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     $hot = $db->getHotNews();
                     if ($hot) {?>
                 
-        <div class="md:w-full lg:w-1/3 h-[600px] ">
-            <img src="<?php echo substr($hot['photo'], 3); ?>" alt="" class="w-full h-full object-cover rounded-tl-2xl rounded-br-2xl">
+        <div class="md:w-full lg:w-1/2 2xl:w-1/2 h-[600px] md:px-10 ">
+            <img src="<?php echo substr($hot['photo'], 3); ?>" alt="" class="w-full h-full object-cover rounded-xl rounded-br-2xl">
         </div>
-        <div class="md:w-full lg:w-1/3 flex flex-col justify-center  px-5 md:px-1">
+        <div class="md:w-full lg:w-1/2 2xl:w-1/3 flex flex-col justify-center  px-3 md:px-1">
             <div class="flex gap-1 py-5">
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
@@ -257,8 +271,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
                 <img src="../assets/icons/icons8-rating-30.png" alt="">
             </div>
-            <h1 class="font-bold py-3 text-4xl"><?php echo $hot['title']; ?></h1>
-            <p class="textcontent font-light leading-8 py-5 mb-5"><?php echo substr($hot['content'], 0, 500); ?> ...</p>
+            <h1 class="font-bold py-3 text-2xl md:text-3xl"><?php echo $hot['title']; ?></h1>
+            <p class="textcontent font-light md:leading-8 2xl:text-lg py-5 mb-2 md:mb-5"><?php echo substr($hot['content'], 0, 500); ?> ...</p>
         </div>
         <?php }} ?>
     </div>

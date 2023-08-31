@@ -1,5 +1,25 @@
 
 <?php include '../../includes/header.php'; ?>
+
+<?php
+    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+        $news = $db->getAll("news");
+        $utf8_encoded_events = array_map(function($event) {
+        foreach ($event as $key => $value) {
+            if (is_string($value)) {
+                $event[$key] = utf8_encode($value);
+            }
+        }
+        return $event;
+    }, $news);
+    try {
+        $jsonData = json_encode($utf8_encoded_events,JSON_THROW_ON_ERROR);
+    } catch (Exception $e) {
+        echo 'Caught exception: ',  $e->getMessage(), "\n";
+    }
+    }
+?>
+
 <div class="md:flex">
     <div>
         <?php include '../../includes/leftbar.php'; ?>
@@ -136,13 +156,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="font-light">
-                                    <?php
-                                            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                                $all =  $db->getAll("news");
-
-                                                foreach ($all as $new) {?>
-                        
-                                            <?php }} ?>
+                                     
                                         
                                         
                                     </tbody>
@@ -175,9 +189,9 @@
                                     const pageList = document.getElementById('pageList');
                                     const rowsPerPage = 10;
                                     let currentPage = 1;
-                                    let filteredData = <?php echo json_encode($all); ?>;
+                                    const filteredData = <?php echo $jsonData; ?>;
 
-                                    const data = <?php echo json_encode($all); ?>;
+                                    const data = <?php echo $jsonData; ?>;
 
                                     function filterTable(query) {
                                         if (query === '') {

@@ -9,7 +9,7 @@
         <p class="pb-10 font-light w-4/5">Explore our network of Taekwondo clubs, dedicated to fostering the practice and spirit of Taekwondo across different communities. Our Taekwondo Federation's Clubs offer a welcoming environment for practitioners of all skill levels, from beginners to seasoned athletes. Join us in promoting the values of discipline, respect, and excellence through the practice of Taekwondo. Discover a club near you and embark on a journey of personal growth, physical fitness, and camaraderie.</p>
     
 
-        <div class="md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 flex-wrap gap-5 md:gap-20 justify-center items-center w-full px-5 md:px-10 lg:px-20 xl:px-40">
+        <div class="md:grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 flex-wrap gap-5 md:gap-20 justify-center items-center w-full px-5 md:px-10 lg:px-20 xl:px-40">
 
 
         <?php
@@ -19,7 +19,7 @@
                 ?>
 
             
-            <div class="relative md:w-[400px] newcard" >
+            <div class="relative md:w-[400px] newcard mb-5 md:mb-0" >
                 <div class="w-full">
                 <img src="<?php echo substr($club['photo'], 3); ?>" alt="" class="w-full h-[500px] object-cover drop-shadow-xl">
                 </div>

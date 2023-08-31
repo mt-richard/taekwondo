@@ -125,6 +125,8 @@ class dbconnection {
             }
         }
         
+      
+        
         // latest news
         function getOverview(){
             try {
@@ -176,6 +178,17 @@ class dbconnection {
             }
         }
 
+        // all news
+        function getAllNews() {
+            try {
+                $stm = $this->db->prepare("SELECT * FROM  news ORDER BY createdat DESC");
+                $stm->execute();
+                $result = $stm->fetchAll(PDO::FETCH_ASSOC);
+                return $result;
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
         // latest comment
         function getComments($id){
             try {

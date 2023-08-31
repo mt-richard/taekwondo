@@ -23,8 +23,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
 <div>
     <div class="bg-gray-100 md:py-10">
 
-        <div class="w-full flex gap-2 justify-center ">
-            <div class="md:w-3/5 newslist px-5 md:py-10">
+        <div class="w-full grid  xl:flex gap-2 justify-center ">
+            <div class="md:w-full lg:w-full xl:w-3/5 newslist px-5 md:py-10">
                 <div class="w-full py-5 flex justify-between ">
                     <a href="<?php echo $newsUrl; ?>" class="flex justify-center cursor-pointer items-center py-5 bg-blue-400 rounded-full w-5 h-5 p-5">
                         <h2 class="text-3xl font-bold text-white text-center mb-2 font-bold">&larr;</h2>
@@ -50,12 +50,12 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 <?php } }?>
 
                 <!-- comment section -->
-                 <section class="relative flex flex-col items-center justify-center md:py-10 border-t antialiased bg-white bg-gray-100 ">
+                 <section class="relative flex flex-col items-center justify-center md:py-10 border-t antialiased bg-white ">
                     <div class="text-left w-full md:px-20 py-2 ">
                         <h2 class="uppercase font-bold text-xl py-5 border-b">COmments</h2>
                     </div>
                     
-                    <div class="container px-0 mx-auto sm:px-5 md:px-40 md:py-10">
+                    <div class="container px-0 mx-auto sm:px-5 xl:px-40 md:py-10">
                     
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
@@ -138,7 +138,7 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                         ?>
 
                   
-                     <div class=" w-full md:px-20 py-5 border-t md:flex">
+                     <div class=" w-full px-5 xl:px-20 py-5 border-t md:flex bg-white">
                             <div class="md:w-1/2">
                                 <h2 class="py-2 font-bold text-xl text-gray-700">Leave comment</h2>
                                 <p class="text-gray-700 font-normal pb-5">Dont hesitate to comment your idea</p>
@@ -171,24 +171,60 @@ if($_SERVER['REQUEST_METHOD'] == 'GET'){
                 </section> 
                 
             </div>
-
             <!-- latest -->
-            <div class=" md:w-[350px] latest py-10">
-                <div class="w-full mb-2 p-5 bg-white rounded">
-                    <form action="">
-                        <input type="search" name="" id="" class="w-full bg-white border rounded px-10 py-2" placeholder="Search here ..">
-                    </form>
+            <div class="md:w-full lg:w-full xl:w-1/4  px-5 py-10 md:py-24">
+                <div class="flex flex-col justify-center items-center  w-full py-5">
+                    <h1 class="uppercase font-bold text-2xl">Latest news</h1>
                 </div>
-                <div class="w-full mb-2 p-5 bg-white rounded">
-                    <h2 class="text-xl font-bold pb-3">Categories</h2>
-                    <ul>
-                        <li class="font-light tetx-gray-500 border-b py-2 hover:text-blue-400 cursor-pointer"> <span class="font-bold leading-8 px-3">&gt;</span>world champion</li>
-                        <li class="font-light tetx-gray-500 border-b py-2 hover:text-blue-400 cursor-pointer"> <span class="font-bold leading-8 px-3">&gt;</span>region champion</li>
-                        <li class="font-light tetx-gray-500 border-b py-2 hover:text-blue-400 cursor-pointer"> <span class="font-bold leading-8 px-3">&gt;</span>events</li>
-                        <li class="font-light tetx-gray-500 border-b py-2 hover:text-blue-400 cursor-pointer"> <span class="font-bold leading-8 px-3">&gt;</span>Competions</li>
-                    </ul>
+                <div class="grid xl:grid md:flex lg:flex xl:flex-col justify-center items-center gap-5">
+
+                <?php
+                            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                                $state = 'NORMAL';
+                                $limit = 3;
+                                $news = $db->getNews("news", $state, $limit);
+                                // echo json_encode($news);
+                            
+                                foreach ($news as $new){
+                                
+                                ?>
+
+                                <div class="max-w-sm bg-white drop-shadow-xl rounded drop-shadow-xl newcard ">
+                                <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['id']); ?>">
+
+                                    <div>
+                                        <img class="w-full md:h-60 xl:h-40 2xl:h-60 object-cover" src="<?php echo substr($new['photo'], 3); ?>" alt="" />
+                                    </div>
+                                    <div class="p-5">
+                                    
+                                            <h5 class="mb-2 2xl:text-2xl font-bold tracking-tight text-gray-900 "><?php echo $new['title']; ?></h5>
+                                        
+                                        <p class="mb-3 xl:text-[15px] font-normal text-gray-700"><?php echo substr($new['content'], 0, 80); ?> ...</p>
+                                        <a href="<?php echo $newpageUrl; ?>?id=<?php echo base64_encode($new['id']); ?>" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                            Read more
+                                            <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </a>
+                                </div>
+                            <?php }} ?>
+
+
+
                 </div>
+                <div class="flex justify-center items-center pt-10">
+                    <a href="<?php echo $newsUrl; ?>" class="inline-flex items-center xl:px-3 md:px-10 py-3 text-sm font-medium text-center text-white bg-blue-500 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                                    Navigate to more
+                                    <svg class="w-3.5 h-3.5 ml-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+                                    </svg>
+                    </a>
+                </div>
+                
             </div>
+            
         </div>
     </div>
 </div>
