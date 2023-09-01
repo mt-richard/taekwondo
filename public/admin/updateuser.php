@@ -24,6 +24,7 @@
                             $email = $_POST['email'];
                             $phone = $_POST['phone'];
                             $address = $_POST['address'];
+                            // $status = $_POST['status'];
                             $password = $_POST['password'];
                             
                             $userData = [
@@ -31,6 +32,7 @@
                                 "email" => $email,
                                 "phone" => $phone,
                                 "address" => $address,
+                                // "status" => $status,
                                 "password" => $password
                             ];
                             
@@ -77,6 +79,7 @@
                                     <div class=" mb-4 px-3">
                                     <input type="password" id="password" required name="password" placeholder="********" value="<?php echo $user['password']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
+                                    
                                     
                                     
                                     <div class=" mb-4 px-3">

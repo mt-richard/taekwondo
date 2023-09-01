@@ -13,7 +13,7 @@ class dbconnection {
         // login function
         function login($email, $password) {
             try {
-                $query = "SELECT * FROM users WHERE email = ?";
+                $query = "SELECT * FROM users WHERE email = ? and status = 'active'";
                 $stm = $this->db->prepare($query);
                 $stm->execute([$email]);
                 $user = $stm->fetch(PDO::FETCH_ASSOC);
@@ -81,7 +81,7 @@ class dbconnection {
         // retrieve all data
         function getAll($table){
             try {
-                $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY createdat DESC");
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " WHERE status = 'active' ORDER BY createdat DESC");
                 $stm->execute();
                 $stm->setFetchMode(PDO::FETCH_ASSOC);
                 return $stm->fetchAll();
@@ -189,10 +189,22 @@ class dbconnection {
                 return $th->getMessage();
             }
         }
+
+        // latest comment
+        function getAllComments(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM comments ORDER BY `createdat`  DESC");
+                $stm->execute();
+                $stm->setFetchMode(PDO::FETCH_ASSOC);
+                return $stm->fetchAll();
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
         // latest comment
         function getComments($id){
             try {
-                $stm = $this->db->prepare("SELECT * FROM comments WHERE news_id = :id ORDER BY `createdat`  DESC LIMIT 2");
+                $stm = $this->db->prepare("SELECT * FROM comments WHERE news_id = :id AND status = 'active' ORDER BY `createdat`  DESC LIMIT 2");
                 $stm->bindParam(':id', $id, PDO::PARAM_INT);
                 $stm->execute();
                 $stm->setFetchMode(PDO::FETCH_ASSOC);
@@ -215,7 +227,20 @@ class dbconnection {
         }
 
         // delete
-        function destroy($table, $id) {
+        function destroy($table, $status, $id) {
+            try {
+                $stmt = $this->db->prepare("UPDATE $table SET status = :status WHERE id = :id");
+                $stmt->bindParam(':status', $status, PDO::PARAM_STR);
+                $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+                $stmt->execute();
+                return "Record Deleted successfully.";
+            } catch (Exception $e) {
+                return "Record deleted Failed: " . $e->getMessage();
+            }
+        }
+        
+        // delete permanently from db
+        function delete($table, $id) {
             try {
                 $stm = $this->db->prepare("DELETE FROM ".$table." WHERE id = :id");
                 $stm->bindParam(':id', $id, PDO::PARAM_INT);
@@ -227,6 +252,4 @@ class dbconnection {
         }
         
 }
-
-
 ?>

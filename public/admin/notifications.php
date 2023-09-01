@@ -27,7 +27,6 @@
                                 <th class="py-2 px-5 border" data-priority="2">Email</th>
                                 <th class="py-2 px-5 border" data-priority="2">Message</th>
                                 <th class="py-2 px-5 border" data-priority="5">Created At</th>
-                                <th class="py-2 px-5 border" data-priority="6">Action</th>
                             </tr>
                         </thead>
                         <tbody class="font-light">
@@ -109,11 +108,7 @@
                                            <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
                                            <td class="px-5 py-1 border-b">${filteredData[i].message}</td>
                                            <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                           <td class="px-5 py-1 border-b">
-                                               <div class="flex gap-10">
-                                                   <a onclick="return openConfirm()" href="notifications?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
-                                               </div>
-                                           </td>
+                                           
                                        `;
                                            tbody.appendChild(row);
                                        }
@@ -205,7 +200,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $userdel = $db->destroy('notifications', $id);
+                        $userdel = $db->destroy('notifications', 'inactive', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'notifications';</script>";

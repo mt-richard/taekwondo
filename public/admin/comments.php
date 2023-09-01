@@ -5,86 +5,10 @@
         <?php include '../../includes/leftbar.php'; ?>
     </div>
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Users</h2>
+        <h2 class="text-xl py-10">Dashbord / Comments</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
             <div class="container w-full mx-auto px-2">
 
-                <!-- add user -->
-                    <div class="py-5"> 
-                        <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
-                            Add user
-                        </button>
-                    </div>
-                    <!-- modal -->
-
-                    <?php
-                        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            
-                            $username = $_POST['username'];
-                            $email = $_POST['email'];
-                            $phone = $_POST['phone'];
-                            $address = $_POST['address'];
-                            $password = $_POST['password'];
-                            
-                            $userData = [
-                                "username" => $username,
-                                "email" => $email,
-                                "phone" => $phone,
-                                "address" => $address,
-                                "password" => $password
-                            ];
-                            
-                            $result = $db->save("users", $userData);
-                            
-							if ($result['status'] == 'success') {
-								$response = $result['message'];
-							}else{
-								$response = "Failed to add User. Please aviod Duplicate" ;
-							}
-							$message = json_encode($response);
-							echo "<script>alert('$message'); window.history.pushState({}, '', 'users'); window.location.reload();</script>";
-
-							}
-                        ?>
-
-
-                    <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
-                            <div class="md:w-full pb-5">
-                                <div class="w-full justify-center">
-                                    <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
-                                </div>
-                                <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Add User Here</h2>
-                                </div>
-                                <form action="" method="POST">
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="username" placeholder="Enter userName" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="email" id="name" required name="email" placeholder="Enter Email address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="phone" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="address" placeholder="Enter address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    <div class=" mb-4 px-3">
-                                    <input type="password" id="password" required name="password" placeholder="********" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
-                                    </div>
-                                    
-                                    
-                                    <div class=" mb-4 px-3">
-                                        <button type="submit" name="adduser" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add user</button>
-                                    </div>
-                                    
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-
-                <!-- end add user -->
 
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                     <div class="container w-full  mx-auto px-2">
@@ -97,10 +21,10 @@
                     <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                         <thead class="text-left px-5">
                             <tr class="bg-gray-100">
-                                <th class="py-2 px-5 border" data-priority="1">Username</th>
+                                <th class="py-2 px-5 border" data-priority="1">Name</th>
                                 <th class="py-2 px-5 border" data-priority="2">Email</th>
-                                <th class="py-2 px-5 border" data-priority="3">Phone</th>
-                                <th class="py-2 px-5 border" data-priority="4">Address</th>
+                                <th class="py-2 px-5 border" data-priority="3">Message</th>
+                                <th class="py-2 px-5 border" data-priority="3">Status</th>
                                 <th class="py-2 px-5 border" data-priority="5">Created At</th>
                                 <th class="py-2 px-5 border" data-priority="6">Action</th>
                             </tr>
@@ -108,7 +32,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                $all =  $db->getAll("users");
+                                $all =  $db->getAllComments("comments");
 
                                 foreach ($all as $user) { ?>
                                    
@@ -181,15 +105,15 @@
                                 const row = document.createElement('tr');
                                 row.className = 'table-row';
                                 row.innerHTML = `
-                                <td class="px-5 py-1 border-b">${filteredData[i].username}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].name}</td>
                                 <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
-                                <td class="px-5 py-1 border-b">${filteredData[i].phone}</td>
-                                <td class="px-5 py-1 border-b">${filteredData[i].address}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].message}</td>
+                                <td class="px-5 py-1 border-b">${filteredData[i].status}</td>
                                 <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
                                 <td class="px-5 py-1 border-b">
                                     <div class="flex gap-10">
-                                        <a href="updateuser?editid=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-edit-property-18.png"></a>
-                                        <a onclick="return openConfirm()" href="users?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
+                                        <a href="comments?approveid=${filteredData[i].id}" class=" font-semibold text-green-600">Approve</a>
+                                        <a onclick="return openConfirm()" href="comments?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
                                     </div>
                                 </td>
                             `;
@@ -284,19 +208,32 @@
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $userid = $_GET['id'];
                         $status = "inactive";
-                        $userdel = $db->destroy('users', $status, $userid);
+                        $userdel = $db->destroy('comments', $status, $userid);
 
                         if ($userdel) {
-                            echo "<script>alert('Record deleted successfully'); window.location.href = 'users';</script>";
+                            echo "<script>alert('Record deleted successfully'); window.location.href = 'comments';</script>";
                         } else {
-                            echo "<script>alert('Failed to delete record'); window.location.href = 'users';</script>";
+                            echo "<script>alert('Failed to delete record'); window.location.href = 'comments';</script>";
+                        }
+                    }
+                    ?>
+                    <?php
+                    if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['approveid']) && is_numeric($_GET['approveid'])) {
+                        $commentid = $_GET['approveid'];
+                        $status = "active";
+                        $comdel = $db->destroy('comments', $status, $commentid);
+
+                        if ($comdel) {
+                            echo "<script>alert('Record Update successfully'); window.location.href = 'comments';</script>";
+                        } else {
+                            echo "<script>alert('Failed to update record'); window.location.href = 'comments';</script>";
                         }
                     }
                     ?>
 
                     <script>
                         function openConfirm() {
-                            return confirm("Are you sure you want to Delete this user?");
+                            return confirm("Are you sure you want to Delete this comments?");
                         }
                     </script>
 

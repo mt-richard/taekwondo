@@ -322,7 +322,7 @@
                             <?php
                                 if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                                     $id = $_GET['id'];
-                                    $userdel = $db->destroy('news', $id);
+                                    $userdel = $db->destroy('news','inactive', $id);
 
                                     if ($userdel) {
                                         echo "<script>alert('Record deleted successfully'); window.location.href = 'news';</script>";
