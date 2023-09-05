@@ -7,7 +7,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update Clubs</h2>
+        <h2 class="text-xl py-10">Dashboard / Update Clubs</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -81,31 +81,36 @@
                                 if($user){
                         ?>
                    
-                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
+                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 xl:1/3 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="py-5 flex justify-center items-cenetr">
                                     <h2 class="text-2xl font-bold text-gray-600">Update  Club Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Club's name : </label>
                                         <input type="text" required name="name" placeholder="Enter Name" value="<?php echo $user['name']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Master's Name : </label>
                                         <input type="text" required name="master" placeholder="Enter Master's Name" value="<?php echo $user['master']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Club's Phone : </label>
                                         <input type="text" required name="phone" placeholder="Enter Phone" value="<?php echo $user['phone']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Club's Address : </label>
                                         <input type="text" required name="address" placeholder="Enter Address" value="<?php echo $user['address']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload Club's Photo : </label>
                                         <input type="file"  name="photo" placeholder="Choose Photo" value="<?php echo $user['photo']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Club</button>
+                                        <button type="submit" name="updateclub" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Club</button>
                                     </div>
                                     
                                 </form>

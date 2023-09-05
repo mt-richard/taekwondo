@@ -7,7 +7,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update User</h2>
+        <h2 class="text-xl py-10">Dashboard / Update User</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -57,7 +57,7 @@
                                 if($user){
                         ?>
                    
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/2 rounded-lg shadow-lg md:mt-20">
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                
                                 <div class="py-5 flex justify-center items-cenetr">
@@ -65,19 +65,24 @@
                                 </div>
                                 <form action="" method="POST">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Username : </label>
                                         <input type="text" id="name" required name="username" placeholder="Enter userName"  value="<?php echo $user['username']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Email : </label>
                                         <input type="email" id="name" required name="email" placeholder="Enter Email address" value="<?php echo $user['email']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Phone : </label>
                                         <input type="text" id="name" required name="phone" placeholder="Enter phone" value="<?php echo $user['phone']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Address : </label>
                                         <input type="text" id="name" required name="address" placeholder="Enter address" value="<?php echo $user['address']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                    <input type="password" id="password" required name="password" placeholder="********" value="<?php echo $user['password']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Password : </label>
+                                        <input type="password" id="password" required name="password" placeholder="********" value="<?php echo $user['password']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     

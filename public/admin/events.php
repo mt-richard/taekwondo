@@ -24,8 +24,8 @@
         ?>
     </div>
     <!-- event page content -->
-    <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Events</h2>
+    <main class="w-full px-5 2xl:px-20 bg-gray-100 ">
+        <h2 class="text-xl py-5">Dashboard / Events</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -33,7 +33,7 @@
 
                 <!-- add event -->
 
-                    <div class="py-5"> 
+                    <div class="pb-2"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
                             Add Event
                         </button>
@@ -128,23 +128,27 @@
                                        
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Event Title : </label>
                                         <input type="text" required name="title" placeholder="Enter Event Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Event Desc : </label>
                                         <textarea required name="desc" placeholder="Enter Event Description" class="w-full h-40 py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
                                     </div>
                                     <div class="mb-4 px-3">
-                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Start Date :</label>
+                                        <label for="" class="text-[14px] font-light text-gray-600">Event Start Date/Time :</label>
                                         <input type="datetime-local" required name="event_date" placeholder="Enter Starting Event Date/Time" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
                                     <div class="mb-4 px-3">
-                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Closing Date :</label>
+                                        <label for="" class="text-[14px] font-light text-gray-600">Event Closing Date/Time :</label>
                                         <input type="datetime-local" required name="event_enddate" placeholder="Enter Ending Event Date/Time" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Event venue :</label>
                                         <input type="text" required name="venue" placeholder="Enter Venue" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload Event Flyer :</label>
                                         <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
@@ -164,9 +168,9 @@
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                     <div class="container w-full  mx-auto px-2">
 
-                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+                    <div id='recipients' class="p-3 mt-2 lg:mt-0 rounded shadow overflow-x-scroll bg-white">
                     <div class="flex justify-center items-center py-5">
-                        <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
+                        <input class="form-control border-end-0 border w-4/5 xl:w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
                     </div>
                 <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                         <thead class="text-left px-5">

@@ -26,15 +26,15 @@
     </div>
     <!-- new page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-3">Dashbord / News</h2>
+        <h2 class="text-xl py-3">Dashboard / News</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
-            <div class="container w-full mx-auto px-2">
+            <div class="container w-full mx-auto md:px-2">
 
                 <!-- add new -->
 
-                    <div class="py-5"> 
+                    <div class="md:py-5"> 
                         <button onclick="openModal()" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" id="openModalBtn" class="block text-white bg-blue-400 hover:bg-blue-600   font-medium rounded-lg text-sm px-10 py-2.5 text-center " type="button">
                             Add News
                         </button>
@@ -94,8 +94,8 @@
 
 
 
-                    <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
+                    <section  id="overlay"  class="bg-gray-700 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 2xl:w-1/2 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="w-full justify-center">
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
@@ -105,12 +105,15 @@
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter News Title : </label>
                                         <input type="text" required name="title" placeholder="Enter News Title" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <textarea required name="content" placeholder="Enter News Description" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter News content : </label>
+                                        <textarea required name="content" placeholder="Enter News Description" class="w-full h-60  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Select News State : </label>
                                         <select required name="state" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                             <option>Choose the News State</option>
                                             <option value="TOP">Top</option>
@@ -119,6 +122,7 @@
                                         </select>
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload Image : </label>
                                         <input type="file" required name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
@@ -136,11 +140,11 @@
 		
 
                     <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-                        <div class="container w-full  mx-auto px-2">
+                        <div class="container w-full  mx-auto md:px-2">
 
-                            <div id='recipients' class="px-8  py-3 mt-6 lg:mt-0 rounded shadow bg-white">
+                            <div id='recipients' class="md:px-8  py-3 mt-6 lg:mt-0 rounded overflow-x-scroll shadow bg-white">
                                 <div class="flex justify-center items-center py-2">
-                                    <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search"  id="searchInput" class="form-control" placeholder="Search by here .....">
+                                    <input class="form-control border-end-0 border w-4/5 xl:w-2/5 py-3 px-10 rounded-xl outline-none " type="search"  id="searchInput" class="form-control" placeholder="Search by here .....">
                                 </div>
                             
 

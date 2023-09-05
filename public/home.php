@@ -173,7 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                             <div class="bg-gray-600 py-5 px-2 md:px-10 absolute top-0 md:ml-[60%] ">
                                 <h2 class="uppercase text-white font-light">upcoming event</h2>
                             </div>
-                                <div class="w-full md:w-full lg:w-4/5 xl:w-3/5 bg-blue-400">
+                                <div class="w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-3/5 bg-blue-400">
                                     <div class="md:flex gap-6 px-5 py-5 md:px-10">
                                         <div class="md:w-1/2 lg:w-1/3 pb-5 md:pb-0">
                                             <img src="<?php echo substr($event['photo'], 3); ?>" alt="" class="rounded w-full h-96 object-cover">
@@ -206,9 +206,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                                                 <h2 class="text-white font-bold py-3 text-2xl tmd:ext-4xl"><?= $event['title']; ?></h2>
                                                 <p class="text-white font-light"><?= $event['event_desc']; ?></p>
                                             </div>
-                                            <div class="pt-5 md:flex justify-between">
+                                            <div class="md:flex justify-between items-center">
                                                 <button class="border-2 border-white hover:bg-white px-5 py-2 hover:text-blue-500 text-white uppercase mt-2 mb-2">join with us</button>
-                                                <h2 class="text-[15px] md:text-normal text-gray-800 leading-8 font-bold flex justify-center px-3 py-2 border-2 border-yellow-300"><span class="font-light">Venue Details :</span> <?php echo $event['venue']; ?></h2>
+                                                <div class="h-[80%] text-[15px] md:text-normal text-gray-800 py-2 font-bold flex justify-center items-center px-3 border-2 border-yellow-300">
+                                                    <span class="font-light">Venue Details :</span><span> <?= $event['venue']; ?></span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

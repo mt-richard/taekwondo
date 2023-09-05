@@ -7,7 +7,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update Member</h2>
+        <h2 class="text-xl py-10">Dashboard / Update Member</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
             <div class="container w-full mx-auto px-2">
                     <!-- modal -->
@@ -71,25 +71,38 @@
                                 if($user){
                         ?>
                    
-                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
+                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 xl:1/3 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="py-5 flex justify-center items-cenetr">
                                     <h2 class="text-2xl font-bold text-gray-600">Update a Member Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter the Name : </label>
                                         <input type="text" id="name" required name="name" placeholder="Enter Name" value="<?php echo $user['name']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
+                                    <!-- <div class=" mb-4 px-3">
+                                        <input type="text" id="name" required name="post" placeholder="Enter Email address" value="" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                    </div> -->
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="post" placeholder="Enter Email address" value="<?php echo $user['post']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Select his/her Post : </label>
+                                        <select id="name" required name="post"  class="w-full  py-1.5 px-6 bg-white text-gray-600 outline-none border border-gray-300 rounded ">
+                                            <option value="<?php echo $user['post']; ?> "><?php echo $user['post']; ?> </option>   
+                                            <option value="">Choose any post</option>
+                                            <option value="MD">MD</option>
+                                            <option value="CEO">CEO</option>
+                                            <option value="CTO">CTO</option>
+                                            <option value="CMO">CMO</option>
+                                        </select>
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="file" id="name"  name="photo" placeholder="Enter phone" value="<?php echo $user['photo']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload his/her Passport Photo : </label>
+                                        <input type="file"  name="photo" placeholder="Choose image" value="<?php echo $user['photo']; ?>" class="w-full  py-3 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update member</button>
+                                        <button type="submit" name="updatemember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Member</button>
                                     </div>
                                     
                                 </form>

@@ -8,11 +8,11 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update News</h2>
+        <h2 class="text-xl py-10">Dashboard / Update News</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
-            <div class="container w-full mx-auto px-2">
+            <div class="container w-full mx-auto md:px-2">
 
             
                     <!-- modal -->
@@ -86,13 +86,16 @@
                                     <h2 class="text-2xl font-bold text-gray-600">Update  News Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
-                                <div class=" mb-4 px-3">
+                                    <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter News Title : </label>
                                         <input type="text" required name="title" placeholder="Enter News Title" value="<?php echo $new['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter News Content : </label>
                                         <textarea required name="content" placeholder="Enter News Description"  value="<?php echo $new['content']; ?>" class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "> <?php echo $new['content']; ?></textarea>
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Select News State : </label>
                                         <select required name="state" class="w-full py-2 px-6 bg-white outline-none border border-gray-300 rounded ">
                                             <option><?php echo $new['state']; ?></option>
                                             <option>Choose News State</option>
@@ -102,6 +105,7 @@
                                         </select>
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter News Image : </label>
                                         <input type="file"  name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     

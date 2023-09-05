@@ -11,14 +11,14 @@ class dbconnection {
     }
 
         // login function
-        function login($email, $password) {
+        public function login($email, $password) {
             try {
-                $query = "SELECT * FROM users WHERE email = ? and status = 'active'";
-                $stm = $this->db->prepare($query);
-                $stm->execute([$email]);
-                $user = $stm->fetch(PDO::FETCH_ASSOC);
-        
-                if ($user && ($password == $user['password'])) {
+                $query = "SELECT * FROM users WHERE email = ? AND status = 'active'";
+                $stmt = $this->db->prepare($query);
+                $stmt->execute([$email]);
+                $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+                if ($user && password_verify($password, $user['password'])) {
                     session_start();
                     $_SESSION['username'] = $user['username'];
                     return ["message" => "Login successful", "status" => 1, "user" => $user];
@@ -29,6 +29,30 @@ class dbconnection {
                 return ["message" => $e->getMessage(), "status" => 0];
             }
         }
+        
+        // user adding
+         function registerUser($username, $email, $password, $phone)
+                {
+                    try {
+
+                        if (strlen($password) < 8) {
+                            throw new Exception("Password must be at least 8 characters long.");
+                        }
+
+                        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                        $query = "INSERT INTO users (username, email, password, phone) VALUES (?, ?, ?, ?)";
+                        $stmt = $this->db->prepare($query);
+
+                        if ($stmt->execute([$username, $email, $hashedPassword, $phone])) {
+                            return ["status" => "success", "message" => "User added successfully"];
+                        } else {
+                            throw new Exception("User registration failed.");
+                        }
+                    } catch (Exception $e) {
+                        return ["status" => "error", "message" => $e->getMessage()];
+                    }
+                }
+
         
     
         // inserting data into db table
@@ -101,6 +125,17 @@ class dbconnection {
                 return $th->getMessage();
             }
         }
+         // Get Committe
+         function getCommitte(){
+            try {
+                $stm = $this->db->prepare("SELECT * FROM members ORDER BY `createdat` ASC");
+                $stm->execute();
+                $stm->setFetchMode(PDO::FETCH_ASSOC);
+                return $stm->fetchAll();
+            } catch (Exception $th) {
+                return $th->getMessage();
+            }
+        }
 
         // latest events
         function getlatestEvent(){
@@ -116,7 +151,7 @@ class dbconnection {
         // get all events
         function getEvents($table) {
             try {
-                $stm = $this->db->prepare("SELECT * FROM " . $table . " ORDER BY event_date DESC, CASE WHEN event_date < NOW() THEN 1 ELSE 0 END, createdat DESC");
+                $stm = $this->db->prepare("SELECT * FROM " . $table . " WHERE status = 'active' ORDER BY event_date DESC, CASE WHEN event_date < NOW() THEN 1 ELSE 0 END, createdat DESC");
                 $stm->execute();
                 $stm->setFetchMode(PDO::FETCH_ASSOC);
                 return $stm->fetchAll();

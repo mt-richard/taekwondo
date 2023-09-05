@@ -7,7 +7,7 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Update Champions</h2>
+        <h2 class="text-xl py-10">Dashboard / Update Champions</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
@@ -81,34 +81,40 @@
                                 if($user){
                         ?>
                    
-                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/3 rounded-lg shadow-lg md:mt-20">
+                   <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 xl:w-1/2 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="py-5 flex justify-center items-cenetr">
-                                    <h2 class="text-2xl font-bold text-gray-600">Update a Member Here</h2>
+                                    <h2 class="text-2xl font-bold text-gray-600">Update a Champion Here</h2>
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Name : </label>
                                         <input type="text" required name="name" placeholder="Enter Name" value="<?php echo $user['name']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Champion Title : </label>
                                         <input type="text" required name="title" placeholder="Enter Champion title" value="<?php echo $user['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Period : </label>
                                         <input type="number" required name="period" placeholder="Enter Period" value="<?php echo $user['period']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Award gained : </label>
                                         <input type="text" required name="award" placeholder="Enter Award gained" value="<?php echo $user['award']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Club belongs to : </label>
                                         <input type="text" required name="club" placeholder="Enter Club" value="<?php echo $user['club']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload his/her Photo : </label>
                                         <input type="file"  name="photo" placeholder="Choose Photo" value="<?php echo $user['photo']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Champion</button>
+                                        <button type="submit" name="updatechampion" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Champion</button>
                                     </div>
                                     
                                 </form>

@@ -30,7 +30,7 @@ $keywords = array('event', 'club', 'champion', 'gallery');
 
 <navbar>
   <div class="sticky top-0 z-2 w-full bg-gray-950 ">
-    <div class="md:flex items-center justify-between mx-auto py-2 px-5 md:px-5 lg:px-20 xl:px-40 2xl:px-60">
+    <div class="md:flex items-center justify-between mx-auto px-5 md:px-5 lg:px-20 xl:px-40 2xl:px-60">
       <div class="flex justify-between justify-center">
         <img src="../assets/images/RTF-Logo.png" alt="" class="w-52 ">
        <!-- <h1 class="md:w-60 w-60 text-white font-black text-2xl py-2"> RTFederation  </h1> -->
@@ -40,16 +40,16 @@ $keywords = array('event', 'club', 'champion', 'gallery');
        </div>
       </div>
 
-      <div id="myTopnav" class=" navlink md:block  md:pt-0 px-3 md:px-0 ">
+      <div id="myTopnav" class=" navlink md:block px-3 md:px-0 ">
         <ul class="text-gray-400 md:flex md:gap-1 gap-5 items-center hidden md:block">
            <li class="text-center cursor-pointer">
-                <a href="<?php echo $homeUrl;?>" class=" mynavlink md:px-2 py-9 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'home') !== false ? 'bg-blue-400' : ''; ?> ">home</a>
+                <a href="<?php echo $homeUrl;?>" class=" mynavlink md:px-2 py-8 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'home') !== false ? 'bg-blue-400' : ''; ?> ">home</a>
            </li>
            <li class="text-center cursor-pointer">
-                <a href="<?php echo $aboutUrl;?>" class=" mynavlink md:px-2 py-9 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'about') !== false ? 'bg-blue-400' : ''; ?>">about us</a>
+                <a href="<?php echo $aboutUrl;?>" class=" mynavlink md:px-2 py-8 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'about') !== false ? 'bg-blue-400' : ''; ?>">about us</a>
            </li>
            <li class="cursor-pointer">
-            <a href="#" class=" mynavlink md:px-2 py-9 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo $classToAdd ?>">Media</a>
+            <a href="#" class=" mynavlink md:px-2 py-8 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600 flex justify-center items-center gap-5 <?php echo $classToAdd ?>">Media <img src="../assets/icons/icons8-expand-arrow-white.png"></a>
                 <ul class="absolute rounded-b md:bg-gray-900 hidden text-white capitalize w-full md:w-52 py-2">
                     <a href="<?php echo $eventsUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">Events</li></a>
                     <a href="<?php echo $clubsUrl;?>" class=" mynavlink w-full"><li class="hover:bg-blue-400 hover:text-white py-3 w-full px-5 py-2 capitalize lg:text-[12px] md:text-[12px] text-white font-bold hover:text-blue-600">Clubs</li></a>
@@ -58,11 +58,11 @@ $keywords = array('event', 'club', 'champion', 'gallery');
                 </ul>
             </li>
             <li class="text-center cursor-pointer">
-                <a href="<?php echo $newsUrl;?>" class=" mynavlink md:px-2 py-9 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'new') !== false ? 'bg-blue-400' : ''; ?>">News</a>
+                <a href="<?php echo $newsUrl;?>" class=" mynavlink md:px-2 py-8 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'new') !== false ? 'bg-blue-400' : ''; ?>">News</a>
             </li>
             
             <li class="text-center cursor-pointer">
-                <a href="<?php echo $contactUrl; ?>" class=" mynavlink md:px-2 py-9 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'contact') !== false ? 'bg-blue-400' : ''; ?> ">Contact us</a>
+                <a href="<?php echo $contactUrl; ?>" class=" mynavlink md:px-2 py-8 lg:px-5 capitalize lg:text-[12px] md:text-[12px] text-white font-bold md:uppercase hover:text-blue-600  <?php echo strpos($currentURL, 'contact') !== false ? 'bg-blue-400' : ''; ?> ">Contact us</a>
             </li>
         
         </ul>
@@ -70,9 +70,9 @@ $keywords = array('event', 'club', 'champion', 'gallery');
       </div>
 
       <div class="flex gap-2 hidden md:flex">
-        <a href=""><img src="../assets/icons/icons8-facebook.svg"></a>
-        <a href=""><img src="../assets/icons/icons8-instagram.svg"></a>
-        <a href=""><img src="../assets/icons/icons8-twitter.svg"></a>
+        <a href="https://www.facebook.com/TaekwondoRwandaFederation/"><img src="../assets/icons/icons8-facebook.svg"></a>
+        <a href="https://www.instagram.com/rwandataekwondo/?hl=en"><img src="../assets/icons/icons8-instagram.svg"></a>
+        <a href="https://twitter.com/taekwondorwanda?lang=en"><img src="../assets/icons/icons8-twitter.svg"></a>
       </div>
 
     </div>

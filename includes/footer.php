@@ -29,12 +29,12 @@
             <h3 class="text-white font-bold pb-3 text-xl ">Get more info...</h3>
             <p class="text-gray-400 font-light leading-2 pb-4">You can reach us on the following address.</p>
          
-            <p class="text-gray-400 font-light leading-2 ">Booyoung Taepyung Building 10th Floor,</p>
-                <p class="text-gray-400 font-light leading-2 pb-4">Seoul, Republic of Korea, 04513</p>
+            <p class="text-gray-400 font-light leading-2 ">Amahoro National Stadium,</p>
+                <p class="text-gray-400 font-light leading-2 pb-4">24W7+3GF, Kigali</p>
                 
                 <p class="text-gray-400 font-light leading-2 ">Tel : +250 788 566 250</p>
                 <p class="text-gray-400 font-light leading-2 ">Tel : +250 788 866 666</p>
-                <p class="text-gray-400 font-light leading-2 ">Email : office@worldtaekwondo.org</p>
+                <p class="text-gray-400 font-light leading-2 ">Email : info@rtf.org</p>
 
                 <div class="flex gap-1 pt-5">
                 <div class="bg-main w-8 rounded-full">
@@ -43,13 +43,13 @@
                     </a>
                 </div>
                 <div class="bg-main w-8 rounded-full">
-                    <a href="" class="">
-                        <img src="../assets/icons/icons8-twitter.svg" alt="" srcset="">
+                    <a href="https://www.instagram.com/rwandataekwondo/?hl=en" class="">
+                        <img src="../assets/icons/icons8-instagram.svg" alt="" srcset="">
                     </a>
                 </div>
                 <div class="bg-main w-8 rounded-full">
-                    <a href="" class="">
-                        <img src="../assets/icons/icons8-instagram.svg" alt="" srcset="">
+                    <a href="https://twitter.com/taekwondorwanda?lang=en" class="">
+                        <img src="../assets/icons/icons8-twitter.svg" alt="" srcset="">
                     </a>
                 </div>
             </div>

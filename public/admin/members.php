@@ -6,11 +6,11 @@
     </div>
     <!-- user page content -->
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-5">Dashbord / Members</h2>
+        <h2 class="text-xl py-2 md:py-5">Dashbord / Members</h2>
 
         <div class="text-gray-900 tracking-wider leading-normal">
 
-            <div class="container w-full mx-auto px-2">
+            <div class="container w-full mx-auto md:px-2">
 
                 <!-- add user -->
                     <div class="py-5"> 
@@ -69,8 +69,8 @@
 
 
 
-                    <section  id="overlay"  class="bg-gray-700 opacity-95 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
-                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-1/5 rounded-lg shadow-lg md:mt-20">
+                    <section  id="overlay"  class="bg-gray-700 fixed top-0 left-0 right-0 z-50 hidden w-full p-4 md:inset-0 h-[calc(100%)] max-h-full flex flex-col justify-center items-center min-h-screen antialiased bg-gray-100 bg-gray-100 min-w-screen">
+                        <div class="container px-0 mx-auto sm:px-5 bg-white p-5 md:w-3/5 xl:w-1/3 rounded-lg shadow-lg md:mt-20">
                             <div class="md:w-full pb-5">
                                 <div class="w-full justify-center">
                                     <span onclick="closeModal()" class="text-2xl cursor-pointer rounded-full p-2 w-5 h-5">&times;</span>
@@ -80,12 +80,23 @@
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Enter Username : </label>
                                         <input type="text" id="name" required name="name" placeholder="Enter userName" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <input type="text" id="name" required name="post" placeholder="Enter Email address" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Select his/her Post : </label>
+                                        <select id="name" required name="post"  class="w-full  py-1.5 px-6 bg-white text-gray-600 outline-none border border-gray-300 rounded ">
+                                            <option value="">Choose any post</option>
+                                            <option value="President">President</option>
+                                            <option value="Vice President">Vice President</option>
+                                            <option value="Secretary General">Secretary General</option>
+                                            <option value="Treasurer">Treasurer</option>
+                                            <option value="Advisor 1">Advisor 1</option>
+                                            <option value="Advisor 2">Advisor 2</option>
+                                        </select>
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Upload his/her Passport Photo : </label>
                                         <input type="file" id="name"  name="photo" placeholder="Enter phone" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
@@ -102,11 +113,11 @@
                 <!-- end add user -->
 		
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-                    <div class="container w-full  mx-auto px-2">
+                    <div class="container w-full  mx-auto md:px-2">
 
-                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+                    <div id='recipients' class="md:p-8 mt-6 lg:mt-0 rounded shadow  overflow-x-scroll bg-white">
                     <div class="flex justify-center items-center py-2">
-                        <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
+                        <input class="form-control border-end-0 border w-4/5 md:w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
                     </div>
 
                     <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
@@ -122,7 +133,7 @@
                         <tbody class="font-light">
                             <?php
                             if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-                                $all =  $db->getAll("members");
+                                $all =  $db->getCommitte();
 
                                 foreach ($all as $user) { ?>
                                    

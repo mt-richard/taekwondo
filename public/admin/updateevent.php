@@ -22,6 +22,7 @@
                             $title = $_POST['title'];
                             $event_date = $_POST['event_date'];
                             $event_desc = $_POST['event_desc'];
+                            $event_enddate = $_POST['event_enddate'];
                             $venue = $_POST['venue'];
                             $photo = $_FILES['photo'];
 
@@ -30,6 +31,7 @@
                                 "title" => $title,
                                 "event_desc" => $event_desc,
                                 "event_date" => $event_date,
+                                "event_enddate" => $event_enddate,
                                 "venue" => $venue,
                             ];
 
@@ -106,16 +108,20 @@
                                         </select>
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Title : </label>
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Title : </label>
                                         <input type="text" required name="title" placeholder="Enter Event Title" value="<?php echo $new['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
-                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Venue : </label>
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Venue : </label>
                                         <input type="text" required name="venue" placeholder="Enter Event Venue " value="<?php echo $new['venue']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class="mb-4 px-3">
-                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Date :</label>
-                                        <input type="datetime-local" required name="event_date" placeholder="Enter Event Date" value="<?php echo $new['event_date']; ?>" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Date/Time :</label>
+                                        <input type="datetime-local" required name="event_date" placeholder="Enter Event Date" value="<?php echo $new['event_date']; ?>"  class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
+                                    </div>
+                                    <div class="mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Event Closing Date/Time :</label>
+                                        <input type="datetime-local" required name="event_enddate" placeholder="Enter Ending Event Date/Time" value="<?php echo $new['event_enddate']; ?>" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
 
                                     <div class=" mb-4 px-3">

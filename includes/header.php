@@ -8,6 +8,7 @@ $db = new dbconnection();
     }
 
     if (isUserLoggedIn()) {
+      
  ?>
 
 
@@ -18,6 +19,7 @@ $db = new dbconnection();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RFT Admin Portal</title>
+    <link rel="icon" href="../../assets/icons/RTF-Logo-Circle.ico" type="image/x-icon">
     <link rel="stylesheet" href="../assets/css/style.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -49,10 +51,10 @@ $db = new dbconnection();
 
  <nav class="bg-gray-600 p-4 flex items-center justify-between">
     <div>
-      <h1 class="text-white text-xl font-semibold">RTFederation</h1>
+      <h1 class="text-white text-xl font-semibold">RFT Admin Portal</h1>
     </div>
     <div class="flex items-center space-x-4">
-      <span class="text-white">Welcome</span>
+      <span class="text-white capitalize"><?php $user = $_SESSION['username']; echo $user['username'] ?></span>
       <i class="fas fa-user-circle text-white text-2xl"></i>
     </div>
   </nav>
