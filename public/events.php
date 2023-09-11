@@ -1,7 +1,7 @@
 <?php include '../includes/navbar.php'; ?>
 <?php
     if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-        $news = $db->getEvents('events', 'event_date', 'ASC');
+        $news = $db->getEvents('events');
     }
 ?>
 <body>
@@ -28,7 +28,7 @@
                 </div>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <div class="w-full grid md:flex gap-2 justify-center">
-            <div class=" flex flex-col">
+            <div class=" w-full flex flex-col">
                 <div id="newsContainer" class="w-full newslist  md:py-10">
                 </div>
                 <div class="pagination flex justify-center items-center py-5">
@@ -157,7 +157,7 @@ $(document).ready(function() {
     }
 
     if (data.length === 0) {
-        newsContainer.append('<p>No event found.</p>');
+        newsContainer.append('<p class="flex justify-center">No event found.</p>');
     }
 }
 
@@ -188,39 +188,64 @@ function updateCountdown(newsItemId, eventStartDate) {
     }
 }
 
+function updatePagination() {
+    const totalPages = Math.ceil(newsData.length / itemsPerPage);
 
-    function updatePagination() {
-        const totalPages = Math.ceil(newsData.length / itemsPerPage);
+    const pageLinks = [];
+    const pagesPerGroup = 10; 
+    const currentGroup = Math.ceil(currentPage / pagesPerGroup);
 
-        const pageLinks = [];
-        for (let i = 1; i <= Math.min(totalPages, 10); i++) {
-            pageLinks.push(i);
-        }
+    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
 
-        if (totalPages > 10) {
-            pageLinks.push('Last Page');
-        }
+    const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
 
-        pageList.empty();
-        pageLinks.forEach(page => {
-            const link = $('<span></span>').addClass('p-[3px] rounded text-lg flex gap-2 cursor-pointer').text(page);
-            link.on('click', function() {
-                if (page === 'Last Page') {
-                    currentPage = totalPages;
-                } else {
-                    currentPage = page;
-                }
-                showNews(currentPage, newsData);
-                updatePagination();
-            });
-
-            if ((page === currentPage) || (page === 'Last Page' && currentPage === totalPages)) {
-                link.addClass('active-btn');
-            }
-
-            pageList.append(link);
-        });
+    if (currentPage > 10 && !currentPage == 1){
+        pageLinks.push(1);
     }
+
+    if (currentGroup > 1) {
+        pageLinks.push('Pre Group');
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        pageLinks.push(i);
+    }
+
+    if (currentGroup < Math.ceil(totalPages / pagesPerGroup)) {
+        pageLinks.push('Next Group');
+    }
+
+    pageLinks.push(totalPages);
+
+    pageList.empty();
+    pageLinks.forEach(page => {
+        const link = $('<span></span>').addClass('p-[3px] rounded text-sm font-light flex gap-2 cursor-pointer').text(page);
+        link.on('click', function() {
+            if (page === 'First Page') {
+                currentPage = 1;
+            } else if (page === 'Last Page') {
+                currentPage = totalPages;
+            } else if (page === 'Pre Group') {
+                currentPage = startPage - 1;
+            } else if (page === 'Next Group') {
+                currentPage = endPage + 1;
+            } else {
+                currentPage = page;
+            }
+            showNews(currentPage, newsData);
+            updatePagination();
+        });
+
+        if (page === currentPage) {
+            link.addClass('active-btn');
+        }
+
+        pageList.append(link);
+    });
+}
+
+
+
 
     function filterNews(searchText, data) {
         const filteredNews = data.filter(newsItem => {

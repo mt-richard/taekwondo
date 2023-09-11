@@ -113,37 +113,61 @@ $(document).ready(function() {
     }
 
     function updatePagination() {
-        const totalPages = Math.ceil(newsData.length / itemsPerPage);
+    const totalPages = Math.ceil(newsData.length / itemsPerPage);
 
-        const pageLinks = [];
-        for (let i = 1; i <= Math.min(totalPages, 10); i++) {
-            pageLinks.push(i);
-        }
+    const pageLinks = [];
+    const pagesPerGroup = 10; 
+    const currentGroup = Math.ceil(currentPage / pagesPerGroup);
 
-        if (totalPages > 10) {
-            pageLinks.push('Last Page');
-        }
+    const startPage = (currentGroup - 1) * pagesPerGroup + 1;
 
-        pageList.empty();
-        pageLinks.forEach(page => {
-            const link = $('<span></span>').addClass('p-[3px] rounded text-lg flex gap-2 cursor-pointer').text(page);
-            link.on('click', function() {
-                if (page === 'Last Page') {
-                    currentPage = totalPages;
-                } else {
-                    currentPage = page;
-                }
-                showNews(currentPage, newsData);
-                updatePagination();
-            });
+    const endPage = Math.min(currentGroup * pagesPerGroup, totalPages);
 
-            if ((page === currentPage) || (page === 'Last Page' && currentPage === totalPages)) {
-                link.addClass('active-btn');
-            }
-
-            pageList.append(link);
-        });
+    if (currentPage > 10){
+        pageLinks.push(1);
     }
+
+    if (currentGroup > 1) {
+        pageLinks.push('Pre Group');
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+        pageLinks.push(i);
+    }
+
+    if (currentGroup < Math.ceil(totalPages / pagesPerGroup)) {
+        pageLinks.push('Next Group');
+    }
+
+    pageLinks.push(totalPages);
+
+    pageList.empty();
+    pageLinks.forEach(page => {
+        const link = $('<span></span>').addClass('p-[3px] rounded text-sm font-light flex gap-2 cursor-pointer').text(page);
+        link.on('click', function() {
+            if (page === 'First Page') {
+                currentPage = 1;
+            } else if (page === 'Last Page') {
+                currentPage = totalPages;
+            } else if (page === 'Pre Group') {
+                currentPage = startPage - 1;
+            } else if (page === 'Next Group') {
+                currentPage = endPage + 1;
+            } else {
+                currentPage = page;
+            }
+            showNews(currentPage, newsData);
+            updatePagination();
+        });
+
+        if (page === currentPage) {
+            link.addClass('active-btn');
+        }
+
+        pageList.append(link);
+    });
+}
+
 
     function filterNews(searchText, data) {
         const filteredNews = data.filter(newsItem => {

@@ -42,8 +42,11 @@
                     
                     <!-- Main modal -->
                         <?php
+                        
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                            
+                            $userid = $_SESSION['username'];
+                            $id = $userid['id'];
+                            // echo $id;
                             $title = $_POST['title'];
                             $content = $_POST['content'];
                             $state = $_POST['state'];
@@ -53,6 +56,8 @@
                                 "title" => $title,
                                 "content" => $content,
                                 "state" => $state,
+                                "userid" => $id,
+
                             ];
 
                             $photoName = $photo['name'];
