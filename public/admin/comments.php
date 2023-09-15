@@ -4,21 +4,21 @@
     <div>
         <?php include '../../includes/leftbar.php'; ?>
     </div>
-    <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Comments</h2>
+    <main class="w-full p-1 md:px-20 bg-gray-100 ">
+        <h2 class="text-xl  py-3 md:py-10">Dashbord / Comments</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
-            <div class="container w-full mx-auto px-2">
+            <div class="container w-full mx-auto md:px-2">
 
 
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
-                    <div class="container w-full  mx-auto px-2">
+                    <div class="container w-full  mx-auto md:px-2">
 
-                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+                    <div id='recipients' class="md:p-8 mt-6 lg:mt-0 rounded shadow overflow-x-scroll bg-white">
                     <div class="flex justify-center items-center py-5">
-                        <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
+                        <input class="form-control border-end-0 border w-4/5 md:w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
                     </div>
 
-                    <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
+                    <table id="datatable" class="table datatable stripe hover overflow-y-scroll" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
                         <thead class="text-left px-5">
                             <tr class="bg-gray-100">
                                 <th class="py-2 px-5 border" data-priority="1">Name</th>
@@ -110,9 +110,9 @@
                                 <td class="px-5 py-1 border-b">${filteredData[i].message}</td>
                                 <td class="px-5 py-1 border-b">${filteredData[i].status}</td>
                                 <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                <td class="px-5 py-1 border-b">
-                                    <div class="flex gap-10">
-                                        <a href="comments?approveid=${filteredData[i].id}" class=" font-semibold text-green-600">Approve</a>
+                                <td class="px-1 md:px-5 py-1 border-b">
+                                    <div class="flex gap-2 md:gap-10">
+                                        <a href="comments?approveid=${filteredData[i].id}" class=" font-semibold text-green-600 text-[12px]">Approve</a>
                                         <a onclick="return openConfirm()" href="comments?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
                                     </div>
                                 </td>

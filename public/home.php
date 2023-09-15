@@ -40,20 +40,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }
 ?>
 <div class="w-full ">
-    <div id="myDiv" class=" w-full mx-auto py-20 md:py-40 h-[150vh] md:h-[85vh] lg:h-[90vh] flex flex-col md:justify-center items-center">
+    <div id="myDiv" class=" w-full mx-auto py-20 md:py-40 min-h-screen md:h-[85vh] lg:h-[90vh] flex flex-col md:justify-center items-center">
        
         <div class="md:full lg:w-4/5 xl:w-3/5 md:flex md:justify-center items-center md:gap-20">
             <div class="slideshow-text md:w-2/3  px-5 py-0 md:py-10 mb-5  " >
             </div>
-            <div class="relative w-full md:w-1/3 md:px-2 ">
+            <div class="relative w-3/5 md:w-1/3 md:px-2 ">
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                 
                     $champion = $db->getChampion();
                     if ($champion){?>
                     <div class="absolute  z-1 w-full rounded-t ">
-                        <h1 class="text-gray-100 py-3 font-bold uppercase text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
-                        <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[15px]"><?php echo $champion['title'];?></span></h1>
+                        <h1 class="text-gray-100 py-3 font-bold uppercase text-sm md:text-xl"><?php echo $champion['period']; ?> &nbsp; Champion</h1>
+                        <h1 class="absolute bg-gray-950 opacity-2 bottom-20 md:bottom-20 lg:bottom-20 left-0 md:px-5 md:py-3 p-3 flex justify-center text-white  font-bold text-sm md:text-xl uppercase flex flex-col"><?php echo $champion['name'];?> <span class="font-light text-[12px] md:text-[15px]"><?php echo $champion['title'];?></span></h1>
                         <img src="<?php echo substr($champion['photo'], 3); ?>" alt=""  class=" object-cover w-full  lg:h-[400px] h-100 md:h-96 rounded-t-xl">
                     </div>
 
@@ -78,9 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         slideshow.style.backgroundSize = 'cover';
       slideshow.style.backgroundImage = `linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(${slides[currentIndex].image})`;
       textContainer.innerHTML = `
-        <h1 class="text-left drop-shadow-xl text-white font-black text-2xl md:text-5xl pb-5">${slides[currentIndex].title}</h1>
-        <p class="text-left text-white drop-shadow font-light text-sm md:text-lg xl:text-xl leading-6 md:leading-8 py-5">${slides[currentIndex].content} ...</p>
-        <a href="<?php echo $contactUrl; ?>" type="button" class="bg-blue-500 px-6 rounded-3xl py-3 uppercase font-semibold text-white border-none outline-none hover:bg-white hover:text-blue-600 hover:shadow">get in touch</a>
+        <h1 class="text-left drop-shadow-xl text-white font-black text-2xl md:text-5xl pb-2 md:pb-5">${slides[currentIndex].title}</h1>
+        <p class="text-left text-white drop-shadow font-light text-sm md:text-lg xl:text-xl leading-6 md:leading-8  py-2 md:py-5">${slides[currentIndex].content} ...</p>
+        <a href="<?php echo $contactUrl; ?>" type="button" class=" text-sm md:text-lg bg-blue-500 px-6 rounded-3xl py-1 md:py-3 uppercase font-medium md:font-semibold text-white border-none outline-none hover:bg-white hover:text-blue-600 hover:shadow">get in touch</a>
 
       `;
       currentIndex = (currentIndex + 1) % slides.length;

@@ -32,7 +32,7 @@ $keywords = array('event', 'club', 'champion', 'gallery');
   <div class="sticky top-0 z-2 w-full bg-gray-950 ">
     <div class="md:flex items-center justify-between mx-auto px-5 md:px-5 lg:px-20 xl:px-40 2xl:px-60">
       <div class="flex justify-between justify-center">
-        <img src="../assets/images/RTF-Logo.png" alt="" class="w-52 ">
+        <img src="../assets/images/RTF-Logo.png" alt="" class="md:w-52 w-40 ">
        <!-- <h1 class="md:w-60 w-60 text-white font-black text-2xl py-2"> RTFederation  </h1> -->
 
        <div class="md:flex ">
@@ -92,7 +92,7 @@ $keywords = array('event', 'club', 'champion', 'gallery');
                
               <a href="<?php echo $homeUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-2 px-5 text-[14px]">home</li></a>
               <a href="<?php echo $aboutUrl;?>" class="w-full text-gray-900 capitalize  hover:text-white"><li class="hover:bg-blue-400 w-full border-b py-2 px-5 text-[14px]">about us</li></a>
-              <a href="#" class="w-full text-gray-900 capitalize  "><li class=" w-full border-b py-4 px-5 "> <span class="flex justify-between ">media<img src="../assets/icons/icons8-expand-arrow-24.png"></span>
+              <a href="#" class="w-full text-gray-900 capitalize  "><li class=" w-full border-b py-4 px-5 "> <span class="flex justify-between  hover:bg-blue-400 w-full border-b text-[14px]">media<img src="../assets/icons/icons8-expand-arrow-24.png"></span>
 
                 <ul class=" text-gray-700 capitalize w-full py-2 ">
                     <a href="<?php echo $eventsUrl;?>" ><li class="py-2 px-10 hover:text-white hover:bg-blue-400 text-[13px]">Events</li></a>
