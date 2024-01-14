@@ -15,9 +15,9 @@
                 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
                     <div class="container w-full  mx-auto px-2">
 
-                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded shadow bg-white">
+                    <div id='recipients' class="p-8 mt-6 lg:mt-0 rounded overflow-x-scroll shadow bg-white">
                     <div class="flex justify-center items-center py-5">
-                        <input class="form-control border-end-0 border w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
+                        <input class="form-control border-end-0 border w-4/5 xl:w-2/5 py-3 px-10 rounded-xl outline-none " type="search" id="searchInput" class="form-control" placeholder="Search by here .....">
                     </div>
 
                     <table id="datatable" class="table datatable stripe hover" style="width:100%; padding-top: 1em; padding-bottom: 1em;">
@@ -27,7 +27,6 @@
                                 <th class="py-2 px-5 border" data-priority="2">Email</th>
                                 <th class="py-2 px-5 border" data-priority="2">Message</th>
                                 <th class="py-2 px-5 border" data-priority="5">Created At</th>
-                                <th class="py-2 px-5 border" data-priority="6">Action</th>
                             </tr>
                         </thead>
                         <tbody class="font-light">
@@ -109,11 +108,7 @@
                                            <td class="px-5 py-1 border-b">${filteredData[i].email}</td>
                                            <td class="px-5 py-1 border-b">${filteredData[i].message}</td>
                                            <td class="px-5 py-1 border-b">${filteredData[i].createdat}</td>
-                                           <td class="px-5 py-1 border-b">
-                                               <div class="flex gap-10">
-                                                   <a onclick="return openConfirm()" href="notifications?id=${filteredData[i].id}" class="text-red-700"><img src="../../assets/icons/icons8-delete-18.png"></a>
-                                               </div>
-                                           </td>
+                                           
                                        `;
                                            tbody.appendChild(row);
                                        }
@@ -205,7 +200,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $id = $_GET['id'];
-                        $userdel = $db->destroy('notifications', $id);
+                        $userdel = $db->destroy('notifications', 'inactive', $id);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'notifications';</script>";

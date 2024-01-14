@@ -18,19 +18,21 @@
                     <?php
                         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             $id = $_GET['editid'];
+                            $category = $_POST['category'];
                             $title = $_POST['title'];
                             $event_date = $_POST['event_date'];
                             $event_desc = $_POST['event_desc'];
+                            $event_enddate = $_POST['event_enddate'];
                             $venue = $_POST['venue'];
-                            $start_time = $_POST['start_time'];
                             $photo = $_FILES['photo'];
 
                             $userData = [
+                                "event_category" => $category,
                                 "title" => $title,
                                 "event_desc" => $event_desc,
                                 "event_date" => $event_date,
+                                "event_enddate" => $event_enddate,
                                 "venue" => $venue,
-                                "start_time" => $start_time,
                             ];
 
                             if (!empty($photo['name'])) {
@@ -45,8 +47,9 @@
                                 if (!in_array($uploadedExtension, $allowedExtensions)) {
                                     $response = "Invalid image format. Allowed formats: JPG, JPEG, PNG, GIF.";
                                 } elseif ($photoError === UPLOAD_ERR_OK) {
-                                    $targetDirectory = '../../upload/';
-                                    $targetPath = $targetDirectory . $photoName;
+                                    $uniqueFilename = date('YmdHis') . '_' . uniqid() . '-' .$photoName;
+                                    $targetDirectory =  '../../upload/' ;
+                                    $targetPath = $targetDirectory . $uniqueFilename;
 
                                     if (move_uploaded_file($photoTmpName, $targetPath)) {
                                         $userData["photo"] = $targetPath;
@@ -88,28 +91,52 @@
                                 </div>
                                 <form action="" method="POST" enctype="multipart/form-data">
                                     <div class=" mb-4 px-3">
+                                        <?php
+                                        //    if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                                        //     include '../../config/dbconnection.php';
+                                        //     $cats = new dbconnection();
+                                        //     $alls =  $db->getAll("events");
+                                        //     echo json_encode($alls);
+                                        //     } 
+                                            ?>
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Choose Category : </label>
+                                        <select required name="category" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                            <option>Choose the Event Category</option>
+                                            <option value="AFRICAN TAEKWONDO CHAMPIONSHIPS">AFRICAN TAEKWONDO CHAMPIONSHIPS</option>
+                                            <option value="WORLD TAEKWONDO CHAMPIONSHIPS">WORLD TAEKWONDO CHAMPIONSHIPS</option>
+                                            <option value="EURO TAEKWONDO CHAMPIONSHIPS">EURO TAEKWONDO CHAMPIONSHIPS</option>
+                                        </select>
+                                    </div>
+                                    <div class=" mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Title : </label>
                                         <input type="text" required name="title" placeholder="Enter Event Title" value="<?php echo $new['title']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Venue : </label>
                                         <input type="text" required name="venue" placeholder="Enter Event Venue " value="<?php echo $new['venue']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="date" required name="event_date" placeholder="Enter Event Date " value="<?php echo $new['event_date']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                    <div class="mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Enter Event Date/Time :</label>
+                                        <input type="datetime-local" required name="event_date" placeholder="Enter Event Date" value="<?php echo $new['event_date']; ?>"  class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
-                                    <div class=" mb-4 px-3">
-                                        <input type="time" required name="start_time" placeholder="Enter Event time " value="<?php echo $new['start_time']; ?>" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
+                                    <div class="mb-4 px-3">
+                                        <label for="" class="text-[14px] font-light text-gray-600">Event Closing Date/Time :</label>
+                                        <input type="datetime-local" required name="event_enddate" placeholder="Enter Ending Event Date/Time" value="<?php echo $new['event_enddate']; ?>" min="<?php echo date('Y-m-d\TH:i'); ?>" class="w-full py-1.5 px-6 bg-white outline-none border border-gray-300 rounded">
                                     </div>
+
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event Description : </label>
                                         <textarea required name="event_desc" placeholder="Enter Event Description"   class="w-full h-96  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded "> <?php echo $new['event_desc']; ?></textarea>
                                     </div>
                                     
                                     <div class=" mb-4 px-3">
+                                        <label for="" class="font-light text-[14px] text-gray-700 p-2 px-5">Event banner : </label>
                                         <input type="file"  name="photo" placeholder="Choose Photo" class="w-full  py-1.5 px-6 bg-white outline-none border border-gray-300 rounded ">
                                     </div>
                                     
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Add member</button>
+                                        <button type="submit" name="addmember" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Event</button>
                                     </div>
                                     
                                 </form>

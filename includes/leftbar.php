@@ -14,76 +14,91 @@
  $logoutUrl = dirname($currentURL) . "/logout";
  $overviewUrl = dirname($currentURL) . "/overview";
  $notificationUrl = dirname($currentURL) . "/notifications";
- 
+ $commentsUrl = dirname($currentURL) . "/comments";
 
  $encodedURL = urlencode($currentURL);
 
 ?>
 
 <body class="bg-gray-100">
+        <div class=" md:hidden absolute right-0" id="openbtn">
+            <button class="bg-gray-500 p-2 text-[12px] rounded text-gray-700"><img src="../../assets/icons/icons8-menu-50.png" class="w-5 h-5"></button>
+          </div>
 
-  <aside class="bg-gray-800 text-white md:w-80 md:min-h-screen w-full  p-4">
-    <nav>
+  <aside id="menu" class="hidden md:block bg-gray-800 text-white lg:w-40 2xl:w-80 md:min-h-screen h-full w-full  p-4">
+          
+    <nav >
       <ul class="space-y-2">
-        <a href="<?php echo $dashboardUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/dashboard.php' || $currentURL == 'http://localhost/taekwondo/public/admin/dashboard') echo "text-blue-400"; ?>">
+        <a href="<?php echo $dashboardUrl;?>" class="<?php echo strpos($currentURL, 'dashboard') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
               <div class="flex items-center justify-between p-2 hover:bg-gray-700">
                 <div class="flex items-center">
                   <i class="fas fa-tachometer-alt mr-2"></i>
-                  <span>Dashboard</span>
+                  <span class="md:hidden lg:block">Dashboard</span>
                 </div>
               </div>
           </li>
         </a>
-        <a href="<?php echo $overviewUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/overview.php' || $currentURL == 'http://localhost/taekwondo/public/admin/overview') echo "text-blue-400"; ?>">
+        <a href="<?php echo $overviewUrl;?>" class="<?php echo strpos($currentURL, 'overview') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
               <div class="flex items-center justify-between p-2 hover:bg-gray-700">
                 <div class="flex items-center">
                   <i class="fas fa-eye mr-2"></i>
-                  <span>Overview</span>
+                  <span class="md:hidden lg:block">Overview</span>
                 </div>
               </div>
           </li>
         </a>
-        <a href="<?php echo $usersUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/users.php' || $currentURL == 'http://localhost/taekwondo/public/admin/users') echo "text-blue-400"; ?>">
+        <a href="<?php echo $usersUrl;?>" class="<?php echo strpos($currentURL, 'users') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
                 <i class="fas fa-users mr-2"></i>
-                <span>Users</span>
+                <span class="md:hidden lg:block">Users</span>
               </div>
             </div>
           </li>
         </a>
 
-        <a href="<?php echo $clubsUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/clubs.php' || $currentURL == 'http://localhost/taekwondo/public/admin/clubs') echo "text-blue-400"; ?>">
+        <a href="<?php echo $clubsUrl;?>" class="<?php echo strpos($currentURL, 'clubs') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
               <div class="flex items-center justify-between p-2 hover:bg-gray-700">
                 <div class="flex items-center">
                   <i class="fas fa-running mr-2"></i>
-                  <span>Clubs</span>
+                  <span class="md:hidden lg:block">Clubs</span>
                 </div>
               </div>
             </li>
         </a>
 
-          <a href="<?php echo $membersUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/members.php' || $currentURL == 'http://localhost/taekwondo/public/admin/members') echo "text-blue-400"; ?>">
+          <a href="<?php echo $membersUrl;?>" class="<?php echo strpos($currentURL, 'members') !== false ? 'text-blue-400' : ''; ?>">
             <li class="opcion-con-desplegable">
               <div class="flex items-center justify-between p-2 hover:bg-gray-700">
                 <div class="flex items-center">
                   <i class="fas fa-users mr-2"></i>
-                  <span>Committe</span>
+                  <span class="md:hidden lg:block">Committe</span>
                 </div>
               </div>
             </li>
           </a>
 
-          <a href="#" class=" <?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/events.php' || $currentURL ==  'http://localhost/taekwondo/public/admin/eventcategory'  || $currentURL == 'http://localhost/taekwondo/public/admin/events') echo "text-blue-400"; ?>">
+          <a href="<?php echo $championsUrl;?>" class="<?php echo strpos($currentURL, 'champions') !== false ? 'text-blue-400' : ''; ?>">
+            <li class="opcion-con-desplegable">
+              <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-trophy mr-2"></i>
+                  <span class="md:hidden lg:block">Champions</span>
+                </div>
+              </div>
+            </li>
+          </a>
+
+          <a href="#" class=" <?php echo strpos($currentURL, 'event') !== false ? 'text-blue-400' : ''; ?>">
             <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
                   <i class="fas fa-calendar-alt mr-2"></i>
-                  <span>Events</span>
+                  <span class="md:hidden lg:block">Events</span>
               </div>
               <i class="fas fa-chevron-down text-xs"></i>
             </div>
@@ -108,23 +123,34 @@
           </li>
           </a>
 
-        <a href="<?php echo $newsUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/news.php' || $currentURL == 'http://localhost/taekwondo/public/admin/news') echo "text-blue-400"; ?>">
+        <a href="<?php echo $newsUrl;?>" class="<?php echo strpos($currentURL, 'news') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
                 <i class="fas fa-newspaper mr-2"></i>
-                <span>News</span>
+                <span class="md:hidden lg:block">News</span>
               </div>
             </div>
           </li>
         </a>
 
-        <a href="<?php echo $notificationUrl;?>" class="<?php if ( $currentURL ==  'http://localhost/taekwondo/public/admin/notifications.php' || $currentURL == 'http://localhost/taekwondo/public/admin/notifications') echo "text-blue-400"; ?>">
+        <a href="<?php echo $commentsUrl;?>" class="<?php echo strpos($currentURL, 'comment') !== false ? 'text-blue-400' : ''; ?>">
+          <li class="opcion-con-desplegable">
+            <div class="flex items-center justify-between p-2 hover:bg-gray-700">
+              <div class="flex items-center">
+                <i class="fas fa-newspaper mr-2"></i>
+                <span class="md:hidden lg:block">Comments</span>
+              </div>
+            </div>
+          </li>
+        </a>
+
+        <a href="<?php echo $notificationUrl;?>" class="<?php echo strpos($currentURL, 'notifications') !== false ? 'text-blue-400' : ''; ?>">
           <li class="opcion-con-desplegable">
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
                 <i class="fas fa-bell mr-2"></i>
-                <span>Notifications</span>
+                <span class="md:hidden lg:block">Notifications</span>
               </div>
             </div>
           </li>
@@ -134,7 +160,7 @@
             <div class="flex items-center justify-between p-2 hover:bg-gray-700">
               <div class="flex items-center">
                 <i class="fas fa-sign-out-alt mr-2"></i>
-                <span>Logout</span>
+                <span class="md:hidden lg:block">Logout</span>
               </div>
             </div>
           </li>
@@ -143,7 +169,6 @@
       </ul>
     </nav>
   </aside>
-
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -157,6 +182,21 @@
         });
       });
     });
+
+    let openbtn = document.getElementById('openbtn');
+    let menu = document.getElementById('menu');
+    let menuVisible = true; 
+
+    openbtn.addEventListener('click', function () {
+      if (menuVisible) {
+        menu.style.display = 'none';
+      } else {
+        menu.style.display = 'block';
+      }
+      menuVisible = !menuVisible; 
+    });
+     
+    
   </script>
 </body>
 </html>

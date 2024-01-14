@@ -5,7 +5,7 @@
         <?php include '../../includes/leftbar.php'; ?>
     </div>
     <main class="w-full px-5 md:px-20 bg-gray-100 ">
-        <h2 class="text-xl py-10">Dashbord / Overview</h2>
+        <h2 class="text-xl py-10">Dashboard / Overview</h2>
         <div class="text-gray-900 tracking-wider leading-normal">
             <div class="container w-full mx-auto px-2">
 
@@ -68,7 +68,7 @@
                                     </div>
                                     
                                     <div class=" mb-4 px-3">
-                                        <button type="submit" name="updates" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update user</button>
+                                        <button type="submit" name="updates" class="text-white bg-blue-400 hover:bg-blue-600 uppercase py-2 rounded font-[500] w-full">Update Overview Details</button>
                                     </div>
                                     
                                 </form>
@@ -263,7 +263,7 @@
                  <?php
                     if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['id']) && is_numeric($_GET['id'])) {
                         $userid = $_GET['id'];
-                        $userdel = $db->destroy('users', $userid);
+                        $userdel = $db->destroy('users','inactive', $userid);
 
                         if ($userdel) {
                             echo "<script>alert('Record deleted successfully'); window.location.href = 'users';</script>";
