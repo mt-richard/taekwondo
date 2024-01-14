@@ -146,13 +146,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
                     if ($event) {
                         
                             $eventStartDate = new DateTime($event['event_date']); 
+                            $eventCloseDate = new DateTime($event['event_enddate']); 
                             $currentDate = new DateTime();
                             $interval = $eventStartDate->diff($currentDate);
 
-                            $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;
-                            $remainingHours = $eventStartDate > $currentDate ? $interval->h : 0;
-                            $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
-                            $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
+                            // $remainingDays = $eventStartDate > $currentDate ? $interval->d : 0;
+                            // $remainingHours = $eventStartDate > $currentDate ? $interval->h : 0;
+                            // $remainingMinutes = $eventStartDate > $currentDate ? $interval->i : 0;
+                            // $remainingSeconds = $eventStartDate > $currentDate ? $interval->s : 0;
+                            $interval = $eventStartDate->diff($currentDate);
+
+if ($eventStartDate > $currentDate) {
+    $remainingDays = $interval->d;
+    $remainingHours = $interval->h;
+    $remainingMinutes = $interval->i;
+    $remainingSeconds = $interval->s;
+} else {
+    $remainingDays = 0;
+    $remainingHours = 0;
+    $remainingMinutes = 0;
+    $remainingSeconds = 0;
+}
 
                             // $status = $eventStartDate > $currentDate ? 'Remaining' : 'Passed';
                             // $statusColor = $status === 'Passed' ? 'text-red-600' : 'text-gray-600'; 
